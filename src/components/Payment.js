@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// Redux imports removed as they were unused
 import { toast } from 'react-toastify';
 import { FaMobile, FaShieldAlt, FaClock, FaCheckCircle } from 'react-icons/fa';
 
