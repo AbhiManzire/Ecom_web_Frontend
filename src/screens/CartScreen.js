@@ -35,7 +35,7 @@ const CartScreen = () => {
             <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
             {cartItems.length === 0 ? (
               <Message>
-                Your cart is empty <Link to="/" className="text-blue-600 hover:text-blue-500">Go Back</Link>
+                Your cart is empty <Link to="/" className="text-black hover:underline">Go Back</Link>
               </Message>
             ) : (
               <div className="space-y-4">
@@ -46,7 +46,7 @@ const CartScreen = () => {
                         <img src={item.image} alt={item.name} className="w-full h-24 object-cover rounded" />
                       </div>
                       <div className="md:col-span-1">
-                        <Link to={`/product/${item._id}`} className="text-blue-600 hover:text-blue-500 font-medium">
+                        <Link to={`/product/${item._id}`} className="text-black hover:underline font-medium">
                           {item.name}
                         </Link>
                       </div>
@@ -82,7 +82,7 @@ const CartScreen = () => {
                           <button
                             type="button"
                             onClick={() => removeFromCartHandler(item._id, item.size, item.color)}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                            className="p-2 text-black hover:bg-gray-200 rounded-md transition-colors"
                           >
                             <FaTrash />
                           </button>

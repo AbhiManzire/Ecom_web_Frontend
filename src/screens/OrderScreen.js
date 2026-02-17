@@ -35,13 +35,13 @@ const OrderScreen = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'delivered':
-        return <FaCheckCircle className="text-green-500" />;
+        return <FaCheckCircle className="text-black" />;
       case 'shipped':
-        return <FaTruck className="text-blue-500" />;
+        return <FaTruck className="text-black" />;
       case 'processing':
-        return <FaBox className="text-yellow-500" />;
+        return <FaBox className="text-gray-600" />;
       case 'cancelled':
-        return <FaTimesCircle className="text-red-500" />;
+        return <FaTimesCircle className="text-gray-600" />;
       default:
         return <FaClock className="text-gray-500" />;
     }
@@ -50,15 +50,15 @@ const OrderScreen = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'delivered':
-        return 'text-green-600 bg-green-100';
+        return 'text-black bg-white border-2 border-black';
       case 'shipped':
-        return 'text-blue-600 bg-blue-100';
+        return 'text-black bg-white border-2 border-black';
       case 'processing':
-        return 'text-yellow-600 bg-yellow-100';
+        return 'text-black bg-gray-100 border-2 border-black';
       case 'cancelled':
-        return 'text-red-600 bg-red-100';
+        return 'text-black bg-gray-100 border-2 border-black';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-black bg-gray-100 border-2 border-black';
     }
   };
 
@@ -66,7 +66,7 @@ const OrderScreen = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
         </div>
       </div>
     );

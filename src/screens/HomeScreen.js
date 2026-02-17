@@ -169,24 +169,39 @@ const HomeScreen = () => {
           </div>
         </div>
 
+        {/* Featured Products Section */}
+        {products && products.filter(p => p.featured).length > 0 && (
+          <div className="max-w-7xl mx-auto px-4 py-12">
+            <div className="mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-2">Featured Products</h2>
+              <p className="text-gray-600">Check out our best sellers and trending items</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.filter(p => p.featured).slice(0, 8).map((product) => (
+                <Product key={product._id} product={product} />
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Product Carousels */}
         <div className="space-y-8">
           {/* Men's Categories */}
           <div className="space-y-6">
             {/* Men's Collection Header */}
             <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-90"></div>
+              <div className="absolute inset-0 bg-black"></div>
               <div className="absolute inset-0" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
               }}></div>
-              <div className="relative z-10 py-16">
+              <div className="relative z-10 py-16 border-b-4 border-white">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                   <div className="inline-block">
                     <h2 className="text-5xl font-bold text-white mb-4 tracking-wider transform hover:scale-105 transition-transform duration-300">
                       MEN'S COLLECTION
                     </h2>
                     <div className="w-32 h-1 bg-white mx-auto rounded-full"></div>
-                    <p className="text-white text-lg mt-4 opacity-90">
+                    <p className="text-white text-lg mt-4 opacity-100">
                       Discover the latest trends in men's fashion
                     </p>
                   </div>
@@ -279,18 +294,18 @@ const HomeScreen = () => {
           <div className="space-y-6">
             {/* Ladies' Collection Header */}
             <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 opacity-90"></div>
-              <div className="absolute inset-0" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              <div className="absolute inset-0 bg-white"></div>
+              <div className="absolute inset-0 border-t-4 border-black" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
               }}></div>
-              <div className="relative z-10 py-16">
+              <div className="relative z-10 py-16 border-b-4 border-black">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                   <div className="inline-block">
-                    <h2 className="text-5xl font-bold text-white mb-4 tracking-wider transform hover:scale-105 transition-transform duration-300">
+                    <h2 className="text-5xl font-bold text-black mb-4 tracking-wider transform hover:scale-105 transition-transform duration-300">
                       LADIES' COLLECTION
                     </h2>
-                    <div className="w-32 h-1 bg-white mx-auto rounded-full"></div>
-                    <p className="text-white text-lg mt-4 opacity-90">
+                    <div className="w-32 h-1 bg-black mx-auto rounded-full"></div>
+                    <p className="text-black text-lg mt-4 opacity-90">
                       Explore elegant and trendy women's fashion
                     </p>
                   </div>
@@ -406,8 +421,8 @@ const HomeScreen = () => {
       <Meta />
       
       {/* Banner Section */}
-      <div className="bg-gradient-to-r from-blue-400 to-blue-500 py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
+      <div className="bg-black border-b-4 border-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-white opacity-5"></div>
         <div className="absolute inset-0" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}></div>
@@ -415,17 +430,17 @@ const HomeScreen = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-lg">
+              <div className="bg-white text-black px-4 py-2 rounded-lg font-bold text-lg border-2 border-black">
                 {keyword ? 'SEARCH' : category ? 'CATEGORY' : 'STEALS'}
               </div>
             </div>
             <div className="text-center">
-              <h1 className="text-5xl font-bold text-black mb-2">
+              <h1 className="text-5xl font-bold text-white mb-2">
                 {keyword ? `SEARCH: ${keyword.toUpperCase()}` : 
                  category ? getCategoryDisplayName(category).toUpperCase() : 
                  'ALL SNEAKERS'}
               </h1>
-              <p className="text-black text-lg">
+              <p className="text-white text-lg">
                 {keyword ? `Search results for "${keyword}"` :
                  category ? `Discover amazing ${getCategoryDisplayName(category).toLowerCase()}` :
                  'Discover the latest releases and exclusive deals'}

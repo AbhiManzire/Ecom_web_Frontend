@@ -7,11 +7,11 @@ const AboutScreen = () => {
       <Meta title="About Us - YOUTH CIRCLE" />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-gray-900 to-black py-20">
+      <div className="bg-black text-white py-20 border-b-4 border-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center">
             <h1 className="text-5xl font-bold text-white mb-6">ABOUT YOUTH CIRCLE</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Your premier destination for premium fashion, where style meets quality for the modern generation.
             </p>
           </div>

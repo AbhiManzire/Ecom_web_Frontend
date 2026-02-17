@@ -21,16 +21,15 @@ const LoginScreen = () => {
   useEffect(() => {
     if (userInfo) {
       console.log('🔍 LoginScreen: User logged in:', userInfo);
-      console.log('🔍 LoginScreen: isAdmin:', userInfo.isAdmin);
-      console.log('🔍 LoginScreen: redirect:', redirect);
-      
+
       // Check if user is admin and redirect accordingly
       if (userInfo.isAdmin) {
         console.log('🔍 LoginScreen: Redirecting to admin dashboard');
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard', { replace: true });
       } else {
-        console.log('🔍 LoginScreen: Redirecting to:', redirect);
-        navigate(redirect);
+        const path = redirect === '/' ? '/' : redirect;
+        console.log('🔍 LoginScreen: Redirecting to:', path);
+        navigate(path, { replace: true });
       }
     }
   }, [navigate, userInfo, redirect]);
@@ -43,31 +42,31 @@ const LoginScreen = () => {
   return (
     <>
       <Meta title="Sign In | MearnSneakers" />
-      <div className="min-h-screen  flex items-center justify-center bg-gray-50  py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
               Sign in to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            <p className="mt-2 text-center text-sm text-black">
               Or{' '}
               <Link
                 to={redirect ? `/register?redirect=${redirect}` : '/register'}
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-medium text-black hover:text-gray-700 underline"
               >
                 create a new account
               </Link>
             </p>
           </div>
-          
-          <div className="bg-white shadow-lg rounded-lg">
+
+          <div className="bg-white shadow-lg rounded-lg border-2 border-black">
             <div className="p-8">
               {error && <Message variant="danger">{error}</Message>}
               {loading && <Loader />}
-              
+
               <form onSubmit={submitHandler}>
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
                     Email Address
                   </label>
                   <input
@@ -78,12 +77,12 @@ const LoginScreen = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                   />
                 </div>
 
                 <div className="mb-6">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-black mb-2">
                     Password
                   </label>
                   <input
@@ -94,13 +93,13 @@ const LoginScreen = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     autoComplete="current-password"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full py-3 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed font-semibold"
                   disabled={loading}
                 >
                   {loading ? 'Signing In...' : 'Sign In'}
@@ -109,7 +108,7 @@ const LoginScreen = () => {
 
               <div className="py-3">
                 <div className="text-center">
-                  <Link to="/forgot-password" className="text-blue-600 hover:text-blue-500">
+                  <Link to="/forgot-password" className="text-black hover:text-gray-700 underline">
                     Forgot Password?
                   </Link>
                 </div>

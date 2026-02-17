@@ -32,11 +32,11 @@ const OrderViewScreen = () => {
 
   const getStatusBadge = useCallback((order) => {
     if (order.isDelivered) {
-      return 'bg-green-100 text-green-800';
+      return 'bg-white text-black border-2 border-black';
     } else if (order.isPaid) {
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-black text-white border-2 border-black';
     } else {
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-gray-100 text-black border-2 border-black';
     }
   }, []);
 
@@ -69,7 +69,7 @@ const OrderViewScreen = () => {
         <div className="mb-6">
           <button
             onClick={() => navigate('/admin/orderlist')}
-            className="text-blue-600 hover:text-blue-800 mb-4 flex items-center"
+            className="text-black hover:underline mb-4 flex items-center"
           >
             <FaArrowLeft className="w-5 h-5 mr-2" />
             Back to Orders
@@ -96,7 +96,7 @@ const OrderViewScreen = () => {
             {/* Order Items */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FaBox className="mr-2 text-blue-600" />
+                <FaBox className="mr-2 text-black" />
                 Order Items
               </h3>
               <div className="space-y-4">
@@ -123,7 +123,7 @@ const OrderViewScreen = () => {
             {/* Customer Information */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FaUser className="mr-2 text-blue-600" />
+                <FaUser className="mr-2 text-black" />
                 Customer Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -144,7 +144,7 @@ const OrderViewScreen = () => {
             {/* Shipping Address */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FaMapMarkerAlt className="mr-2 text-blue-600" />
+                <FaMapMarkerAlt className="mr-2 text-black" />
                 Shipping Address
               </h3>
               <div className="text-gray-600">
@@ -190,7 +190,7 @@ const OrderViewScreen = () => {
               {/* Payment Information */}
               <div className="mt-6">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                  <FaCreditCard className="mr-2 text-blue-600" />
+                  <FaCreditCard className="mr-2 text-black" />
                   Payment Information
                 </h4>
                 <div className="space-y-2">
@@ -201,7 +201,7 @@ const OrderViewScreen = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Status</span>
                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      order.isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      order.isPaid ? 'bg-white text-black border-2 border-black' : 'bg-gray-100 text-black border-2 border-black'
                     }`}>
                       {order.isPaid ? 'Paid' : 'Unpaid'}
                     </span>
@@ -218,12 +218,12 @@ const OrderViewScreen = () => {
               {/* Order Timeline */}
               <div className="mt-6">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                  <FaCalendar className="mr-2 text-blue-600" />
+                  <FaCalendar className="mr-2 text-black" />
                   Order Timeline
                 </h4>
                 <div className="space-y-3">
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                    <div className="w-3 h-3 bg-black rounded-full mr-3"></div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">Order Placed</p>
                       <p className="text-xs text-gray-600">{formatDate(order.createdAt)}</p>
@@ -231,7 +231,7 @@ const OrderViewScreen = () => {
                   </div>
                   {order.isPaid && (
                     <div className="flex items-center">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                      <div className="w-3 h-3 bg-gray-400 rounded-full mr-3"></div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">Payment Received</p>
                         <p className="text-xs text-gray-600">{formatDate(order.paidAt)}</p>
@@ -240,7 +240,7 @@ const OrderViewScreen = () => {
                   )}
                   {order.isDelivered && (
                     <div className="flex items-center">
-                      <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                      <div className="w-3 h-3 bg-black rounded-full mr-3"></div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">Delivered</p>
                         <p className="text-xs text-gray-600">{formatDate(order.deliveredAt)}</p>

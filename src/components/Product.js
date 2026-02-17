@@ -72,28 +72,35 @@ const Product = ({ product }) => {
   };
 
   const currentImages = getCurrentImages();
-  
+
   // Ensure we have at least one image
   const displayImage = currentImages && currentImages.length > 0 ? currentImages[currentImageIndex] : (product.images && product.images.length > 0 ? product.images[0] : '');
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex + 1 >= currentImages.length ? 0 : prevIndex + 1
     );
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex - 1 < 0 ? currentImages.length - 1 : prevIndex - 1
     );
   };
 
   // Get available sizes based on selected color
   const getAvailableSizes = () => {
-    if (product.colorVariants && selectedColor && product.colorVariants[selectedColor]) {
-      return product.colorVariants[selectedColor].sizes.filter(size => size.stock > 0);
+    try {
+      if (product.colorVariants && selectedColor && product.colorVariants[selectedColor]) {
+        const sizes = product.colorVariants[selectedColor].sizes;
+        return (sizes && Array.isArray(sizes)) ? sizes.filter(size => size && size.stock > 0) : [];
+      }
+      const sizes = product.sizes;
+      return (sizes && Array.isArray(sizes)) ? sizes.filter(size => size && size.stock > 0) : [];
+    } catch (error) {
+      console.error('Error in getAvailableSizes:', error);
+      return [];
     }
-    return product.sizes.filter(size => size.stock > 0);
   };
 
   const availableSizes = getAvailableSizes();
@@ -134,7 +141,7 @@ const Product = ({ product }) => {
             />
           )}
         </Link>
-        
+
         {/* Image Navigation Arrows */}
         {currentImages.length > 1 && (
           <>
@@ -160,7 +167,7 @@ const Product = ({ product }) => {
             </button>
           </>
         )}
-        
+
         {/* Image Indicators */}
         {currentImages.length > 1 && (
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
@@ -172,14 +179,13 @@ const Product = ({ product }) => {
                   e.stopPropagation();
                   setCurrentImageIndex(index);
                 }}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                }`}
+                className={`w-2 h-2 rounded-full transition-colors ${index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
+                  }`}
               />
             ))}
           </div>
         )}
-        
+
         {/* Wishlist Button */}
         <button
           className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors opacity-0 group-hover:opacity-100"
@@ -206,7 +212,7 @@ const Product = ({ product }) => {
       <div className="p-4 flex flex-col flex-grow">
         {/* Product Name */}
         <Link to={`/product/${product._id}`} className="no-underline">
-          <h5 className="text-gray-900 font-semibold mb-2 line-clamp-2 hover:text-blue-600 transition-colors text-sm">
+          <h5 className="text-black font-semibold mb-2 line-clamp-2 hover:text-blue-600 transition-colors text-sm">
             {product.name.toUpperCase()}
           </h5>
         </Link>
@@ -230,17 +236,17 @@ const Product = ({ product }) => {
         {/* Price - MRP Format */}
         <div className="mb-3">
           <div className="flex items-center space-x-2">
-            <span className="text-lg font-bold text-gray-900">
+            <span className="text-lg font-bold text-black">
               MRP ₹{product.price.toLocaleString()}
             </span>
             {product.originalPrice && product.originalPrice > product.price && (
-              <span className="text-gray-500 line-through text-sm">
+              <span className="text-black line-through text-sm">
                 MRP ₹{product.originalPrice.toLocaleString()}
               </span>
             )}
           </div>
           {product.originalPrice && product.originalPrice > product.price && (
-            <div className="text-green-600 text-sm font-medium mt-1">
+            <div className="text-black text-sm font-medium mt-1">
               Save ₹{(product.originalPrice - product.price).toLocaleString()}
             </div>
           )}
@@ -254,11 +260,10 @@ const Product = ({ product }) => {
               {product.colors.slice(0, 3).map((color) => (
                 <button
                   key={color}
-                  className={`px-2 py-1 text-xs rounded border transition-colors ${
-                    selectedColor === color
+                  className={`px-2 py-1 text-xs rounded border transition-colors ${selectedColor === color
                       ? 'bg-gray-900 text-white border-gray-900'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                  }`}
+                    }`}
                   onClick={() => {
                     setSelectedColor(color);
                     setSelectedSize(''); // Reset size when color changes
@@ -283,11 +288,10 @@ const Product = ({ product }) => {
             {availableSizes.slice(0, 4).map((size) => (
               <button
                 key={size.size}
-                className={`px-2 py-1 text-xs rounded border transition-colors ${
-                  selectedSize === size.size
+                className={`px-2 py-1 text-xs rounded border transition-colors ${selectedSize === size.size
                     ? 'bg-gray-900 text-white border-gray-900'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                } ${size.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  } ${size.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={() => setSelectedSize(size.size)}
                 disabled={size.stock === 0}
               >
@@ -304,11 +308,10 @@ const Product = ({ product }) => {
 
         {/* Add to Cart Button */}
         <button
-          className={`mt-auto w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-            !product.inStock || availableSizes.length === 0
+          className={`mt-auto w-full py-3 px-4 rounded-lg font-medium transition-colors ${!product.inStock || availableSizes.length === 0
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : 'bg-gray-900 text-white hover:bg-gray-800'
-          }`}
+            }`}
           onClick={addToCartHandler}
           disabled={!product.inStock || availableSizes.length === 0}
         >

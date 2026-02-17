@@ -132,14 +132,14 @@ const AdminLayout = () => {
           ))}
         </nav>
 
-        <div className="w-full p-6 border-t border-gray-700 flex-shrink-0">
+        <div className="w-full p-6 border-t-2 border-white flex-shrink-0">
           <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-bold text-lg border-2 border-black">
               {userInfo?.name?.charAt(0)?.toUpperCase() || 'A'}
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-white">{userInfo?.name || 'Admin User'}</p>
-              <p className="text-xs text-gray-400">Administrator</p>
+              <p className="text-xs text-gray-300">Administrator</p>
             </div>
           </div>
           <button

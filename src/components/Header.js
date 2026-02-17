@@ -36,7 +36,7 @@ const Header = () => {
     return (
       <div className="relative group">
         <button
-          className="flex items-center text-white hover:text-white hover:bg-blue-500 px-4 py-2 rounded-md transition-all duration-300 font-semibold text-sm uppercase tracking-wide hover:shadow-lg hover:scale-105"
+          className="flex items-center text-white hover:text-gray-300 hover:bg-black px-4 py-2 rounded-md transition-all duration-300 font-semibold text-sm uppercase tracking-wide hover:shadow-lg hover:scale-105"
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
         >
@@ -44,7 +44,7 @@ const Header = () => {
           <FaChevronDown className="ml-1 text-xs transition-transform duration-300 group-hover:rotate-180" />
         </button>
         <div
-          className={`absolute top-full left-0 bg-blue-700 border border-blue-500 rounded-lg shadow-2xl min-w-56 z-50 transition-all duration-300 ${
+          className={`absolute top-full left-0 bg-black border border-gray-800 rounded-lg shadow-2xl min-w-56 z-50 transition-all duration-300 ${
             isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
           }`}
           onMouseEnter={() => setIsOpen(true)}
@@ -59,14 +59,14 @@ const Header = () => {
   const NavDropdownItem = ({ href, children }) => (
     <Link
       to={href}
-      className="block px-4 py-3  hover:text-white hover:bg-blue-500 transition-all duration-300 font-medium text-sm hover:shadow-md hover:translate-x-1"
+      className="block px-4 py-3 text-white hover:text-black hover:bg-white transition-all duration-300 font-medium text-sm hover:shadow-md hover:translate-x-1"
     >
       {children}
     </Link>
   );
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 via-purple-600 to-purple-600 text-white">
+    <header className="bg-black text-white border-b-2 border-white">
       <nav className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -99,8 +99,8 @@ const Header = () => {
               to="/" 
               className={`px-4 py-2 rounded-md transition-all duration-300 font-semibold text-sm uppercase tracking-wide hover:shadow-lg hover:scale-105 ${
                 location.pathname === '/' 
-                  ? 'text-white bg-blue-500 shadow-lg' 
-                  : 'text-white hover:text-white hover:bg-blue-500'
+                  ? 'text-white bg-black shadow-lg border-2 border-white' 
+                  : 'text-white hover:text-gray-300 hover:bg-black border-2 border-transparent'
               }`}
             >
               HOME
@@ -109,8 +109,8 @@ const Header = () => {
               to="/about" 
               className={`px-4 py-2 rounded-md transition-all duration-300 font-semibold text-sm uppercase tracking-wide hover:shadow-lg hover:scale-105 ${
                 location.pathname === '/about' 
-                ? 'text-white bg-blue-500 shadow-lg' 
-                  : 'text-white hover:text-white hover:bg-blue-500'
+                ? 'text-white bg-black shadow-lg border-2 border-white' 
+                  : 'text-white hover:text-gray-300 hover:bg-black border-2 border-transparent'
               }`}
             >
               ABOUT
@@ -119,8 +119,8 @@ const Header = () => {
               to="/contact" 
               className={`px-4 py-2 rounded-md transition-all duration-300 font-semibold text-sm uppercase tracking-wide hover:shadow-lg hover:scale-105 ${
                 location.pathname === '/contact' 
-                ? 'text-white bg-blue-500 shadow-lg' 
-                  : 'text-white hover:text-white hover:bg-blue-500'
+                ? 'text-white bg-black shadow-lg border-2 border-white' 
+                  : 'text-white hover:text-gray-300 hover:bg-black border-2 border-transparent'
               }`}
             >
               CONTACT
@@ -172,7 +172,7 @@ const Header = () => {
             <Link to="/cart" className="relative text-white hover:text-gray-300 transition-colors">
               <FaShoppingCart className="text-xl" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
                   {cartItems.reduce((acc, item) => acc + item.qty, 0)}
                 </span>
               )}
@@ -184,28 +184,28 @@ const Header = () => {
                 <button className="flex items-center text-white hover:text-gray-300 transition-colors">
                   <FaUser className="text-xl" />
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-blue-700 border border-blue-500 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="px-4 py-2 border-b border-blue-500">
+                <div className="absolute right-0 mt-2 w-48 bg-black border-2 border-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="px-4 py-2 border-b-2 border-white">
                     <p className="text-white font-medium">{userInfo.name}</p>
-                    <p className="text-gray-400 text-sm">{userInfo.email}</p>
+                    <p className="text-gray-300 text-sm">{userInfo.email}</p>
                   </div>
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-500 transition-colors"
+                    className="block px-4 py-2 text-white hover:text-black hover:bg-white transition-colors"
                   >
                     Profile
                   </Link>
                   {userInfo.isAdmin && (
                     <Link
                       to="/admin/dashboard"
-                      className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-500 transition-colors"
+                      className="block px-4 py-2 text-white hover:text-black hover:bg-white transition-colors"
                     >
                       Admin Dashboard
                     </Link>
                   )}
                   <button
                     onClick={logoutHandler}
-                    className="block w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-500 transition-colors"
+                    className="block w-full text-left px-4 py-2 text-white hover:text-black hover:bg-white transition-colors"
                   >
                     Logout
                   </button>
@@ -229,7 +229,7 @@ const Header = () => {
 
         {/* Search Bar (Conditional) */}
         {showSearch && (
-          <div className="py-4 border-t border-gray-700">
+          <div className="py-4 border-t border-gray-800">
             <form onSubmit={submitHandler} className="max-w-md mx-auto">
               <div className="relative">
                 <input
@@ -237,10 +237,10 @@ const Header = () => {
                   placeholder="Search products..."
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
-                  className="w-full px-4 py-2 pl-10 text-gray-900 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 pl-10 text-black bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-black border-2 border-black"
                   autoFocus
                 />
-                <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                <FaSearch className="absolute left-3 top-3 text-black" />
                 <button
                   type="button"
                   onClick={() => setShowSearch(false)}
@@ -255,7 +255,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-blue-700 border-t border-blue-500">
+          <div className="lg:hidden bg-white border-t-2 border-black">
             <div className="px-4 py-2">
               <form onSubmit={submitHandler}>
                 <div className="relative">
@@ -264,9 +264,9 @@ const Header = () => {
                     placeholder="Search products..."
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    className="w-full px-4 py-2 pl-10 text-gray-900 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 pl-10 text-black bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-black border-2 border-black"
                   />
-                  <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                  <FaSearch className="absolute left-3 top-3 text-black" />
                 </div>
               </form>
             </div>
@@ -276,8 +276,8 @@ const Header = () => {
                 to="/"
                 className={`block px-4 py-3 rounded-lg transition-all duration-300 font-semibold text-sm uppercase tracking-wide ${
                   location.pathname === '/' 
-                   ? 'text-white bg-blue-500 shadow-lg' 
-                  : 'text-white hover:text-white hover:bg-blue-500'
+                   ? 'text-white bg-black shadow-lg border-2 border-white' 
+                  : 'text-black hover:text-white hover:bg-black border-2 border-transparent'
                 }`}
               >
                 HOME

@@ -7,7 +7,9 @@ import { addToCart } from '../store/slices/cartSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
+import Product from '../components/Product';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ProductScreen = () => {
   const { id } = useParams();
@@ -22,10 +24,31 @@ const ProductScreen = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loadingRelated, setLoadingRelated] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
   }, [dispatch, id]);
+
+  // Fetch related products
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        setLoadingRelated(true);
+        const { data } = await axios.get(`/api/products/related/${id}`);
+        setRelatedProducts(data);
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      } finally {
+        setLoadingRelated(false);
+      }
+    };
+
+    if (id) {
+      fetchRelatedProducts();
+    }
+  }, [id]);
 
   // Reset selections when product changes
   useEffect(() => {
@@ -274,6 +297,20 @@ const ProductScreen = () => {
             </div>
           </div>
         </div>
+
+        {/* Related Products Section */}
+        {relatedProducts.length > 0 && (
+          <div className="mt-16 border-t border-gray-200 pt-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Products</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {relatedProducts.map((relatedProduct) => (
+                <div key={relatedProduct._id} className="group">
+                  <Product product={relatedProduct} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

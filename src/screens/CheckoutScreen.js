@@ -118,7 +118,7 @@ const CheckoutScreen = () => {
           <p className="text-gray-600 mb-6">Add some products to your cart to proceed with checkout</p>
           <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors border-2 border-black"
           >
             Continue Shopping
           </button>
@@ -191,7 +191,7 @@ const CheckoutScreen = () => {
           {/* Shipping Address */}
           <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-              <FaMapMarkerAlt className="mr-2 text-blue-600" />
+              <FaMapMarkerAlt className="mr-2 text-black" />
               Shipping Address
             </h3>
             {shippingAddress.address ? (
@@ -207,7 +207,7 @@ const CheckoutScreen = () => {
                 <p>No shipping address added</p>
                 <button
                   onClick={() => navigate('/shipping')}
-                  className="text-blue-600 hover:text-blue-800 mt-1"
+                  className="text-black hover:underline mt-1"
                 >
                   Add shipping address
                 </button>
@@ -218,12 +218,12 @@ const CheckoutScreen = () => {
           {/* Payment Method */}
           <div className="bg-white rounded-lg shadow-sm border p-4">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-              <FaMobile className="mr-2 text-green-600" />
+              <FaMobile className="mr-2 text-black" />
               Payment Method
             </h3>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <FaMobile className="text-green-600" />
+              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center border-2 border-black">
+                <FaMobile className="text-black" />
               </div>
               <div>
                 <p className="font-medium text-gray-900">Mobile Payment</p>
@@ -261,7 +261,7 @@ const CheckoutScreen = () => {
             <button
               onClick={handlePlaceOrder}
               disabled={loading || !shippingAddress.address}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+              className="w-full bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center border-2 border-black"
             >
               {loading ? (
                 <>
@@ -278,8 +278,8 @@ const CheckoutScreen = () => {
 
 
             {error && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="mt-4 p-3 bg-white border-2 border-black rounded-lg">
+                <p className="text-sm text-black font-semibold">{error}</p>
               </div>
             )}
           </div>

@@ -14,7 +14,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 code {
@@ -28,16 +29,16 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f9f9f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #333333;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #000000;
 }
 
 /* Custom animations */
@@ -68,16 +69,16 @@ code {
 
 /* Button styles */
 .btn-primary {
-  @apply bg-black text-white px-6 py-3 rounded-md font-medium hover:bg-gray-800 transition-colors duration-200;
+  @apply bg-black text-white px-6 py-3 rounded-md font-medium hover:bg-gray-900 transition-colors duration-200;
 }
 
 .btn-secondary {
-  @apply bg-gray-200 text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-300 transition-colors duration-200;
+  @apply bg-white text-black px-6 py-3 rounded-md font-medium border-2 border-black hover:bg-gray-100 transition-colors duration-200;
 }
 
 /* Input styles */
 .input-field {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent;
+  @apply w-full px-4 py-3 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black;
 }
 
 /* Loading spinner */

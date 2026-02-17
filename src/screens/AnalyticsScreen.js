@@ -137,46 +137,46 @@ const AnalyticsScreen = () => {
 
         {/* Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-blue-100 rounded-full">
-                <FaDollarSign className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-white rounded-full border-2 border-black">
+                <FaDollarSign className="w-6 h-6 text-black" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.totalRevenue || 0)}</p>
+                <p className="text-sm font-medium text-black">Total Revenue</p>
+                <p className="text-2xl font-bold text-black">{formatCurrency(analytics.totalRevenue || 0)}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-green-100 rounded-full">
-                <FaShoppingCart className="w-6 h-6 text-green-600" />
+              <div className="p-3 bg-white rounded-full border-2 border-black">
+                <FaShoppingCart className="w-6 h-6 text-black" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Orders</p>
-                <p className="text-2xl font-bold text-gray-900">{analytics.totalOrders || 0}</p>
+                <p className="text-sm font-medium text-black">Total Orders</p>
+                <p className="text-2xl font-bold text-black">{analytics.totalOrders || 0}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-purple-100 rounded-full">
-                <FaUsers className="w-6 h-6 text-purple-600" />
+              <div className="p-3 bg-white rounded-full border-2 border-black">
+                <FaUsers className="w-6 h-6 text-black" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">New Users</p>
-                <p className="text-2xl font-bold text-gray-900">{analytics.totalUsers || 0}</p>
+                <p className="text-sm font-medium text-black">New Users</p>
+                <p className="text-2xl font-bold text-black">{analytics.totalUsers || 0}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
             <div className="flex items-center">
-              <div className="p-3 bg-orange-100 rounded-full">
-                <FaChartLine className="w-6 h-6 text-orange-600" />
+              <div className="p-3 bg-white rounded-full border-2 border-black">
+                <FaChartLine className="w-6 h-6 text-black" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Avg Order Value</p>
@@ -189,35 +189,35 @@ const AnalyticsScreen = () => {
         {/* Charts and Detailed Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Order Status Distribution */}
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Status Distribution</h3>
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
+            <h3 className="text-lg font-semibold text-black mb-4">Order Status Distribution</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
-                  <span className="text-sm text-gray-600">Pending</span>
+                  <div className="w-3 h-3 bg-gray-700 rounded-full mr-3"></div>
+                  <span className="text-sm text-black">Pending</span>
                 </div>
-                <span className="font-semibold">{analytics.statusDistribution?.pending || 0}</span>
+                <span className="font-semibold text-black">{analytics.statusDistribution?.pending || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                  <span className="text-sm text-gray-600">Paid</span>
+                  <div className="w-3 h-3 bg-black rounded-full mr-3"></div>
+                  <span className="text-sm text-black">Paid</span>
                 </div>
-                <span className="font-semibold">{analytics.statusDistribution?.paid || 0}</span>
+                <span className="font-semibold text-black">{analytics.statusDistribution?.paid || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                  <span className="text-sm text-gray-600">Delivered</span>
+                  <div className="w-3 h-3 bg-gray-400 rounded-full mr-3"></div>
+                  <span className="text-sm text-black">Delivered</span>
                 </div>
-                <span className="font-semibold">{analytics.statusDistribution?.delivered || 0}</span>
+                <span className="font-semibold text-black">{analytics.statusDistribution?.delivered || 0}</span>
               </div>
             </div>
           </div>
 
           {/* Top Products */}
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Selling Products</h3>
             <div className="space-y-3">
               {analytics.topProducts?.length > 0 ? (
@@ -239,7 +239,7 @@ const AnalyticsScreen = () => {
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Rate</h3>
             <div className="flex items-center">
-              <FaArrowUp className="w-8 h-8 text-green-500 mr-3" />
+              <FaArrowUp className="w-8 h-8 text-black mr-3" />
               <div>
                 <p className="text-2xl font-bold text-gray-900">{analytics.conversionRate?.toFixed(1) || 0}%</p>
                 <p className="text-sm text-gray-600">Orders per user</p>
@@ -250,7 +250,7 @@ const AnalyticsScreen = () => {
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Total Products</h3>
             <div className="flex items-center">
-              <FaEye className="w-8 h-8 text-blue-500 mr-3" />
+              <FaEye className="w-8 h-8 text-black mr-3" />
               <div>
                 <p className="text-2xl font-bold text-gray-900">{analytics.totalProducts || 0}</p>
                 <p className="text-sm text-gray-600">Active products</p>
@@ -261,7 +261,7 @@ const AnalyticsScreen = () => {
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Growth Rate</h3>
             <div className="flex items-center">
-              <FaArrowUp className="w-8 h-8 text-green-500 mr-3" />
+              <FaArrowUp className="w-8 h-8 text-black mr-3" />
               <div>
                 <p className="text-2xl font-bold text-gray-900">+12.5%</p>
                 <p className="text-sm text-gray-600">vs last period</p>

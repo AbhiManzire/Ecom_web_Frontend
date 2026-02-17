@@ -4,15 +4,15 @@ const Message = ({ variant, children }) => {
   const getAlertClasses = (variant) => {
     switch (variant) {
       case 'danger':
-        return 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded';
+        return 'bg-black border-2 border-white text-white px-4 py-3 rounded';
       case 'success':
-        return 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded';
+        return 'bg-black border-2 border-white text-white px-4 py-3 rounded';
       case 'warning':
-        return 'bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded';
+        return 'bg-black border-2 border-white text-white px-4 py-3 rounded';
       case 'info':
-        return 'bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded';
+        return 'bg-black border-2 border-white text-white px-4 py-3 rounded';
       default:
-        return 'bg-gray-100 border border-gray-400 text-gray-700 px-4 py-3 rounded';
+        return 'bg-white border-2 border-black text-black px-4 py-3 rounded';
     }
   };
 

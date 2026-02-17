@@ -208,9 +208,9 @@ const AdminDashboard = () => {
       title: 'Total Users', 
       value: formatNumber(stats.totalUsers), 
       icon: FaUsers, 
-      color: 'bg-blue-500', 
-      bgColor: 'bg-blue-50', 
-      textColor: 'text-blue-600',
+      color: 'bg-black', 
+      bgColor: 'bg-white', 
+      textColor: 'text-black',
       growth: stats.userGrowth,
       trend: 'up'
     },
@@ -218,9 +218,9 @@ const AdminDashboard = () => {
       title: 'Total Products', 
       value: formatNumber(stats.totalProducts), 
       icon: FaBox, 
-      color: 'bg-green-500', 
-      bgColor: 'bg-green-50', 
-      textColor: 'text-green-600',
+      color: 'bg-black', 
+      bgColor: 'bg-white', 
+      textColor: 'text-black',
       growth: 8,
       trend: 'up'
     },
@@ -228,9 +228,9 @@ const AdminDashboard = () => {
       title: 'Total Orders', 
       value: formatNumber(stats.totalOrders), 
       icon: FaShoppingCart, 
-      color: 'bg-yellow-500', 
-      bgColor: 'bg-yellow-50', 
-      textColor: 'text-yellow-600',
+      color: 'bg-black', 
+      bgColor: 'bg-white', 
+      textColor: 'text-black',
       growth: stats.orderGrowth,
       trend: 'up'
     },
@@ -238,9 +238,9 @@ const AdminDashboard = () => {
       title: 'Total Revenue', 
       value: formatCurrency(stats.totalRevenue), 
       icon: FaDollarSign, 
-      color: 'bg-purple-500', 
-      bgColor: 'bg-purple-50', 
-      textColor: 'text-purple-600',
+      color: 'bg-black', 
+      bgColor: 'bg-white', 
+      textColor: 'text-black',
       growth: 15,
       trend: 'up'
     },
@@ -266,12 +266,12 @@ const AdminDashboard = () => {
 
       {/* Monthly Revenue Summary */}
       <div className="mb-8">
-        <div className="admin-card bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl shadow-lg border-0 p-6 text-white">
+        <div className="admin-card bg-black text-white rounded-xl shadow-lg border-2 border-white p-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold mb-2">Monthly Revenue</h3>
               <p className="text-3xl font-bold mb-1">{formatCurrency(stats.monthlyRevenue)}</p>
-              <p className="text-purple-100 text-sm">Last 30 days</p>
+              <p className="text-gray-600 text-sm">Last 30 days</p>
             </div>
             <div className="text-right">
               <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
@@ -316,11 +316,11 @@ const AdminDashboard = () => {
                     <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                     <div className="flex items-center mt-1">
                       {stat.trend === 'up' ? (
-                        <FaArrowUp className="w-3 h-3 text-green-500 mr-1" />
+                        <FaArrowUp className="w-3 h-3 text-black mr-1" />
                       ) : (
-                        <FaArrowDown className="w-3 h-3 text-red-500 mr-1" />
+                        <FaArrowDown className="w-3 h-3 text-gray-600 mr-1" />
                       )}
-                      <span className={`text-xs font-medium ${stat.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                      <span className={`text-xs font-medium ${stat.trend === 'up' ? 'text-black' : 'text-gray-600'}`}>
                         +{stat.growth}% from last month
                       </span>
                     </div>
@@ -338,55 +338,55 @@ const AdminDashboard = () => {
       {/* Quick Actions and Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Actions */}
-        <div className="admin-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <FaBox className="mr-2 text-blue-500" />
+        <div className="admin-card bg-white rounded-xl shadow-sm border-2 border-black p-6">
+          <h3 className="text-xl font-semibold text-black mb-6 flex items-center">
+            <FaBox className="mr-2 text-black" />
             Quick Actions
           </h3>
           <div className="space-y-4">
             <Link
               to="/admin/productlist"
-              className="flex items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-200 hover:shadow-md group"
+              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
             >
-              <div className="p-3 bg-blue-500 rounded-lg group-hover:bg-blue-600 transition-colors">
+              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
                 <FaBox className="text-white w-5 h-5" />
               </div>
               <div className="ml-4">
-                <p className="text-blue-700 font-semibold">Manage Products</p>
-                <p className="text-blue-600 text-sm">Add, edit, or remove products</p>
+                <p className="text-black font-semibold">Manage Products</p>
+                <p className="text-gray-700 text-sm">Add, edit, or remove products</p>
               </div>
             </Link>
             <Link
               to="/admin/userlist"
-              className="flex items-center p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-all duration-200 hover:shadow-md group"
+              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
             >
-              <div className="p-3 bg-green-500 rounded-lg group-hover:bg-green-600 transition-colors">
+              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
                 <FaUsers className="text-white w-5 h-5" />
               </div>
               <div className="ml-4">
-                <p className="text-green-700 font-semibold">Manage Users</p>
-                <p className="text-green-600 text-sm">View and manage user accounts</p>
+                <p className="text-black font-semibold">Manage Users</p>
+                <p className="text-gray-700 text-sm">View and manage user accounts</p>
               </div>
             </Link>
             <Link
               to="/admin/orderlist"
-              className="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-xl transition-all duration-200 hover:shadow-md group"
+              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
             >
-              <div className="p-3 bg-yellow-500 rounded-lg group-hover:bg-yellow-600 transition-colors">
+              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
                 <FaShoppingCart className="text-white w-5 h-5" />
               </div>
               <div className="ml-4">
-                <p className="text-yellow-700 font-semibold">View Orders</p>
-                <p className="text-yellow-600 text-sm">Track and manage orders</p>
+                <p className="text-black font-semibold">View Orders</p>
+                <p className="text-gray-700 text-sm">Track and manage orders</p>
               </div>
             </Link>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="admin-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <FaChartBar className="mr-2 text-purple-500" />
+        <div className="admin-card bg-white rounded-xl shadow-sm border-2 border-black p-6">
+          <h3 className="text-xl font-semibold text-black mb-6 flex items-center">
+            <FaChartBar className="mr-2 text-black" />
             Recent Activity
           </h3>
           <div className="space-y-4">
