@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { 
-  FaUsers, 
-  FaBox, 
-  FaShoppingCart, 
+import { useSelector } from 'react-redux';
+import {
+  FaUsers,
+  FaBox,
+  FaShoppingCart,
   FaChartBar,
   FaDollarSign,
   FaArrowUp,
@@ -28,22 +28,18 @@ const AdminDashboard = () => {
 
   const { userInfo } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = React.useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // Use the new dashboard stats endpoint for better performance
       const dashboardResponse = await api.get('/api/users/dashboard-stats');
       const data = dashboardResponse.data;
-      
+
       // Calculate growth percentages (mock data for now)
       const userGrowth = Math.floor(Math.random() * 20) + 5; // 5-25%
       const orderGrowth = Math.floor(Math.random() * 30) + 10; // 10-40%
-      
+
       setStats({
         totalUsers: data.totalUsers,
         totalProducts: data.totalProducts,
@@ -53,32 +49,32 @@ const AdminDashboard = () => {
         userGrowth,
         orderGrowth
       });
-      
+
       // Generate recent activity from real data
       generateRecentActivity(data.recentOrders, data.recentUsers);
-      
+
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       console.error('Error details:', error.response?.data || error.message);
-      
+
       // Fallback: try individual API calls
       try {
         const usersResponse = await api.get('/api/users');
         const productsResponse = await api.get('/api/products?pageSize=1000');
         const ordersResponse = await api.get('/api/orders');
-        
+
         const totalUsers = Array.isArray(usersResponse.data) ? usersResponse.data.length : 0;
         const totalProducts = productsResponse.data.total || productsResponse.data.products?.length || 0;
         const orders = Array.isArray(ordersResponse.data) ? ordersResponse.data : [];
         const totalOrders = orders.length;
-        
+
         const totalRevenue = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-        
+
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         const monthlyOrders = orders.filter(order => new Date(order.createdAt) >= thirtyDaysAgo);
         const monthlyRevenue = monthlyOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-        
+
         setStats({
           totalUsers,
           totalProducts,
@@ -88,12 +84,12 @@ const AdminDashboard = () => {
           userGrowth: 0,
           orderGrowth: 0
         });
-        
+
         generateRecentActivity(orders, usersResponse.data || []);
-        
+
       } catch (fallbackError) {
         console.error('Fallback API calls also failed:', fallbackError);
-        
+
         // Set fallback data with correct expected values
         setStats({
           totalUsers: 3, // Correct user count
@@ -104,17 +100,21 @@ const AdminDashboard = () => {
           userGrowth: 0,
           orderGrowth: 0
         });
-        
+
         generateMockRecentActivity();
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const generateRecentActivity = (orders, users) => {
     const activities = [];
-    
+
     // Recent orders
     orders.slice(0, 3).forEach(order => {
       activities.push({
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
         color: 'green'
       });
     });
-    
+
     // Recent users - show actual users from database
     users.slice(0, 3).forEach(user => {
       activities.push({
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
         color: 'blue'
       });
     });
-    
+
     // If no activities, show a default message
     if (activities.length === 0) {
       activities.push({
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
         color: 'gray'
       });
     }
-    
+
     // Sort by time and take latest 4
     activities.sort((a, b) => new Date(b.time) - new Date(a.time));
     setRecentActivity(activities.slice(0, 4));
@@ -204,42 +204,42 @@ const AdminDashboard = () => {
   };
 
   const statsData = [
-    { 
-      title: 'Total Users', 
-      value: formatNumber(stats.totalUsers), 
-      icon: FaUsers, 
-      color: 'bg-black', 
-      bgColor: 'bg-white', 
+    {
+      title: 'Total Users',
+      value: formatNumber(stats.totalUsers),
+      icon: FaUsers,
+      color: 'bg-black',
+      bgColor: 'bg-white',
       textColor: 'text-black',
       growth: stats.userGrowth,
       trend: 'up'
     },
-    { 
-      title: 'Total Products', 
-      value: formatNumber(stats.totalProducts), 
-      icon: FaBox, 
-      color: 'bg-black', 
-      bgColor: 'bg-white', 
+    {
+      title: 'Total Products',
+      value: formatNumber(stats.totalProducts),
+      icon: FaBox,
+      color: 'bg-black',
+      bgColor: 'bg-white',
       textColor: 'text-black',
       growth: 8,
       trend: 'up'
     },
-    { 
-      title: 'Total Orders', 
-      value: formatNumber(stats.totalOrders), 
-      icon: FaShoppingCart, 
-      color: 'bg-black', 
-      bgColor: 'bg-white', 
+    {
+      title: 'Total Orders',
+      value: formatNumber(stats.totalOrders),
+      icon: FaShoppingCart,
+      color: 'bg-black',
+      bgColor: 'bg-white',
       textColor: 'text-black',
       growth: stats.orderGrowth,
       trend: 'up'
     },
-    { 
-      title: 'Total Revenue', 
-      value: formatCurrency(stats.totalRevenue), 
-      icon: FaDollarSign, 
-      color: 'bg-black', 
-      bgColor: 'bg-white', 
+    {
+      title: 'Total Revenue',
+      value: formatCurrency(stats.totalRevenue),
+      icon: FaDollarSign,
+      color: 'bg-black',
+      bgColor: 'bg-white',
       textColor: 'text-black',
       growth: 15,
       trend: 'up'
@@ -249,7 +249,7 @@ const AdminDashboard = () => {
   return (
     <>
       <Meta title="Admin Dashboard | MearnSneakers" />
-      
+
       {/* Welcome Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
@@ -404,10 +404,10 @@ const AdminDashboard = () => {
                     <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
                   </div>
                   <div className={`text-${activity.color}-500 text-xs font-medium`}>
-                    {activity.type === 'order' ? 'Order' : 
-                     activity.type === 'user' ? 'User' :
-                     activity.type === 'product' ? 'Product' : 
-                     activity.type === 'info' ? 'Info' : 'Alert'}
+                    {activity.type === 'order' ? 'Order' :
+                      activity.type === 'user' ? 'User' :
+                        activity.type === 'product' ? 'Product' :
+                          activity.type === 'info' ? 'Info' : 'Alert'}
                   </div>
                 </div>
               ))

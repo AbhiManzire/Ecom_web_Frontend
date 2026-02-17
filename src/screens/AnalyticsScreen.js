@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllOrders } from '../store/slices/orderSlice';
 import { fetchAllUsers } from '../store/slices/userSlice';
 import { fetchProducts } from '../store/slices/productSlice';
-import { FaChartLine, FaUsers, FaShoppingCart, FaDollarSign, FaEye, FaCalendarAlt, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaChartLine, FaUsers, FaShoppingCart, FaDollarSign, FaEye, FaCalendarAlt, FaArrowUp } from 'react-icons/fa';
 import Loader from '../components/Loader';
-import Message from '../components/Message';
 import Meta from '../components/Meta';
 
 const AnalyticsScreen = () => {
@@ -67,7 +66,7 @@ const AnalyticsScreen = () => {
     });
 
     const topProducts = Object.entries(productSales)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 5);
 
     // Calculate order status distribution

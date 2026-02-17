@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FaFilter, FaSort } from 'react-icons/fa';
 import { fetchProducts, fetchFilterOptions } from '../store/slices/productSlice';
 import Product from '../components/Product';

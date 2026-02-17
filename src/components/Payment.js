@@ -4,9 +4,6 @@ import { toast } from 'react-toastify';
 import { FaMobile, FaShieldAlt, FaClock, FaCheckCircle } from 'react-icons/fa';
 
 const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) => {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.user);
-
   const [step, setStep] = useState(1); // 1: Mobile Input, 2: OTP Verification, 3: Success
   const [mobileNumber, setMobileNumber] = useState('');
   const [otp, setOtp] = useState('');
@@ -40,7 +37,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
 
   const handleMobileSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!mobileNumber || mobileNumber.length !== 10) {
       toast.error('Please enter a valid 10-digit mobile number');
       return;
@@ -50,7 +47,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
     try {
       // Mock API call - simulate delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Mock successful response
       const mockPaymentId = `payment_${Date.now()}`;
       setPaymentId(mockPaymentId);
@@ -67,7 +64,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!otp || otp.length !== 6) {
       toast.error('Please enter a valid 6-digit OTP');
       return;
@@ -77,7 +74,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
     try {
       // Mock API call - simulate delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Check for dummy OTP
       if (otp === '123456') {
         setStep(3);
@@ -94,7 +91,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
         setOtpAttempts(prev => prev + 1);
         toast.error('Invalid OTP. For testing, use: 123456');
         setOtp('');
-        
+
         if (otpAttempts >= 2) {
           toast.error('Maximum OTP attempts exceeded. Please try again.');
           setStep(1);
@@ -114,7 +111,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
     try {
       // Mock API call - simulate delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Mock successful resend
       setOtpExpiresIn(300); // 5 minutes
       setOtp('');
@@ -283,7 +280,7 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
               Your order has been confirmed and payment processed.
             </p>
           </div>
-          
+
           <div className="bg-gray-50 p-4 rounded-lg text-left">
             <h4 className="font-semibold text-gray-900 mb-2">Payment Details:</h4>
             <div className="space-y-1 text-sm">

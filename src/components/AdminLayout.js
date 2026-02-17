@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, Outlet, Routes, Route, useLocation } from 'react-router-dom';
+import { Link, useNavigate, Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/slices/userSlice';
-import { 
-  FaUsers, 
-  FaBox, 
-  FaShoppingCart, 
-  FaChartBar, 
+import {
+  FaUsers,
+  FaBox,
+  FaShoppingCart,
+  FaChartBar,
   FaSignOutAlt,
   FaBars,
   FaTimes,
@@ -49,7 +49,7 @@ const AdminLayout = () => {
   ];
 
   const isActive = (path) => {
-    return location.pathname === path || location.pathname === '/admin' && path === '/admin/dashboard';
+    return location.pathname === path || (location.pathname === '/admin' && path === '/admin/dashboard');
   };
 
   const getPageTitle = (pathname) => {
@@ -100,10 +100,9 @@ const AdminLayout = () => {
       )}
 
       {/* Sidebar - Always Fixed */}
-      <div 
-        className={`admin-sidebar bg-gray-900 flex flex-col ${
-          sidebarOpen ? 'sidebar-open' : ''
-        }`}
+      <div
+        className={`admin-sidebar bg-gray-900 flex flex-col ${sidebarOpen ? 'sidebar-open' : ''
+          }`}
       >
         <div className="flex items-center justify-between h-16 px-6 bg-gray-800 border-b border-gray-700 flex-shrink-0">
           <h1 className="text-xl font-bold text-white">Admin Panel</h1>
@@ -114,17 +113,16 @@ const AdminLayout = () => {
             <FaTimes className="w-5 h-5" />
           </button>
         </div>
-        
+
         <nav className="mt-8 px-4 flex-1 overflow-y-auto">
           {sidebarItems.map((item) => (
             <Link
               key={item.name}
               to={item.path}
-              className={`admin-nav-item flex items-center px-4 py-3 mb-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-all duration-200 rounded-lg ${
-                isActive(item.path) 
-                  ? 'bg-gray-800 text-white border-r-4 border-blue-500 shadow-lg' 
+              className={`admin-nav-item flex items-center px-4 py-3 mb-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-all duration-200 rounded-lg ${isActive(item.path)
+                  ? 'bg-gray-800 text-white border-r-4 border-blue-500 shadow-lg'
                   : 'hover:shadow-md'
-              }`}
+                }`}
             >
               <item.icon className="mr-3 w-5 h-5" />
               <span className="font-medium">{item.name}</span>

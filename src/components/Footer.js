@@ -12,41 +12,41 @@ const Footer = () => {
               Your premier destination for authentic sneakers, exclusive releases, and unbeatable deals.
             </p>
             <div className="flex space-x-3">
-              <a href="#" className="text-white hover:text-gray-400 transition-colors">
+              <a href="/" className="text-white hover:text-gray-400 transition-colors">
                 <FaFacebook size={20} />
               </a>
-              <a href="#" className="text-white hover:text-gray-400 transition-colors">
+              <a href="/" className="text-white hover:text-gray-400 transition-colors">
                 <FaTwitter size={20} />
               </a>
-              <a href="#" className="text-white hover:text-gray-400 transition-colors">
+              <a href="/" className="text-white hover:text-gray-400 transition-colors">
                 <FaInstagram size={20} />
               </a>
-              <a href="#" className="text-white hover:text-gray-400 transition-colors">
+              <a href="/" className="text-white hover:text-gray-400 transition-colors">
                 <FaYoutube size={20} />
               </a>
             </div>
           </div>
-          
+
           <div className="mb-4">
             <h5 className="text-lg font-semibold mb-3">Quick Links</h5>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Shop</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Shop</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
-          
+
           <div className="mb-4">
             <h5 className="text-lg font-semibold mb-3">Customer Service</h5>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Returns & Exchanges</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Shipping Info</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Size Guide</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Returns & Exchanges</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Shipping Info</a></li>
+              <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Size Guide</a></li>
             </ul>
           </div>
-          
+
           <div className="mb-4">
             <h5 className="text-lg font-semibold mb-3">Newsletter</h5>
             <p className="text-gray-300 mb-3">
@@ -64,15 +64,15 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <hr className="border-gray-700 my-8" />
-        
+
         <div className="text-center">
           <p className="text-gray-300">
             © 2024 MearnSneakers. All rights reserved.
           </p>
         </div>
-      </div>  
+      </div>
     </footer>
   );
 };

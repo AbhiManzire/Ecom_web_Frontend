@@ -18,12 +18,6 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
-import UserListScreen from './screens/UserListScreen';
-import UserEditScreen from './screens/UserEditScreen';
-import ProductListScreen from './screens/ProductListScreen';
-import ProductEditScreen from './screens/ProductEditScreen';
-import OrderListScreen from './screens/OrderListScreen';
-import AdminDashboard from './screens/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import AdminLayout from './components/AdminLayout';
 import { clearError, clearSuccess } from './store/slices/userSlice';
@@ -59,7 +53,7 @@ function App() {
     <Routes>
       {/* Admin Routes - No Header/Footer */}
       <Route path="/admin/*" element={<AdminRoute><AdminLayout /></AdminRoute>} />
-      
+
       {/* Main Website Routes - With Header/Footer */}
       <Route path="/*" element={
         <div className="min-h-screen flex flex-col">

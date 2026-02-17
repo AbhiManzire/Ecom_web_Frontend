@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar, FaHeart, FaShoppingCart, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
@@ -261,8 +261,8 @@ const Product = ({ product }) => {
                 <button
                   key={color}
                   className={`px-2 py-1 text-xs rounded border transition-colors ${selectedColor === color
-                      ? 'bg-gray-900 text-white border-gray-900'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    ? 'bg-gray-900 text-white border-gray-900'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                     }`}
                   onClick={() => {
                     setSelectedColor(color);
@@ -289,8 +289,8 @@ const Product = ({ product }) => {
               <button
                 key={size.size}
                 className={`px-2 py-1 text-xs rounded border transition-colors ${selectedSize === size.size
-                    ? 'bg-gray-900 text-white border-gray-900'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-gray-900 text-white border-gray-900'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   } ${size.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={() => setSelectedSize(size.size)}
                 disabled={size.stock === 0}
@@ -309,8 +309,8 @@ const Product = ({ product }) => {
         {/* Add to Cart Button */}
         <button
           className={`mt-auto w-full py-3 px-4 rounded-lg font-medium transition-colors ${!product.inStock || availableSizes.length === 0
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gray-900 text-white hover:bg-gray-800'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-gray-900 text-white hover:bg-gray-800'
             }`}
           onClick={addToCartHandler}
           disabled={!product.inStock || availableSizes.length === 0}

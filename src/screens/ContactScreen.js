@@ -112,7 +112,7 @@ const ContactScreen = () => {
                   <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
                     <span className="text-lg">🐦</span>
                   </a>
-                  <a href="#" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
+                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
                     <span className="text-lg">📌</span>
                   </a>
                 </div>

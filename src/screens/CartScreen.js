@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, updateCartItemQuantity } from '../store/slices/cartSlice';
@@ -7,7 +7,7 @@ import Message from '../components/Message';
 import Meta from '../components/Meta';
 
 const CartScreen = () => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -94,7 +94,7 @@ const CartScreen = () => {
               </div>
             )}
           </div>
-          
+
           <div className="lg:col-span-1">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="border-b border-gray-200 pb-4 mb-4">
@@ -107,7 +107,7 @@ const CartScreen = () => {
                     .toFixed(2)}
                 </p>
               </div>
-              
+
               <button
                 type="button"
                 className="w-full py-3 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
