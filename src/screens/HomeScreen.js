@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { FaFilter, FaSort, FaStar, FaHeart } from 'react-icons/fa';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FaFilter, FaSort } from 'react-icons/fa';
 import { fetchProducts, fetchFilterOptions } from '../store/slices/productSlice';
 import Product from '../components/Product';
 import ProductCarousel from '../components/ProductCarousel';
@@ -12,9 +12,9 @@ import Meta from '../components/Meta';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { keyword, pageNumber, category } = useParams();
-  
+
   const { products, loading, error, page, pages, filterOptions } = useSelector((state) => state.product);
   console.log('Products from Redux**************************************:', products);
   console.log('Products count:', products ? products.length : 0);
@@ -28,7 +28,7 @@ const HomeScreen = () => {
       categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
     });
     console.log(categoryCounts);
-    
+
     // Check for invalid products
     const invalidProducts = products.filter(p => !p._id || !p.name || !p.category || !p.images || p.images.length === 0);
     if (invalidProducts.length > 0) {
@@ -61,7 +61,7 @@ const HomeScreen = () => {
     const params = {
       pageNumber: pageNumber || 1
     };
-    
+
     // Only add non-empty filter values
     if (filters.category) params.category = filters.category;
     if (filters.brand) params.brand = filters.brand;
@@ -73,20 +73,20 @@ const HomeScreen = () => {
     if (filters.featured) params.featured = filters.featured;
     if (filters.sortBy) params.sortBy = filters.sortBy;
     if (filters.sortOrder) params.sortOrder = filters.sortOrder;
-    
+
     if (keyword) {
       params.keyword = keyword;
     }
-    
+
     if (category) {
       params.category = category;
     }
-    
+
     // For homepage, fetch more products to show in carousels
     if (!keyword && !category) {
       params.pageSize = 200; // Fetch all products for homepage to ensure all categories are represented
     }
-    
+
     dispatch(fetchProducts(params));
   }, [dispatch, keyword, pageNumber, category, filters]);
 
@@ -126,7 +126,7 @@ const HomeScreen = () => {
       'flipflop': 'Men\'s Flip Flops',
       'men-sport': 'Men\'s Sport',
       'men-accessories': 'Men\'s Accessories',
-      
+
       // Ladies' Categories
       'ladies-tshirt': 'Ladies\' T-Shirts',
       'ladies-shirt': 'Ladies\' Shirts',
@@ -140,7 +140,7 @@ const HomeScreen = () => {
       'ladies-clothing': 'Ladies\' Clothing',
       'ladies-accessories': 'Ladies\' Accessories',
       'lingerie': 'Ladies\' Lingerie',
-      
+
       // Legacy categories (if still needed)
       'mobile': 'Mobile Phones',
       'watches': 'Watches',
@@ -156,10 +156,10 @@ const HomeScreen = () => {
     return (
       <>
         <Meta />
-        
+
         {/* Hero Banner */}
         <div className="relative bg-gradient-to-br from-gray-200 to-gray-300 py-20 overflow-hidden">
-          
+
           <div className="relative z-10 max-w-7xl mx-auto px-4">
             <div className="text-center">
               <div className="bg-white rounded-2xl shadow-2xl p-8 inline-block transform hover:scale-105 transition-transform duration-300">
@@ -208,87 +208,87 @@ const HomeScreen = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Men's T-Shirts */}
-            <ProductCarousel 
-              title="MEN'S T-SHIRTS" 
+            <ProductCarousel
+              title="MEN'S T-SHIRTS"
               products={products.filter(p => p.category === 'tshirt')}
               category="tshirt"
               theme="mens"
             />
 
             {/* Men's Shirts */}
-            <ProductCarousel 
-              title="MEN'S SHIRTS" 
+            <ProductCarousel
+              title="MEN'S SHIRTS"
               products={products.filter(p => p.category === 'shirt')}
               category="shirt"
               theme="mens"
             />
 
             {/* Men's Jeans */}
-          <ProductCarousel 
-              title="MEN'S JEANS" 
+            <ProductCarousel
+              title="MEN'S JEANS"
               products={products.filter(p => p.category === 'jeans')}
               category="jeans"
               theme="mens"
-          />
+            />
 
             {/* Men's Sneakers */}
-          <ProductCarousel 
-              title="MEN'S SNEAKERS" 
+            <ProductCarousel
+              title="MEN'S SNEAKERS"
               products={products.filter(p => p.category === 'sneakers')}
-            category="sneakers"
-            theme="mens"
-          />
+              category="sneakers"
+              theme="mens"
+            />
 
             {/* Men's Cargo */}
-            <ProductCarousel 
-              title="MEN'S CARGO" 
+            <ProductCarousel
+              title="MEN'S CARGO"
               products={products.filter(p => p.category === 'cargo')}
               category="cargo"
               theme="mens"
             />
 
             {/* Men's Trousers */}
-          <ProductCarousel 
-              title="MEN'S TROUSERS" 
+            <ProductCarousel
+              title="MEN'S TROUSERS"
               products={products.filter(p => p.category === 'trousers')}
               category="trousers"
               theme="mens"
             />
 
             {/* Men's Hoodies & Sweaters */}
-          <ProductCarousel 
-              title="MEN'S HOODIES & SWEATERS" 
+            <ProductCarousel
+              title="MEN'S HOODIES & SWEATERS"
               products={products.filter(p => p.category === 'hoodies-sweaters')}
               category="hoodies-sweaters"
               theme="mens"
             />
 
             {/* Men's Flip Flops */}
-          <ProductCarousel 
-              title="MEN'S FLIP FLOPS" 
+            <ProductCarousel
+              title="MEN'S FLIP FLOPS"
               products={products.filter(p => p.category === 'flipflop')}
               category="flipflop"
               theme="mens"
             />
 
             {/* Men's Sport */}
-          <ProductCarousel 
-              title="MEN'S SPORT" 
+            <ProductCarousel
+              title="MEN'S SPORT"
               products={products.filter(p => p.category === 'men-sport')}
               category="men-sport"
               theme="mens"
             />
 
             {/* Men's Accessories */}
-          <ProductCarousel 
-              title="MEN'S ACCESSORIES" 
+            <ProductCarousel
+              title="MEN'S ACCESSORIES"
               products={products.filter(p => p.category === 'men-accessories')}
               category="men-accessories"
               theme="mens"
-          />
-        </div>
+            />
+          </div>
 
           {/* Ladies' Categories */}
           <div className="space-y-6">
@@ -312,98 +312,98 @@ const HomeScreen = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Ladies' T-Shirts */}
-            <ProductCarousel 
-              title="LADIES' T-SHIRTS" 
+            <ProductCarousel
+              title="LADIES' T-SHIRTS"
               products={products.filter(p => p.category === 'ladies-tshirt')}
               category="ladies-tshirt"
               theme="ladies"
             />
 
             {/* Ladies' Shirts */}
-            <ProductCarousel 
-              title="LADIES' SHIRTS" 
+            <ProductCarousel
+              title="LADIES' SHIRTS"
               products={products.filter(p => p.category === 'ladies-shirt')}
               category="ladies-shirt"
               theme="ladies"
             />
 
             {/* Ladies' Jeans */}
-            <ProductCarousel 
-              title="LADIES' JEANS" 
+            <ProductCarousel
+              title="LADIES' JEANS"
               products={products.filter(p => p.category === 'ladies-jeans')}
               category="ladies-jeans"
               theme="ladies"
             />
 
             {/* Ladies' Shorts */}
-            <ProductCarousel 
-              title="LADIES' SHORTS" 
+            <ProductCarousel
+              title="LADIES' SHORTS"
               products={products.filter(p => p.category === 'ladies-shorts')}
               category="ladies-shorts"
               theme="ladies"
             />
 
             {/* Ladies' Co-ord Sets */}
-            <ProductCarousel 
-              title="LADIES' CO-ORD SETS" 
+            <ProductCarousel
+              title="LADIES' CO-ORD SETS"
               products={products.filter(p => p.category === 'coord-set')}
               category="coord-set"
               theme="ladies"
             />
 
             {/* Ladies' Cargo */}
-            <ProductCarousel 
-              title="LADIES' CARGO" 
+            <ProductCarousel
+              title="LADIES' CARGO"
               products={products.filter(p => p.category === 'ladies-cargo')}
               category="ladies-cargo"
               theme="ladies"
             />
 
             {/* Ladies' Trousers */}
-            <ProductCarousel 
-              title="LADIES' TROUSERS" 
+            <ProductCarousel
+              title="LADIES' TROUSERS"
               products={products.filter(p => p.category === 'ladies-trousers')}
               category="ladies-trousers"
               theme="ladies"
             />
 
             {/* Ladies' Hoodies */}
-            <ProductCarousel 
-              title="LADIES' HOODIES" 
+            <ProductCarousel
+              title="LADIES' HOODIES"
               products={products.filter(p => p.category === 'ladies-hoodies')}
               category="ladies-hoodies"
               theme="ladies"
             />
 
             {/* Ladies' Sport */}
-            <ProductCarousel 
-              title="LADIES' SPORT" 
+            <ProductCarousel
+              title="LADIES' SPORT"
               products={products.filter(p => p.category === 'ladies-sport')}
               category="ladies-sport"
               theme="ladies"
             />
 
             {/* Ladies' Clothing */}
-            <ProductCarousel 
-              title="LADIES' CLOTHING" 
+            <ProductCarousel
+              title="LADIES' CLOTHING"
               products={products.filter(p => p.category === 'ladies-clothing')}
               category="ladies-clothing"
               theme="ladies"
             />
 
             {/* Ladies' Accessories */}
-            <ProductCarousel 
-              title="LADIES' ACCESSORIES" 
+            <ProductCarousel
+              title="LADIES' ACCESSORIES"
               products={products.filter(p => p.category === 'ladies-accessories')}
               category="ladies-accessories"
               theme="ladies"
             />
 
             {/* Ladies' Lingerie */}
-            <ProductCarousel 
-              title="LADIES' LINGERIE" 
+            <ProductCarousel
+              title="LADIES' LINGERIE"
               products={products.filter(p => p.category === 'lingerie')}
               category="lingerie"
               theme="ladies"
@@ -419,14 +419,14 @@ const HomeScreen = () => {
   return (
     <>
       <Meta />
-      
+
       {/* Banner Section */}
       <div className="bg-black border-b-4 border-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-white opacity-5"></div>
         <div className="absolute inset-0" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}></div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -436,14 +436,14 @@ const HomeScreen = () => {
             </div>
             <div className="text-center">
               <h1 className="text-5xl font-bold text-white mb-2">
-                {keyword ? `SEARCH: ${keyword.toUpperCase()}` : 
-                 category ? getCategoryDisplayName(category).toUpperCase() : 
-                 'ALL SNEAKERS'}
+                {keyword ? `SEARCH: ${keyword.toUpperCase()}` :
+                  category ? getCategoryDisplayName(category).toUpperCase() :
+                    'ALL SNEAKERS'}
               </h1>
               <p className="text-white text-lg">
                 {keyword ? `Search results for "${keyword}"` :
-                 category ? `Discover amazing ${getCategoryDisplayName(category).toLowerCase()}` :
-                 'Discover the latest releases and exclusive deals'}
+                  category ? `Discover amazing ${getCategoryDisplayName(category).toLowerCase()}` :
+                    'Discover the latest releases and exclusive deals'}
               </p>
             </div>
             <div></div>
@@ -469,7 +469,7 @@ const HomeScreen = () => {
                   {showFilters ? 'Hide' : 'Show'}
                 </button>
               </div>
-              
+
               {showFilters && (
                 <div className="p-4 space-y-4">
                   {/* Category Filter */}
@@ -629,7 +629,7 @@ const HomeScreen = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <Paginate
                   pages={pages}
                   page={page}

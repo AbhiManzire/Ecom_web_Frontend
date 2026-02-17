@@ -25,7 +25,6 @@ const ProductScreen = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loadingRelated, setLoadingRelated] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -35,13 +34,10 @@ const ProductScreen = () => {
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
-        setLoadingRelated(true);
         const { data } = await axios.get(`/api/products/related/${id}`);
         setRelatedProducts(data);
       } catch (error) {
         console.error('Error fetching related products:', error);
-      } finally {
-        setLoadingRelated(false);
       }
     };
 
@@ -146,16 +142,16 @@ const ProductScreen = () => {
         <Link className="inline-block mb-6 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" to="/">
           Go Back
         </Link>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Product Image */}
           <div>
             <div className="relative">
               {currentImages.length > 0 ? (
-                <img 
-                  src={currentImages[currentImageIndex] || currentImages[0]} 
-                  alt={product.name} 
-                  className="w-full rounded-lg" 
+                <img
+                  src={currentImages[currentImageIndex] || currentImages[0]}
+                  alt={product.name}
+                  className="w-full rounded-lg"
                 />
               ) : (
                 <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
@@ -167,9 +163,8 @@ const ProductScreen = () => {
                   {currentImages.map((_, index) => (
                     <button
                       key={index}
-                      className={`w-3 h-3 rounded-full ${
-                        index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                      }`}
+                      className={`w-3 h-3 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                        }`}
                       onClick={() => setCurrentImageIndex(index)}
                     />
                   ))}
@@ -177,12 +172,12 @@ const ProductScreen = () => {
               )}
             </div>
           </div>
-          
+
           {/* Product Details */}
           <div className="space-y-6">
             <div className="border-b border-gray-200 pb-4">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">{product.name}</h3>
-              
+
               {/* Rating */}
               <div className="flex items-center mb-4">
                 <div className="flex items-center mr-2">
@@ -198,7 +193,7 @@ const ProductScreen = () => {
                   {product.rating} ({product.numReviews} reviews)
                 </span>
               </div>
-              
+
               {/* Price */}
               <div className="mb-4">
                 <span className="text-3xl font-bold text-gray-900">${product.price}</span>
@@ -206,11 +201,11 @@ const ProductScreen = () => {
                   <span className="text-gray-500 line-through ml-2">${product.originalPrice}</span>
                 )}
               </div>
-              
+
               {/* Description */}
               <p className="text-gray-600">{product.description}</p>
             </div>
-            
+
             {/* Color Selection */}
             {product.colors && product.colors.length > 0 && (
               <div>
@@ -219,11 +214,10 @@ const ProductScreen = () => {
                   {product.colors.map((color) => (
                     <button
                       key={color}
-                      className={`px-4 py-2 border rounded-md transition-colors ${
-                        selectedColor === color
-                          ? 'bg-gray-900 text-white border-gray-900'
-                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                      }`}
+                      className={`px-4 py-2 border rounded-md transition-colors ${selectedColor === color
+                        ? 'bg-gray-900 text-white border-gray-900'
+                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                        }`}
                       onClick={() => {
                         setSelectedColor(color);
                         setSelectedSize(''); // Reset size when color changes
@@ -235,8 +229,8 @@ const ProductScreen = () => {
                 </div>
               </div>
             )}
-            
-            
+
+
             {/* Size Selection */}
             <div>
               <h4 className="font-semibold mb-3">Select Size</h4>
@@ -244,11 +238,10 @@ const ProductScreen = () => {
                 {availableSizes.map((size) => (
                   <button
                     key={size.size}
-                    className={`px-4 py-2 border rounded-md transition-colors ${
-                      selectedSize === size.size
-                        ? 'bg-gray-900 text-white border-gray-900'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                    }`}
+                    className={`px-4 py-2 border rounded-md transition-colors ${selectedSize === size.size
+                      ? 'bg-gray-900 text-white border-gray-900'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      }`}
                     onClick={() => setSelectedSize(size.size)}
                   >
                     {size.size}
@@ -256,7 +249,7 @@ const ProductScreen = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Quantity */}
             <div>
               <h4 className="font-semibold mb-3">Quantity</h4>
@@ -272,22 +265,21 @@ const ProductScreen = () => {
                 ))}
               </select>
             </div>
-            
+
             {/* Action Buttons */}
             <div className="flex space-x-4">
               <button
                 onClick={addToCartHandler}
                 disabled={!product.inStock || availableSizes.length === 0}
-                className={`flex-1 py-3 px-6 rounded-md font-medium transition-colors ${
-                  !product.inStock || availableSizes.length === 0
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
-                }`}
+                className={`flex-1 py-3 px-6 rounded-md font-medium transition-colors ${!product.inStock || availableSizes.length === 0
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
+                  }`}
               >
                 <FaShoppingCart className="inline mr-2" />
                 {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
               </button>
-              
+
               <button
                 onClick={toggleWishlist}
                 className="p-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"

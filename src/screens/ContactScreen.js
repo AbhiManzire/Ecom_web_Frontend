@@ -28,7 +28,7 @@ const ContactScreen = () => {
   return (
     <>
       <Meta title="Contact Us - YOUTH CIRCLE" />
-      
+
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-gray-900 to-black py-20">
         <div className="max-w-7xl mx-auto px-4">
@@ -48,7 +48,7 @@ const ContactScreen = () => {
             {/* Contact Information */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-black text-white p-3 rounded-lg">
@@ -103,13 +103,13 @@ const ContactScreen = () => {
               <div className="mt-8">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h3>
                 <div className="flex space-x-4">
-                  <a href="#" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
+                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
                     <span className="text-lg">📘</span>
                   </a>
-                  <a href="#" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
+                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
                     <span className="text-lg">📷</span>
                   </a>
-                  <a href="#" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
+                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
                     <span className="text-lg">🐦</span>
                   </a>
                   <a href="#" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
@@ -122,7 +122,7 @@ const ContactScreen = () => {
             {/* Contact Form */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -212,7 +212,7 @@ const ContactScreen = () => {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">What is your return policy?</h3>
               <p className="text-gray-600">
-                We offer a 30-day return policy for all items in original condition. 
+                We offer a 30-day return policy for all items in original condition.
                 Returns are free and easy to process.
               </p>
             </div>
@@ -220,7 +220,7 @@ const ContactScreen = () => {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">How long does shipping take?</h3>
               <p className="text-gray-600">
-                Standard shipping takes 3-5 business days. Express shipping is available 
+                Standard shipping takes 3-5 business days. Express shipping is available
                 for next-day delivery in select areas.
               </p>
             </div>
@@ -228,7 +228,7 @@ const ContactScreen = () => {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Do you offer international shipping?</h3>
               <p className="text-gray-600">
-                Yes, we ship worldwide. International shipping times vary by location, 
+                Yes, we ship worldwide. International shipping times vary by location,
                 typically 7-14 business days.
               </p>
             </div>
@@ -236,7 +236,7 @@ const ContactScreen = () => {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">How can I track my order?</h3>
               <p className="text-gray-600">
-                Once your order ships, you'll receive a tracking number via email. 
+                Once your order ships, you'll receive a tracking number via email.
                 You can track your package on our website or the carrier's site.
               </p>
             </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaArrowLeft, FaCreditCard, FaMobile, FaMapMarkerAlt, FaShoppingCart } from 'react-icons/fa';
-import { createOrder, createMockOrder, updateMockOrderPayment } from '../store/slices/orderSlice';
+import { createOrder, createMockOrder } from '../store/slices/orderSlice';
 import { clearCart, saveShippingAddress } from '../store/slices/cartSlice';
 import Payment from '../components/Payment';
 import PaymentModal from '../components/PaymentModal';
@@ -68,8 +68,8 @@ const CheckoutScreen = () => {
 
   const handleProceedToPay = async () => {
     // Ensure paymentMethod is always a string
-    const paymentMethodValue = typeof paymentMethod === 'string' 
-      ? paymentMethod 
+    const paymentMethodValue = typeof paymentMethod === 'string'
+      ? paymentMethod
       : paymentMethod?.method || 'mobile_otp';
 
     const orderData = {
@@ -144,7 +144,7 @@ const CheckoutScreen = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Meta title="Checkout - MearnSneakers" />
-      
+
       <div className="mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -161,7 +161,7 @@ const CheckoutScreen = () => {
         {/* Order Summary */}
         <div>
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Order Summary</h2>
-          
+
           {/* Cart Items */}
           <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
             <h3 className="font-semibold text-gray-900 mb-3">Items ({cartItems.length})</h3>
@@ -237,7 +237,7 @@ const CheckoutScreen = () => {
         <div className="lg:sticky lg:top-4 lg:self-start lg:h-fit lg:z-10">
           <div className="bg-white rounded-lg shadow-sm border p-6 mt-12">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Order Total</h2>
-            
+
             <div className="space-y-3 mb-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Items ({cartItems.length})</span>
