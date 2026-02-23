@@ -118,7 +118,7 @@ const Product = ({ product }) => {
   }, [selectedColor]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border-0 h-full flex flex-col group">
+    <div className="product-card h-full flex flex-col group rounded-xl overflow-hidden">
       <div className="relative overflow-hidden">
         <Link to={`/product/${product._id}`}>
           {imageError ? (
@@ -132,8 +132,7 @@ const Product = ({ product }) => {
             <img
               src={displayImage}
               alt={product.name}
-              className="w-full h-64 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
-              style={{ minHeight: '256px' }}
+              className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
               onError={() => {
                 console.log('Image failed to load:', displayImage);
                 setImageError(true);
@@ -212,7 +211,7 @@ const Product = ({ product }) => {
       <div className="p-4 flex flex-col flex-grow">
         {/* Product Name */}
         <Link to={`/product/${product._id}`} className="no-underline">
-          <h5 className="text-black font-semibold mb-2 line-clamp-2 hover:text-blue-600 transition-colors text-sm">
+          <h5 className="text-slate-dark font-bold mb-2 line-clamp-2 hover:text-blue-grey-muted transition-colors text-sm tracking-tight">
             {product.name.toUpperCase()}
           </h5>
         </Link>
@@ -236,17 +235,17 @@ const Product = ({ product }) => {
         {/* Price - MRP Format */}
         <div className="mb-3">
           <div className="flex items-center space-x-2">
-            <span className="text-lg font-bold text-black">
-              MRP ₹{product.price.toLocaleString()}
+            <span className="text-lg font-black text-slate-dark">
+              ₹{product.price.toLocaleString()}
             </span>
             {product.originalPrice && product.originalPrice > product.price && (
-              <span className="text-black line-through text-sm">
-                MRP ₹{product.originalPrice.toLocaleString()}
+              <span className="text-slate-dark/40 line-through text-sm">
+                ₹{product.originalPrice.toLocaleString()}
               </span>
             )}
           </div>
           {product.originalPrice && product.originalPrice > product.price && (
-            <div className="text-black text-sm font-medium mt-1">
+            <div className="text-blue-grey-muted text-xs font-bold mt-1 uppercase tracking-wider">
               Save ₹{(product.originalPrice - product.price).toLocaleString()}
             </div>
           )}
@@ -260,9 +259,9 @@ const Product = ({ product }) => {
               {product.colors.slice(0, 3).map((color) => (
                 <button
                   key={color}
-                  className={`px-2 py-1 text-xs rounded border transition-colors ${selectedColor === color
-                    ? 'bg-gray-900 text-white border-gray-900'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  className={`px-3 py-1.5 text-[10px] font-black rounded-full border-2 transition-all duration-300 uppercase tracking-widest ${selectedColor === color
+                    ? 'bg-slate-dark text-white border-slate-dark shadow-lg scale-105'
+                    : 'bg-white text-slate-dark border-slate-dark/10 hover:border-slate-dark/30'
                     }`}
                   onClick={() => {
                     setSelectedColor(color);
@@ -288,10 +287,10 @@ const Product = ({ product }) => {
             {availableSizes.slice(0, 4).map((size) => (
               <button
                 key={size.size}
-                className={`px-2 py-1 text-xs rounded border transition-colors ${selectedSize === size.size
-                  ? 'bg-gray-900 text-white border-gray-900'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                  } ${size.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`px-3 py-1.5 text-[10px] font-black rounded-full border-2 transition-all duration-300 uppercase tracking-widest ${selectedSize === size.size
+                  ? 'bg-slate-dark text-white border-slate-dark shadow-lg scale-105'
+                  : 'bg-white text-slate-dark border-slate-dark/10 hover:border-slate-dark/40'
+                  } ${size.stock === 0 ? 'opacity-30 cursor-not-allowed' : ''}`}
                 onClick={() => setSelectedSize(size.size)}
                 disabled={size.stock === 0}
               >
@@ -308,9 +307,9 @@ const Product = ({ product }) => {
 
         {/* Add to Cart Button */}
         <button
-          className={`mt-auto w-full py-3 px-4 rounded-lg font-medium transition-colors ${!product.inStock || availableSizes.length === 0
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'bg-gray-900 text-white hover:bg-gray-800'
+          className={`mt-4 w-full py-4 px-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 transform active:scale-95 shadow-xl hover:shadow-2xl ${!product.inStock || availableSizes.length === 0
+            ? 'bg-slate-dark/10 text-slate-dark/20 cursor-not-allowed'
+            : 'bg-slate-dark text-white hover:bg-white hover:text-slate-dark border-2 border-slate-dark'
             }`}
           onClick={addToCartHandler}
           disabled={!product.inStock || availableSizes.length === 0}

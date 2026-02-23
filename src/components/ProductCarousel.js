@@ -9,23 +9,23 @@ const ProductCarousel = ({ title, products, category, theme = 'default' }) => {
   const productsPerView = 5;
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex + productsPerView >= products.length ? 0 : prevIndex + productsPerView
     );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex - productsPerView < 0 ? Math.max(0, products.length - productsPerView) : prevIndex - productsPerView
     );
   };
 
-  // Auto-scroll effect
+  // Auto-scroll effect (desktop only)
   useEffect(() => {
     if (!isAutoScrolling || !products || products.length <= productsPerView) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
+      setCurrentIndex((prevIndex) =>
         prevIndex + productsPerView >= products.length ? 0 : prevIndex + productsPerView
       );
     }, 4000); // Auto-scroll every 4 seconds
@@ -39,12 +39,12 @@ const ProductCarousel = ({ title, products, category, theme = 'default' }) => {
   }
 
   // Filter out invalid products
-  const validProducts = products.filter(product => 
-    product && 
-    product._id && 
-    product.name && 
+  const validProducts = products.filter(product =>
+    product &&
+    product._id &&
+    product.name &&
     product.category &&
-    product.images && 
+    product.images &&
     product.images.length > 0
   );
 
@@ -64,24 +64,35 @@ const ProductCarousel = ({ title, products, category, theme = 'default' }) => {
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E")`,
         }}></div>
       </div>
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent uppercase tracking-wide">
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Header - Category title + VIEW ALL (like image) */}
+        <div className="flex items-center justify-between mb-6 md:mb-8 px-1">
+          <h2 className="text-xl md:text-2xl font-black text-slate-dark uppercase tracking-tighter">
             {title}
           </h2>
           <Link
             to={category ? `/category/${category}` : '/'}
-            className="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+            className="bg-slate-dark text-white px-6 py-2 md:px-8 md:py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-slate-dark border-2 border-slate-dark transition-all duration-500 shadow-md shrink-0"
           >
             VIEW ALL
           </Link>
         </div>
 
-        {/* Products Carousel with Auto-scroll */}
-        <div 
-          className="relative overflow-hidden"
+        {/* Mobile: Horizontal scroll slider (movie-style) */}
+        <div className="md:hidden overflow-x-auto overflow-y-hidden pb-4 -mx-4 px-4 scroll-smooth custom-scrollbar">
+          <div className="flex gap-4" style={{ width: 'max-content' }}>
+            {visibleProducts.map((product) => (
+              <div key={product._id} className="flex-shrink-0 w-[160px] snap-start">
+                <ProductCard product={product} imageErrors={imageErrors} setImageErrors={setImageErrors} isMobile />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: Carousel with arrows */}
+        <div
+          className="hidden md:block relative overflow-hidden"
           onMouseEnter={() => setIsAutoScrolling(false)}
           onMouseLeave={() => setIsAutoScrolling(true)}
         >
@@ -104,7 +115,7 @@ const ProductCarousel = ({ title, products, category, theme = 'default' }) => {
           )}
 
           {/* Products Container */}
-          <div 
+          <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${currentIndex * (100 / productsPerView)}%)`,
@@ -124,19 +135,19 @@ const ProductCarousel = ({ title, products, category, theme = 'default' }) => {
 };
 
 // Individual Product Card Component with Multiple Images
-const ProductCard = ({ product, imageErrors, setImageErrors }) => {
+const ProductCard = ({ product, imageErrors, setImageErrors, isMobile = false }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   // Get all available images for this product
   const getAllImages = () => {
     let images = [];
-    
+
     // Add main product images
     if (product.images && product.images.length > 0) {
       images = [...product.images];
     }
-    
+
     // Add color variant images
     if (product.colorVariants) {
       Object.values(product.colorVariants).forEach(variant => {
@@ -145,7 +156,7 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
         }
       });
     }
-    
+
     // Remove duplicates and limit to 5 images
     const uniqueImages = [...new Set(images)].slice(0, 5);
     return uniqueImages.length > 0 ? uniqueImages : ['https://via.placeholder.com/300x300?text=No+Image'];
@@ -165,10 +176,69 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
     setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
   };
 
+  // Mobile compact card (movie-style slider)
+  if (isMobile) {
+    return (
+      <div className="group h-full">
+        <div className="product-card bg-white/90 rounded-xl h-full flex flex-col overflow-hidden shadow-sm border border-beige-soft/30">
+          <div className="relative overflow-hidden rounded-t-lg aspect-[3/4]">
+            <Link to={`/product/${product._id}`}>
+              {imageErrors[product._id] ? (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <div className="text-center text-gray-500 text-xs">
+                    <div className="text-2xl mb-1">📷</div>
+                    <div>Image Not Available</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="relative w-full h-full">
+                  <img
+                    src={productImages[0] || product.images?.[0] || ''}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={() => setImageErrors(prev => ({ ...prev, [product._id]: true }))}
+                  />
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    className="absolute top-1.5 right-1.5 bg-white/80 text-gray-600 p-1.5 rounded-full"
+                  >
+                    <FaHeart className="text-xs" />
+                  </button>
+                </div>
+              )}
+            </Link>
+          </div>
+          <div className="p-2.5 flex flex-col flex-grow min-h-0">
+            <Link to={`/product/${product._id}`} className="no-underline">
+              <h5 className="text-slate-dark font-bold line-clamp-1 text-xs tracking-tight capitalize">
+                {product.name?.toLowerCase()}
+              </h5>
+            </Link>
+            <p className="text-slate-dark/40 font-bold text-[9px] uppercase tracking-widest leading-none mt-0.5">{product.brand}</p>
+            {product.colors && product.colors.length > 0 && (
+              <div className="mt-1.5 flex items-center gap-1">
+                <span className="text-[9px] text-gray-500">Avail. Colors:</span>
+                <div className="flex gap-0.5">
+                  {product.colors.slice(0, 4).map((color, idx) => (
+                    <div key={idx} className="w-3 h-3 rounded-full border border-gray-300 shrink-0" style={{ backgroundColor: getColorCode(color) }} />
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="mt-auto pt-2 border-t border-beige-soft/30">
+              <span className="text-sm font-black text-slate-dark">₹{product.price?.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop card
   return (
-    <div className="group">
-      <div className="bg-white rounded-lg shadow-sm border-0 h-full flex flex-col transform hover:scale-105 transition-all duration-300 hover:shadow-lg">
-        <div 
+    <div className="group h-full">
+      <div className="product-card bg-white rounded-2xl h-full flex flex-col transform hover:-translate-y-2 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl border border-beige-soft/20">
+        <div
           className="relative overflow-hidden rounded-t-lg"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -193,7 +263,7 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
                     setImageErrors(prev => ({ ...prev, [product._id]: true }));
                   }}
                 />
-                
+
                 {/* Image Navigation Arrows */}
                 {productImages.length > 1 && isHovered && (
                   <>
@@ -223,11 +293,10 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
                           e.stopPropagation();
                           setCurrentImageIndex(index);
                         }}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          index === currentImageIndex 
-                            ? 'bg-white' 
-                            : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-                        }`}
+                        className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex
+                          ? 'bg-white'
+                          : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                          }`}
                       />
                     ))}
                   </div>
@@ -252,13 +321,13 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
         <div className="p-4 flex flex-col flex-grow">
           {/* Product Name */}
           <Link to={`/product/${product._id}`} className="no-underline">
-            <h5 className="text-gray-900 font-semibold mb-2 line-clamp-2 hover:text-blue-600 transition-colors text-sm">
-              {product.name.toUpperCase()}
+            <h5 className="text-slate-dark font-bold mb-1 line-clamp-1 hover:text-blue-grey-muted transition-colors text-sm tracking-tight capitalize">
+              {product.name.toLowerCase()}
             </h5>
           </Link>
 
           {/* Brand */}
-          <p className="text-gray-500 text-xs mb-2">{product.brand}</p>
+          <p className="text-slate-dark/40 font-bold text-[10px] mb-3 uppercase tracking-widest leading-none">{product.brand}</p>
 
           {/* Colors Available */}
           {product.colors && product.colors.length > 0 && (
@@ -286,22 +355,17 @@ const ProductCard = ({ product, imageErrors, setImageErrors }) => {
           )}
 
           {/* Price - MRP Format */}
-          <div className="mt-auto">
-            <div className="flex items-center space-x-2">
-              <span className="text-lg font-bold text-red-600">
-                MRP ₹{product.price.toLocaleString()}
+          <div className="mt-auto pt-4 border-t border-beige-soft/30">
+            <div className="flex items-baseline space-x-2">
+              <span className="text-lg font-black text-slate-dark">
+                ₹{product.price.toLocaleString()}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-gray-500 line-through text-sm">
-                  MRP ₹{product.originalPrice.toLocaleString()}
+                <span className="text-slate-dark/30 line-through text-[10px]">
+                  ₹{product.originalPrice.toLocaleString()}
                 </span>
               )}
             </div>
-            {product.originalPrice && product.originalPrice > product.price && (
-              <div className="text-green-600 text-sm font-medium mt-1">
-                Save ₹{(product.originalPrice - product.price).toLocaleString()}
-              </div>
-            )}
           </div>
         </div>
       </div>

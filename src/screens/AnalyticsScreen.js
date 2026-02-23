@@ -6,6 +6,7 @@ import { fetchProducts } from '../store/slices/productSlice';
 import { FaChartLine, FaUsers, FaShoppingCart, FaDollarSign, FaEye, FaCalendarAlt, FaArrowUp } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import Meta from '../components/Meta';
+import CustomDropdown from '../components/CustomDropdown';
 
 const AnalyticsScreen = () => {
   const dispatch = useDispatch();
@@ -111,185 +112,159 @@ const AnalyticsScreen = () => {
 
   return (
     <>
-      <Meta title="Analytics | MearnSneakers Admin" />
-      <div className="p-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-2">Track your business performance and insights</p>
+      <Meta title="Market Intelligence | Mearn Admin" />
+      <div className="max-w-[1600px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 border-b border-slate-dark/5 pb-12">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Economic Insights</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              Market <span className="text-slate-dark/20">Analytics</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              Deep-dive metrics across <span className="text-slate-dark">{timeRange} days</span> of global operations.
+            </p>
+          </div>
+
+          <CustomDropdown
+            label="Analysis Window"
+            options={[
+              { label: '7 Days Cycle', value: '7' },
+              { label: '30 Days Cycle', value: '30' },
+              { label: 'Quarterly Cycle', value: '90' },
+            ]}
+            value={timeRange}
+            onChange={(val) => setTimeRange(val)}
+          />
         </div>
 
-        {/* Time Range Selector */}
-        <div className="mb-6">
-          <div className="flex items-center space-x-4">
-            <label className="text-sm font-medium text-gray-700">Time Range:</label>
-            <select
-              value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="7">Last 7 days</option>
-              <option value="30">Last 30 days</option>
-              <option value="90">Last 90 days</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Key Metrics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-white rounded-full border-2 border-black">
-                <FaDollarSign className="w-6 h-6 text-black" />
+        {/* Primary Analytical Focus */}
+        <div className="mb-12">
+          <div className="relative overflow-hidden bg-white border border-slate-dark/5 rounded-[40px] p-12 shadow-2xl shadow-slate-dark/5">
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-12">
+              <div className="space-y-2">
+                <span className="text-[10px] font-black tracking-[0.5em] text-slate-dark/40 uppercase italic">Aggregated Valuation</span>
+                <h2 className="text-8xl font-black tracking-tighter leading-none text-slate-dark italic">{formatCurrency(analytics.totalRevenue || 0)}</h2>
+                <div className="flex items-center gap-4 pt-4">
+                  <div className="flex items-center gap-1 bg-slate-dark text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <FaArrowUp className="text-[8px]" /> 18.2% Growth
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-dark/30 uppercase tracking-[0.2em]">Validated Revenue Stream</span>
+                </div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-black">Total Revenue</p>
-                <p className="text-2xl font-bold text-black">{formatCurrency(analytics.totalRevenue || 0)}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-white rounded-full border-2 border-black">
-                <FaShoppingCart className="w-6 h-6 text-black" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-black">Total Orders</p>
-                <p className="text-2xl font-bold text-black">{analytics.totalOrders || 0}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-white rounded-full border-2 border-black">
-                <FaUsers className="w-6 h-6 text-black" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-black">New Users</p>
-                <p className="text-2xl font-bold text-black">{analytics.totalUsers || 0}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <div className="flex items-center">
-              <div className="p-3 bg-white rounded-full border-2 border-black">
-                <FaChartLine className="w-6 h-6 text-black" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Avg Order Value</p>
-                <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.averageOrderValue || 0)}</p>
+              <div className="hidden lg:grid grid-cols-2 gap-4">
+                <div className="bg-off-white-warm p-8 rounded-[32px] space-y-1">
+                  <p className="text-[10px] font-black text-slate-dark/30 uppercase tracking-widest">Efficiency</p>
+                  <p className="text-3xl font-black text-slate-dark italic">{analytics.conversionRate?.toFixed(1) || 0}%</p>
+                  <p className="text-[9px] font-bold text-slate-dark/40 uppercase">Conv. Rate</p>
+                </div>
+                <div className="bg-slate-dark text-white p-8 rounded-[32px] space-y-1">
+                  <p className="text-[10px] font-black text-white/30 uppercase tracking-widest">Precision</p>
+                  <p className="text-3xl font-black italic">{formatCurrency(analytics.averageOrderValue || 0)}</p>
+                  <p className="text-[9px] font-bold text-white/40 uppercase">Avg. Ticket</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Charts and Detailed Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Order Status Distribution */}
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <h3 className="text-lg font-semibold text-black mb-4">Order Status Distribution</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-gray-700 rounded-full mr-3"></div>
-                  <span className="text-sm text-black">Pending</span>
+        {/* Distributed Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-white rounded-[40px] p-10 border border-slate-dark/5 shadow-xl">
+            <h3 className="text-[11px] font-black text-slate-dark/30 uppercase tracking-[0.4em] mb-8 pb-4 border-b border-slate-dark/5 italic">Order Lifecycle</h3>
+            <div className="space-y-6">
+              {[
+                { label: 'Pending', count: analytics.statusDistribution?.pending, color: 'bg-orange-400' },
+                { label: 'Settled', count: analytics.statusDistribution?.paid, color: 'bg-blue-400' },
+                { label: 'Fulfilled', count: analytics.statusDistribution?.delivered, color: 'bg-green-400' }
+              ].map((status, i) => (
+                <div key={i} className="space-y-2">
+                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-dark">
+                    <span>{status.label}</span>
+                    <span>{status.count || 0}</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-dark/5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${status.color} transition-all duration-1000`}
+                      style={{ width: `${(status.count / analytics.totalOrders) * 100 || 0}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <span className="font-semibold text-black">{analytics.statusDistribution?.pending || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-black rounded-full mr-3"></div>
-                  <span className="text-sm text-black">Paid</span>
-                </div>
-                <span className="font-semibold text-black">{analytics.statusDistribution?.paid || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-gray-400 rounded-full mr-3"></div>
-                  <span className="text-sm text-black">Delivered</span>
-                </div>
-                <span className="font-semibold text-black">{analytics.statusDistribution?.delivered || 0}</span>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Top Products */}
-          <div className="bg-white rounded-lg shadow-sm border-2 border-black p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Selling Products</h3>
-            <div className="space-y-3">
+          <div className="md:col-span-2 bg-slate-dark rounded-[40px] p-10 text-white shadow-2xl relative overflow-hidden">
+            <h3 className="text-[11px] font-black text-white/30 uppercase tracking-[0.4em] mb-8 pb-4 border-b border-white/10 italic relative z-10">High Velocity Assets</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
               {analytics.topProducts?.length > 0 ? (
                 analytics.topProducts.map(([productName, quantity], index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 truncate">{productName}</span>
-                    <span className="font-semibold">{quantity} sold</span>
+                  <div key={index} className="flex items-center justify-between p-6 bg-white/5 rounded-[24px] hover:bg-white/10 transition-all group">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-black text-white/20 uppercase">Rank {index + 1}</span>
+                      <p className="text-xs font-black uppercase tracking-tight truncate max-w-[150px]">{productName}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-black italic">{quantity}</p>
+                      <p className="text-[9px] font-bold text-white/40 uppercase">Units</p>
+                    </div>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-gray-500">No sales data available</p>
+                <div className="col-span-2 py-10 flex flex-col items-center justify-center opacity-30">
+                  <FaChartLine className="text-4xl mb-4" />
+                  <p className="text-[10px] font-black uppercase tracking-widest">Establishing Inventory Data</p>
+                </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Performance Metrics */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Rate</h3>
-            <div className="flex items-center">
-              <FaArrowUp className="w-8 h-8 text-black mr-3" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{analytics.conversionRate?.toFixed(1) || 0}%</p>
-                <p className="text-sm text-gray-600">Orders per user</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Total Products</h3>
-            <div className="flex items-center">
-              <FaEye className="w-8 h-8 text-black mr-3" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{analytics.totalProducts || 0}</p>
-                <p className="text-sm text-gray-600">Active products</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Growth Rate</h3>
-            <div className="flex items-center">
-              <FaArrowUp className="w-8 h-8 text-black mr-3" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900">+12.5%</p>
-                <p className="text-sm text-gray-600">vs last period</p>
-              </div>
+            {/* Background Texture */}
+            <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
+              <div className="h-full w-full rotate-45 scale-150" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
             </div>
           </div>
         </div>
 
-        {/* Recent Activity */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm border p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-          <div className="space-y-3">
-            {orders?.slice(0, 5).map((order, index) => (
-              <div key={index} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
-                <div className="flex items-center">
-                  <FaCalendarAlt className="w-4 h-4 text-gray-400 mr-3" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Order #{order._id.slice(-6).toUpperCase()}</p>
-                    <p className="text-xs text-gray-600">{formatDate(order.createdAt)}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-gray-900">{formatCurrency(order.totalPrice || 0)}</p>
-                  <p className="text-xs text-gray-600">
-                    {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
-                  </p>
-                </div>
-              </div>
-            ))}
+        {/* Global Performance Chronicle */}
+        <div className="space-y-8">
+          <h3 className="text-[11px] font-black text-slate-dark/30 uppercase tracking-[0.5em] px-2 flex items-center gap-4">
+            <div className="w-8 h-[1px] bg-slate-dark/20"></div>
+            Recent Performance Registry
+          </h3>
+          <div className="bg-white border-t border-b border-slate-dark/10 overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-dark/10">
+                  <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Transaction Signature</th>
+                  <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Chronology</th>
+                  <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Liquidity Valuation</th>
+                  <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40 text-right">Verification Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-dark/5">
+                {orders?.slice(0, 8).map((order, index) => (
+                  <tr key={index} className="hover:bg-off-white-warm/30 transition-colors">
+                    <td className="px-6 py-6">
+                      <span className="text-xs font-black text-slate-dark uppercase tracking-widest leading-none">#{order._id.slice(-8).toUpperCase()}</span>
+                    </td>
+                    <td className="px-6 py-6">
+                      <span className="text-[10px] font-black text-slate-dark/40 uppercase tracking-[0.2em] italic">{formatDate(order.createdAt)}</span>
+                    </td>
+                    <td className="px-6 py-6">
+                      <span className="text-sm font-black text-slate-dark">{formatCurrency(order.totalPrice || 0)}</span>
+                    </td>
+                    <td className="px-6 py-6 text-right">
+                      <span className={`text-[8px] font-black uppercase tracking-[0.3em] px-4 py-2 border ${order.isDelivered ? 'border-slate-dark text-slate-dark' : 'border-slate-dark/10 text-slate-dark/20'
+                        }`}>
+                        {order.isDelivered ? 'Fulfilled' : 'Synchronizing'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

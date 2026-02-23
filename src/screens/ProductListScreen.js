@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
+import {
   FaPlus,
   FaEdit,
   FaTrash,
@@ -14,27 +14,30 @@ import Meta from '../components/Meta';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './ProductListScreen.css';
+import CustomDropdown from '../components/CustomDropdown';
 
 const ProductListScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const { products, loading, error, total } = useSelector((state) => state.product);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [selectedMainCategory, setSelectedMainCategory] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(12);
 
-  // Categories for filter dropdown
-  const categories = [
-    'All Categories',
-    'sneakers', 'shirts', 'pants', 'mobile', 'watches', 'bags', 'apparel', 'accessories', 'collectibles',
-    'tshirt', 'shirt', 'cargo', 'jeans', 'trousers', 'hoodies-sweaters', 'flipflop',
-    'ladies-tshirt', 'ladies-shirt', 'ladies-cargo', 'ladies-jeans', 'ladies-trousers', 'ladies-hoodies', 'ladies-shorts', 'coord-set',
-    'men-clothing', 'men-accessories', 'men-sport', 'ladies-clothing', 'ladies-shoes', 'ladies-accessories', 'lingerie', 'ladies-sport'
-  ];
+  const mainCategories = ['MEN', 'LADIES', 'KIDS', 'SPORTS', 'OTHER'];
+
+  const categoryMapping = {
+    'MEN': ['tshirt', 'shirt', 'cargo', 'jeans', 'trousers', 'hoodies-sweaters', 'flipflop', 'sneakers', 'men-clothing', 'men-accessories', 'men-sport'],
+    'LADIES': ['ladies-tshirt', 'ladies-shirt', 'ladies-cargo', 'ladies-jeans', 'ladies-trousers', 'ladies-hoodies', 'ladies-shorts', 'coord-set', 'ladies-clothing', 'ladies-shoes', 'ladies-accessories', 'lingerie', 'ladies-sport'],
+    'KIDS': ['kids-clothing', 'kids-shoes', 'kids-accessories', 'boys', 'girls', 'infants'],
+    'SPORTS': ['activewear', 'performance', 'gym-gear', 'running', 'training', 'men-sport', 'ladies-sport'],
+    'OTHER': ['sneakers', 'shirts', 'pants', 'mobile', 'watches', 'bags', 'apparel', 'accessories', 'collectibles']
+  };
 
   // Debounce search term to prevent excessive API calls
   useEffect(() => {
@@ -53,18 +56,21 @@ const ProductListScreen = () => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-    
+
     if (debouncedSearchTerm) {
       params.keyword = debouncedSearchTerm;
     }
-    
-    if (selectedCategory && selectedCategory !== 'All Categories') {
+
+    if (selectedMainCategory) {
+      params.mainCategory = selectedMainCategory;
+    }
+
+    if (selectedCategory) {
       params.category = selectedCategory;
     }
-    
-    console.log('🔄 ProductListScreen: Fetching products with params:', params);
+
     dispatch(fetchProducts(params));
-  }, [dispatch, currentPage, debouncedSearchTerm, selectedCategory, pageSize]);
+  }, [dispatch, currentPage, debouncedSearchTerm, selectedMainCategory, selectedCategory, pageSize]);
 
   const handleAddProduct = () => {
     navigate('/admin/product/add');
@@ -112,153 +118,184 @@ const ProductListScreen = () => {
     return sizes.reduce((total, size) => total + (size.stock || 0), 0);
   };
 
+  const getAvailableSubCategories = () => {
+    if (!selectedMainCategory) return [];
+    return categoryMapping[selectedMainCategory] || [];
+  };
+
   return (
     <>
-      <Meta title="Product Management | MearnSneakers Admin" />
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">All Products</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              {loading ? 'Loading...' : `${total} products found`}
+      <Meta title="Archive Management | Mearn Admin" />
+      <div className="max-w-[1600px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Global Digital Archive</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              Stock <span className="text-slate-dark/20">Registry</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              {loading ? 'Synchronizing Archive...' : `Currently Managing ${total} Masterpieces`}
             </p>
           </div>
-          <div className="flex space-x-2">
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+
+          <div className="flex items-center gap-6 whitespace-nowrap">
+            <div className="relative group">
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Find in Registry..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+                className="bg-off-white-warm px-8 py-5 rounded-full w-96 font-bold text-slate-dark focus:bg-white focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none border-none placeholder:text-slate-dark/20"
               />
+              <FaSearch className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-dark/20 group-focus-within:text-slate-dark transition-colors" />
             </div>
-            <select 
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {categories.map(category => (
-                <option key={category} value={category}>
-                  {category === 'All Categories' ? category : category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
-                </option>
-              ))}
-            </select>
-            <button 
+            <button
               onClick={handleAddProduct}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+              className="bg-slate-dark text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl flex items-center gap-3 active:scale-95"
             >
-              <FaPlus className="mr-2" />
-              Add Product
+              <FaPlus className="text-xs" />
+              Ingest New Asset
             </button>
           </div>
         </div>
 
+        {/* Filters Registry */}
+        <div className="flex flex-wrap items-center gap-4 mb-12">
+          <CustomDropdown
+            label="Division"
+            options={[
+              { label: 'All Divisions', value: '' },
+              ...mainCategories.map(cat => ({ label: cat, value: cat }))
+            ]}
+            value={selectedMainCategory}
+            onChange={(val) => {
+              setSelectedMainCategory(val);
+              setSelectedCategory('');
+              setCurrentPage(1);
+            }}
+          />
+
+          {selectedMainCategory && (
+            <CustomDropdown
+              label="Category"
+              options={[
+                { label: 'All Categories', value: '' },
+                ...getAvailableSubCategories().map(cat => ({
+                  label: cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                  value: cat
+                }))
+              ]}
+              value={selectedCategory}
+              onChange={(val) => {
+                setSelectedCategory(val);
+                setCurrentPage(1);
+              }}
+              className="animate-in fade-in slide-in-from-left-4 duration-500"
+            />
+          )}
+        </div>
+
         {loading ? (
-          <Loader />
+          <div className="py-32 flex flex-col items-center justify-center opacity-40">
+            <div className="w-16 h-16 border-4 border-slate-dark border-t-transparent rounded-full animate-spin mb-6"></div>
+            <span className="font-black text-[10px] uppercase tracking-[0.5em]">Fetching Registry Data</span>
+          </div>
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <div className="bg-red-50 text-red-500 p-8 rounded-3xl font-bold text-center">
+            {error}
+          </div>
         ) : (
-          <>
-            <div className="product-table-container">
-              <table className="product-table divide-y divide-gray-200">
-                <thead className="product-table-header">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          <div className="bg-white border-t border-b border-slate-dark/10">
+            <div className="overflow-visible">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-dark/10">
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Asset Portfolio</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Classification</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Signature</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Valuation</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Inventory</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Visibility</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-dark/5">
                   {products && products.length > 0 ? (
                     products.map((product) => (
-                      <tr key={product._id} className="product-table-row">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="h-12 w-12 flex-shrink-0">
+                      <tr key={product._id} className="hover:bg-off-white-warm/30 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-4">
+                            <div className="relative w-12 h-16 flex-shrink-0 bg-off-white-warm border border-slate-dark/5 overflow-hidden">
                               {product.images && product.images.length > 0 ? (
                                 <img
-                                  className="h-12 w-12 rounded-lg object-cover"
+                                  className="w-full h-full object-cover"
                                   src={product.images[0]}
                                   alt={product.name}
-                                  onError={(e) => {
-                                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNCAzNkMzMC42Mjc0IDM2IDM2IDMwLjYyNzQgMzYgMjRDMzYgMTcuMzcyNiAzMC42Mjc0IDEyIDI0IDEyQzE3LjM3MjYgMTIgMTIgMTcuMzcyNiAxMiAyNEMxMiAzMC42Mjc0IDE3LjM3MjYgMzYgMjQgMzZaIiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik0yNCAyOEMyNi4yMDkxIDI4IDI4IDI2LjIwOTEgMjggMjRDMjggMjEuNzkwOSAyNi4yMDkxIDIwIDI0IDIwQzIxLjc5MDkgMjAgMjAgMjEuNzkwOSAyMCAyNEMyMCAyNi4yMDkxIDIxLjc5MDkgMjggMjQgMjhaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K';
-                                  }}
+                                  loading="lazy"
                                 />
                               ) : (
-                                <div className="h-12 w-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                  <span className="text-gray-400 text-xs">No Image</span>
-                                </div>
+                                <div className="w-full h-full flex items-center justify-center text-[8px] font-black text-slate-dark/20 uppercase tracking-tighter text-center">No DNA</div>
                               )}
                             </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900 truncate max-w-xs">
-                                {product.name}
-                              </div>
-                              <div className="text-sm text-gray-500 truncate max-w-xs">
-                                {product.description?.substring(0, 50)}...
-                              </div>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-xs font-black text-slate-dark uppercase tracking-tighter leading-tight">{product.name}</span>
+                              <span className="text-[9px] font-bold text-slate-dark/20 uppercase tracking-widest italic tracking-tighter">{product._id.toString().slice(-8)}</span>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            {product.category?.charAt(0).toUpperCase() + product.category?.slice(1).replace('-', ' ')}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {product.brand}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="font-medium">{formatPrice(product.price)}</span>
-                            {product.originalPrice && product.originalPrice > product.price && (
-                              <span className="text-xs text-gray-500 line-through">
-                                {formatPrice(product.originalPrice)}
+                            <span className="text-[9px] font-black text-slate-dark tracking-widest leading-none">{product.mainCategory || 'OTHER'}</span>
+                            <span className="text-[8px] font-bold text-slate-dark/30 uppercase tracking-widest italic">
+                              {product.category?.replace('-', ' ')}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="text-[9px] font-black text-slate-dark/40 tracking-widest uppercase italic">{product.brand}</span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-black text-slate-dark">₹{product.price.toLocaleString()}</span>
+                            {product.originalPrice > product.price && (
+                              <span className="text-[8px] font-bold text-slate-dark/20 line-through">
+                                ₹{product.originalPrice.toLocaleString()}
                               </span>
                             )}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            getTotalStock(product.sizes) > 10 
-                              ? 'bg-green-100 text-green-800' 
-                              : getTotalStock(product.sizes) > 0 
-                                ? 'bg-yellow-100 text-yellow-800' 
-                                : 'bg-red-100 text-red-800'
-                          }`}>
-                            {getTotalStock(product.sizes)}
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-1.5 h-1.5 rounded-full ${getTotalStock(product.sizes) > 20 ? 'bg-green-400' :
+                              getTotalStock(product.sizes) > 0 ? 'bg-orange-400' : 'bg-red-400'
+                              }`}></div>
+                            <span className="text-[10px] font-black text-slate-dark/60 italic">{getTotalStock(product.sizes)} <span className="opacity-30">UNIT</span></span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 border ${product.inStock ? 'border-slate-dark text-slate-dark' : 'border-slate-dark/10 text-slate-dark/20'}`}>
+                            {product.inStock ? 'Active' : 'Archived'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            product.inStock 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            {product.inStock ? 'In Stock' : 'Out of Stock'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button 
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-1.5 ">
+                            <button
                               onClick={() => handleEditProduct(product._id)}
-                              className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
-                              title="Edit Product"
+                              className="w-8 h-8 bg-slate-dark text-white flex items-center justify-center hover:bg-black transition-colors"
+                              title="Refine Asset"
                             >
-                              <FaEdit />
+                              <FaEdit className="text-[10px]" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleDeleteProduct(product._id, product.name)}
-                              className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
-                              title="Delete Product"
+                              className="w-8 h-8 bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                              title="Expunge Asset"
                             >
-                              <FaTrash />
+                              <FaTrash className="text-[10px]" />
                             </button>
                           </div>
                         </td>
@@ -266,23 +303,12 @@ const ProductListScreen = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="7" className="px-6 py-12 text-center">
-                        <div className="text-gray-500">
-                          <FaFilter className="mx-auto h-12 w-12 text-gray-300 mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-                          <p className="text-gray-500">
-                            {searchTerm || selectedCategory !== '' 
-                              ? 'Try adjusting your search or filter criteria.' 
-                              : 'Get started by adding your first product.'}
-                          </p>
-                          {!searchTerm && selectedCategory === '' && (
-                            <button
-                              onClick={handleAddProduct}
-                              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                              Add Product
-                            </button>
-                          )}
+                      <td colSpan="7" className="px-8 py-24 text-center">
+                        <div className="flex flex-col items-center gap-4">
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-black text-slate-dark uppercase tracking-wider">No Records</h3>
+                            <p className="text-[9px] font-bold text-slate-dark/40 uppercase tracking-widest">Query returned null.</p>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -291,49 +317,31 @@ const ProductListScreen = () => {
               </table>
             </div>
 
-            {/* Pagination */}
+            {/* Premium Pagination */}
             {totalPages > 1 && (
-              <div className="mt-6 flex items-center justify-between">
-                <div className="text-sm text-gray-700">
-                  Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, total)} of {total} results
-                </div>
-                <div className="flex space-x-2">
+              <div className="px-12 py-10 bg-off-white-warm/30 border-t border-slate-dark/5 flex items-center justify-between">
+                <span className="text-[10px] font-black text-slate-dark/40 uppercase tracking-[0.2em]">
+                  Showing Page <span className="text-slate-dark">{currentPage}</span> of <span className="text-slate-dark">{totalPages}</span>
+                </span>
+                <div className="flex gap-2">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-12 h-12 rounded-full border border-slate-dark/10 flex items-center justify-center text-slate-dark disabled:opacity-20 hover:border-slate-dark transition-all"
                   >
-                    Previous
+                    ←
                   </button>
-                  
-                  {Array.from({ length: Math.min(10, totalPages) }, (_, i) => {
-                    const pageNum = i + 1;
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => setCurrentPage(pageNum)}
-                        className={`px-3 py-2 text-sm font-medium rounded-md ${
-                          currentPage === pageNum
-                            ? 'bg-blue-600 text-white'
-                            : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
-                        }`}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
-                  
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-12 h-12 rounded-full border border-slate-dark/10 flex items-center justify-center text-slate-dark disabled:opacity-20 hover:border-slate-dark transition-all"
                   >
-                    Next
+                    →
                   </button>
                 </div>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </>

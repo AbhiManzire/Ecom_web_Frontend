@@ -74,6 +74,28 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+export const uploadAvatar = createAsyncThunk(
+  'user/uploadAvatar',
+  async (file, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.userInfo.token}`,
+        },
+      };
+      const response = await api.post('/api/users/profile/avatar', formData, config);
+      localStorage.setItem('userInfo', JSON.stringify(response.data));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error);
+    }
+  }
+);
+
 // Admin user management actions
 export const fetchAllUsers = createAsyncThunk(
   'user/fetchAllUsers',
@@ -155,6 +177,8 @@ const initialState = {
   users: [], // For admin user management
   selectedUser: null, // For editing a specific user
   loading: false,
+  profileLoading: false, // getProfile + updateProfile only
+  avatarLoading: false, // uploadAvatar only
   error: null,
   success: false,
 };
@@ -213,30 +237,44 @@ const userSlice = createSlice({
       })
       // Get profile
       .addCase(getUserProfile.pending, (state) => {
-        state.loading = true;
+        state.profileLoading = true;
         state.error = null;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.loading = false;
+        state.profileLoading = false;
         state.userInfo = { ...state.userInfo, ...action.payload };
       })
       .addCase(getUserProfile.rejected, (state, action) => {
-        state.loading = false;
+        state.profileLoading = false;
         state.error = action.payload?.message || 'Failed to get profile';
       })
       // Update profile
       .addCase(updateUserProfile.pending, (state) => {
-        state.loading = true;
+        state.profileLoading = true;
         state.error = null;
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.loading = false;
+        state.profileLoading = false;
         state.userInfo = action.payload;
         state.success = true;
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
-        state.loading = false;
+        state.profileLoading = false;
         state.error = action.payload?.message || 'Failed to update profile';
+      })
+      // Upload avatar
+      .addCase(uploadAvatar.pending, (state) => {
+        state.avatarLoading = true;
+        state.error = null;
+      })
+      .addCase(uploadAvatar.fulfilled, (state, action) => {
+        state.avatarLoading = false;
+        state.userInfo = action.payload;
+        state.success = true;
+      })
+      .addCase(uploadAvatar.rejected, (state, action) => {
+        state.avatarLoading = false;
+        state.error = action.payload?.message || 'Failed to upload avatar';
       })
       // Fetch all users (admin)
       .addCase(fetchAllUsers.pending, (state) => {

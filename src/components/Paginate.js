@@ -5,7 +5,7 @@ const Paginate = ({ pages, page, keyword = '', isAdmin = false }) => {
   if (pages <= 1) return null;
 
   return (
-    <div className="flex justify-center items-center space-x-1 my-8">
+    <div className="flex flex-wrap justify-center items-center gap-1 sm:gap-2 my-6 md:my-8">
       {[...Array(pages).keys()].map((x) => (
         <Link
           key={x + 1}

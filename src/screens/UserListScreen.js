@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  FaPlus, 
-  FaEdit, 
-  FaTrash, 
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
   FaSearch,
   FaFilter
 } from 'react-icons/fa';
@@ -14,14 +14,15 @@ import Meta from '../components/Meta';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import './UserListScreen.css';
+import CustomDropdown from '../components/CustomDropdown';
 
 const UserListScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const { users, loading, error } = useSelector((state) => state.user);
   const { userInfo } = useSelector((state) => state.user);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
@@ -32,7 +33,7 @@ const UserListScreen = () => {
     if (searchTerm !== debouncedSearchTerm) {
       setIsSearching(true);
     }
-    
+
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
       setIsSearching(false);
@@ -44,15 +45,15 @@ const UserListScreen = () => {
   // Fetch users on component mount and when filters change
   useEffect(() => {
     const params = {};
-    
+
     if (debouncedSearchTerm) {
       params.search = debouncedSearchTerm;
     }
-    
+
     if (selectedRole && selectedRole !== 'All Users') {
       params.role = selectedRole.toLowerCase().replace(' ', '');
     }
-    
+
     console.log('🔄 UserListScreen: Fetching users with params:', params);
     dispatch(fetchAllUsers(params));
   }, [dispatch, debouncedSearchTerm, selectedRole]);
@@ -116,110 +117,124 @@ const UserListScreen = () => {
 
   return (
     <>
-      <Meta title="User Management | MearnSneakers Admin" />
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">All Users</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              {(loading || isSearching) ? 'Loading...' : `${filteredUsers.length} users found`}
+      <Meta title="Identity Registry | Mearn Admin" />
+      <div className="max-w-[1600px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Human Capital Archive</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              User <span className="text-slate-dark/20">Identities</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              {(loading || isSearching) ? 'Synchronizing Archive...' : `Managing ${filteredUsers.length} Active Profiles`}
             </p>
           </div>
-          <div className="flex space-x-2">
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+
+          <div className="flex items-center gap-6 whitespace-nowrap">
+            <div className="relative group">
               <input
                 type="text"
-                placeholder="Search users..."
+                placeholder="Find in Archive..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+                className="bg-off-white-warm px-8 py-5 rounded-full w-96 font-bold text-slate-dark focus:bg-white focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none border-none placeholder:text-slate-dark/20"
               />
+              <FaSearch className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-dark/20 group-focus-within:text-slate-dark transition-colors" />
             </div>
-            <select 
-              value={selectedRole}
-              onChange={handleRoleChange}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Users</option>
-              <option value="Admin">Admins</option>
-              <option value="Regular">Regular Users</option>
-            </select>
-            <button 
+            <button
               onClick={handleAddUser}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+              className="bg-slate-dark text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl flex items-center gap-3 active:scale-95"
             >
-              <FaPlus className="mr-2" />
-              Add User
+              <FaPlus className="text-xs" />
+              Invite Associate
             </button>
           </div>
         </div>
 
+        {/* Filters Registry */}
+        <div className="flex flex-wrap items-center gap-4 mb-12">
+          <CustomDropdown
+            label="Clearance Level"
+            options={[
+              { label: 'Global Directory', value: '' },
+              { label: 'Administrators', value: 'Admin' },
+              { label: 'Standard Users', value: 'Regular' },
+            ]}
+            value={selectedRole}
+            onChange={(val) => setSelectedRole(val)}
+          />
+        </div>
+
         {(loading || isSearching) ? (
-          <Loader />
+          <div className="py-32 flex flex-col items-center justify-center opacity-40">
+            <div className="w-16 h-16 border-4 border-slate-dark border-t-transparent rounded-full animate-spin mb-6"></div>
+            <span className="font-black text-[10px] uppercase tracking-[0.5em]">Fetching Directory Records</span>
+          </div>
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <div className="bg-red-50 text-red-500 p-8 rounded-3xl font-bold text-center">
+            {error}
+          </div>
         ) : (
-          <>
-            <div className="user-table-container">
-              <table className="user-table divide-y divide-gray-200">
-                <thead className="user-table-header">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          <div className="bg-white border-t border-b border-slate-dark/10">
+            <div className="overflow-visible">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-dark/10">
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Identity Portfolio</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Access Credentials</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Clearance Level</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Chronology</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-dark/5">
                   {filteredUsers && filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
-                      <tr key={user._id} className="user-table-row">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                              {getInitials(user.name)}
+                      <tr key={user._id} className="hover:bg-off-white-warm/30 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-slate-dark/5 flex items-center justify-center border border-slate-dark/10 overflow-hidden">
+                              <span className="text-[10px] font-black text-slate-dark tracking-tighter">{getInitials(user.name)}</span>
                             </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                              <div className="text-sm text-gray-500">
-                                {user.isAdmin ? 'Administrator' : 'User'}
-                              </div>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-xs font-black text-slate-dark uppercase tracking-tighter leading-tight">{user.name}</span>
+                              <span className="text-[9px] font-bold text-slate-dark/20 uppercase tracking-widest italic tracking-tighter">{user._id.toString().slice(-8)}</span>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {user.email}
+                        <td className="px-6 py-4">
+                          <span className="text-[11px] font-bold text-slate-dark/60 lowercase italic tracking-tight">{user.email}</span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            user.isAdmin 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-blue-100 text-blue-800'
-                          }`}>
-                            {user.isAdmin ? 'Admin' : 'User'}
+                        <td className="px-6 py-4">
+                          <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 border ${user.isAdmin ? 'border-slate-dark text-slate-dark' : 'border-slate-dark/10 text-slate-dark/20'}`}>
+                            {user.isAdmin ? 'ADMIN' : 'MEMBER'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatDate(user.createdAt)}
+                        <td className="px-6 py-4">
+                          <span className="text-[10px] font-black text-slate-dark/40 uppercase tracking-widest italic">
+                            {formatDate(user.createdAt)}
+                          </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button 
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-1.5">
+                            <button
                               onClick={() => handleEditUser(user._id)}
-                              className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
-                              title="Edit User"
+                              className="w-8 h-8 bg-slate-dark text-white flex items-center justify-center hover:bg-black transition-colors"
+                              title="Refine Profile"
                             >
-                              <FaEdit />
+                              <FaEdit className="text-[10px]" />
                             </button>
                             {user._id !== userInfo?._id && (
-                              <button 
+                              <button
                                 onClick={() => handleDeleteUser(user._id, user.name)}
-                                className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
-                                title="Delete User"
+                                className="w-8 h-8 bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                                title="Revoke Access"
                               >
-                                <FaTrash />
+                                <FaTrash className="text-[10px]" />
                               </button>
                             )}
                           </div>
@@ -228,23 +243,12 @@ const UserListScreen = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="px-6 py-12 text-center">
-                        <div className="text-gray-500">
-                          <FaFilter className="mx-auto h-12 w-12 text-gray-300 mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-                          <p className="text-gray-500">
-                            {searchTerm || selectedRole !== '' 
-                              ? 'Try adjusting your search or filter criteria.' 
-                              : 'Get started by adding your first user.'}
-                          </p>
-                          {!searchTerm && selectedRole === '' && (
-                            <button
-                              onClick={handleAddUser}
-                              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                              Add User
-                            </button>
-                          )}
+                      <td colSpan="5" className="px-8 py-24 text-center">
+                        <div className="flex flex-col items-center gap-4">
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-black text-slate-dark uppercase tracking-wider">No Records</h3>
+                            <p className="text-[9px] font-bold text-slate-dark/40 uppercase tracking-widest">Directory query returned null.</p>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -252,7 +256,7 @@ const UserListScreen = () => {
                 </tbody>
               </table>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>

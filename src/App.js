@@ -13,12 +13,14 @@ import LoginScreen from './screens/LoginScreen';
 import MobileLoginScreen from './screens/MobileLoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import OrdersScreen from './screens/OrdersScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import AdminRoute from './components/AdminRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/AdminLayout';
 import { clearError, clearSuccess } from './store/slices/userSlice';
 import { clearError as clearProductError } from './store/slices/productSlice';
@@ -56,7 +58,7 @@ function App() {
 
       {/* Main Website Routes - With Header/Footer */}
       <Route path="/*" element={
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col overflow-x-hidden">
           <Header />
           <main className="flex-grow">
             <Routes>
@@ -73,12 +75,13 @@ function App() {
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/mobile-login" element={<MobileLoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
-              <Route path="/shipping" element={<ShippingScreen />} />
-              <Route path="/payment" element={<PaymentScreen />} />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/checkout" element={<CheckoutScreen />} />
-              <Route path="/order/:id" element={<OrderScreen />} />
+              <Route path="/profile" element={<ProtectedRoute><ProfileScreen /></ProtectedRoute>} />
+              <Route path="/orders" element={<ProtectedRoute><OrdersScreen /></ProtectedRoute>} />
+              <Route path="/shipping" element={<ProtectedRoute><ShippingScreen /></ProtectedRoute>} />
+              <Route path="/payment" element={<ProtectedRoute><PaymentScreen /></ProtectedRoute>} />
+              <Route path="/placeorder" element={<ProtectedRoute><PlaceOrderScreen /></ProtectedRoute>} />
+              <Route path="/checkout" element={<ProtectedRoute><CheckoutScreen /></ProtectedRoute>} />
+              <Route path="/order/:id" element={<ProtectedRoute><OrderScreen /></ProtectedRoute>} />
             </Routes>
           </main>
           <Footer />

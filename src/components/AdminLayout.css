@@ -14,6 +14,21 @@
   transform: translateX(0) !important;
 }
 
+/* Hide all scrollbars in sidebar */
+.admin-sidebar,
+.admin-sidebar *,
+.admin-sidebar nav {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.admin-sidebar::-webkit-scrollbar,
+.admin-sidebar *::-webkit-scrollbar,
+.admin-sidebar nav::-webkit-scrollbar {
+  display: none !important;
+}
+
+
 @media (min-width: 1024px) {
   .admin-sidebar {
     transform: translateX(0) !important;
@@ -40,7 +55,14 @@
 .admin-sidebar nav {
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+.admin-sidebar nav::-webkit-scrollbar {
+  display: none;
+}
+
 
 /* Fix for mobile overlay */
 .admin-overlay {

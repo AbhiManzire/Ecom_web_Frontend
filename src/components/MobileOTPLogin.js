@@ -34,7 +34,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
 
   const handleMobileSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!mobileNumber || mobileNumber.length !== 10) {
       alert('Please enter a valid 10-digit mobile number');
       return;
@@ -44,7 +44,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
     try {
       // Simulate API call - replace with actual API
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Mock successful OTP send
       setOtpExpiresIn(300); // 5 minutes
       setStep(2);
@@ -59,7 +59,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!otp || otp.length !== 6) {
       alert('Please enter a valid 6-digit OTP');
       return;
@@ -69,13 +69,13 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
     try {
       // Simulate API call - replace with actual API
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Check for dummy OTP
       if (otp === '123456') {
         // Mock successful OTP verification
         setStep(3);
         alert('Login successful!');
-        
+
         // Simulate user data
         const mockUserData = {
           _id: 'user123',
@@ -84,7 +84,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
           email: `${mobileNumber}@example.com`,
           token: 'mock-jwt-token'
         };
-        
+
         setTimeout(() => {
           onLoginSuccess(mockUserData);
         }, 2000);
@@ -93,7 +93,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
         setOtpAttempts(prev => prev + 1);
         alert('Invalid OTP. For testing, use: 123456');
         setOtp('');
-        
+
         if (otpAttempts >= 2) {
           alert('Maximum OTP attempts exceeded. Please try again.');
           setStep(1);
@@ -105,7 +105,7 @@ const MobileOTPLogin = ({ onLoginSuccess, onCancel, redirect = '/' }) => {
       setOtpAttempts(prev => prev + 1);
       alert('Invalid OTP. For testing, use: 123456');
       setOtp('');
-      
+
       if (otpAttempts >= 2) {
         alert('Maximum OTP attempts exceeded. Please try again.');
         setStep(1);

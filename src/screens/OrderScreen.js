@@ -20,7 +20,7 @@ const OrderScreen = () => {
         console.log('Mock order already in Redux store:', order);
         return;
       }
-      
+
       // Always try to fetch the order (handles both real and mock orders)
       dispatch(getOrderById(id));
     }
@@ -197,8 +197,8 @@ const OrderScreen = () => {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900 capitalize">
-                    {typeof order.paymentMethod === 'string' 
-                      ? order.paymentMethod.replace('_', ' ') 
+                    {typeof order.paymentMethod === 'string'
+                      ? order.paymentMethod.replace('_', ' ')
                       : 'Mobile Payment'}
                   </p>
                   <p className="text-sm text-gray-600">
@@ -218,7 +218,7 @@ const OrderScreen = () => {
           <div className="lg:sticky lg:top-4 lg:self-start lg:h-fit">
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Order Summary</h2>
-              
+
               <div className="space-y-3 mb-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Items ({order.orderItems?.length || 0})</span>
@@ -254,7 +254,7 @@ const OrderScreen = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3">
                     <div className={`w-6 h-6 rounded-full flex items-center justify-center ${order.isDelivered ? 'bg-green-500' : 'bg-gray-300'}`}>
                       {order.isDelivered ? <FaCheckCircle className="text-white text-sm" /> : <FaClock className="text-white text-sm" />}

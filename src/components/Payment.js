@@ -138,16 +138,16 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
       <div className="text-center mb-6">
         <div className="flex justify-center mb-4">
-          {step === 1 && <FaMobile className="text-4xl text-blue-600" />}
-          {step === 2 && <FaShieldAlt className="text-4xl text-green-600" />}
-          {step === 3 && <FaCheckCircle className="text-4xl text-green-600" />}
+          {step === 1 && <FaMobile className="text-4xl text-blue-grey-muted" />}
+          {step === 2 && <FaShieldAlt className="text-4xl text-blue-grey-muted" />}
+          {step === 3 && <FaCheckCircle className="text-4xl text-blue-grey-muted" />}
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-slate-dark mb-2">
           {step === 1 && 'Mobile Payment'}
           {step === 2 && 'Verify OTP'}
           {step === 3 && 'Payment Successful'}
         </h2>
-        <p className="text-gray-600">
+        <p className="text-slate-dark/70">
           {step === 1 && 'Enter your mobile number to receive OTP'}
           {step === 2 && 'Enter the 6-digit OTP sent to your mobile'}
           {step === 3 && 'Your payment has been processed successfully'}
@@ -157,32 +157,32 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
       {step === 1 && (
         <form onSubmit={handleMobileSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-dark mb-2">
               Mobile Number
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span className="text-gray-500 text-sm">+91</span>
+                <span className="text-slate-dark/50 text-sm">+91</span>
               </div>
               <input
                 type="tel"
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                className="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="block w-full pl-12 pr-3 py-3 border border-beige-soft rounded-md focus:outline-none focus:ring-2 focus:ring-blue-grey-muted focus:border-transparent bg-off-white-warm/30"
                 placeholder="Enter any 10-digit number"
                 maxLength="10"
                 required
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-slate-dark/50 mt-1">
               For testing: Use any 10-digit number (e.g., 9876543210)
             </p>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-off-white-warm p-4 rounded-lg border border-beige-soft/20">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Total Amount:</span>
-              <span className="text-lg font-bold text-gray-900">₹{totalAmount.toLocaleString()}</span>
+              <span className="text-sm text-slate-dark/70">Total Amount:</span>
+              <span className="text-lg font-bold text-slate-dark">₹{totalAmount.toLocaleString()}</span>
             </div>
           </div>
 
@@ -190,14 +190,14 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
             <button
               type="button"
               onClick={handleBack}
-              className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 py-3 px-4 border border-beige-soft rounded-md text-slate-dark hover:bg-off-white-warm transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || mobileNumber.length !== 10}
-              className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 py-3 px-4 bg-blue-grey-muted text-slate-dark rounded-md hover:bg-beige-soft disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md hover:shadow-lg"
             >
               {loading ? 'Sending OTP...' : 'Send OTP'}
             </button>
@@ -243,14 +243,14 @@ const Payment = ({ orderId, totalAmount, onPaymentSuccess, onPaymentCancel }) =>
             <button
               type="button"
               onClick={handleBack}
-              className="flex-1 py-3 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 py-3 px-4 border border-beige-soft rounded-md text-slate-dark hover:bg-off-white-warm transition-colors font-medium"
             >
               Back
             </button>
             <button
               type="submit"
               disabled={loading || otp.length !== 6 || otpExpiresIn === 0}
-              className="flex-1 py-3 px-4 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 py-3 px-4 bg-blue-grey-muted text-slate-dark rounded-md hover:bg-beige-soft disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md hover:shadow-lg"
             >
               {loading ? 'Verifying...' : 'Verify OTP'}
             </button>

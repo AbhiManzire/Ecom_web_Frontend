@@ -9,7 +9,7 @@ import Meta from '../components/Meta';
 const ShippingScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { shippingAddress } = useSelector((state) => state.cart);
 
   const [formData, setFormData] = useState({
@@ -29,7 +29,7 @@ const ShippingScreen = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -76,7 +76,7 @@ const ShippingScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       dispatch(saveShippingAddress(formData));
       toast.success('Shipping address saved successfully!');
@@ -89,7 +89,7 @@ const ShippingScreen = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Meta title="Shipping Address - MearnSneakers" />
-      
+
       <div className="mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -121,9 +121,8 @@ const ShippingScreen = () => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.fullName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.fullName ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="Enter your full name"
               />
               {errors.fullName && (
@@ -142,9 +141,8 @@ const ShippingScreen = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.phone ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="Enter 10-digit mobile number"
                 maxLength="10"
               />
@@ -165,9 +163,8 @@ const ShippingScreen = () => {
               value={formData.address}
               onChange={handleChange}
               rows="3"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.address ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.address ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="Enter your complete address"
             />
             {errors.address && (
@@ -186,9 +183,8 @@ const ShippingScreen = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.city ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.city ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="Enter city"
               />
               {errors.city && (
@@ -206,9 +202,8 @@ const ShippingScreen = () => {
                 name="postalCode"
                 value={formData.postalCode}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="Enter 6-digit postal code"
                 maxLength="6"
               />
@@ -226,9 +221,8 @@ const ShippingScreen = () => {
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.country ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.country ? 'border-red-500' : 'border-gray-300'
+                  }`}
               >
                 <option value="India">India</option>
                 <option value="United States">United States</option>

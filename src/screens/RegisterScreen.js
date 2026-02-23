@@ -62,13 +62,13 @@ const RegisterScreen = () => {
               </Link>
             </p>
           </div>
-          
+
           <div className="bg-white shadow-lg rounded-lg">
             <div className="p-8">
               {message && <Message variant="danger">{message}</Message>}
               {error && <Message variant="danger">{error}</Message>}
               {loading && <Loader />}
-              
+
               <form onSubmit={submitHandler}>
                 <div className="mb-4">
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">

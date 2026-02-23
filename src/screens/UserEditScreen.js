@@ -53,7 +53,7 @@ const UserEditScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const updateData = {
       name: formData.name,
       email: formData.email,
@@ -78,130 +78,160 @@ const UserEditScreen = () => {
 
   return (
     <>
-      <Meta title="Edit User | MearnSneakers" />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6">
+      <Meta title="Identity Refinement | Mearn Admin" />
+      <div className="max-w-[1200px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-slate-dark/5 pb-12">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Identity Registry</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              Refine <span className="text-slate-dark/20">Profile</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              Modifying credentials for associate <span className="text-slate-dark">{formData.name || 'Anonymous'}</span>
+            </p>
+          </div>
           <button
-            onClick={() => navigate('/admin/users')}
-            className="text-blue-600 hover:text-blue-800 mb-4 flex items-center"
+            onClick={() => navigate('/admin/userlist')}
+            className="text-[10px] font-black text-slate-dark/40 uppercase tracking-[0.3em] hover:text-slate-dark transition-colors flex items-center gap-2 group"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Users
+            <span className="group-hover:-translate-x-1 transition-transform">←</span> Return to Registry
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Edit User</h1>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter full name"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter email address"
-                />
-              </div>
-
-              {/* Password */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  New Password (optional)
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Leave blank to keep current password"
-                />
-                <p className="text-sm text-gray-500 mt-1">
-                  Leave blank to keep the current password
-                </p>
-              </div>
-
-              {/* Admin Status */}
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="isAdmin"
-                  name="isAdmin"
-                  checked={formData.isAdmin}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="isAdmin" className="ml-2 block text-sm text-gray-700">
-                  Admin privileges
-                </label>
-              </div>
-            </div>
-
-            {/* User Info Display */}
-            {selectedUser && (
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-700 mb-2">User Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-600">User ID:</span>
-                    <span className="ml-2 text-gray-900">{selectedUser._id}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+          {/* Identity Preview Card */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-12 space-y-8">
+              <div className="bg-slate-dark rounded-[40px] p-10 text-white shadow-2xl relative overflow-hidden">
+                <div className="relative z-10 space-y-8">
+                  <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-white/20 shadow-2xl mx-auto mb-8">
+                    <span className="text-3xl font-black italic">{formData.name ? formData.name.split(' ').map(n => n[0]).join('').toUpperCase() : '??'}</span>
                   </div>
-                  <div>
-                    <span className="font-medium text-gray-600">Created:</span>
-                    <span className="ml-2 text-gray-900">
-                      {new Date(selectedUser.createdAt).toLocaleDateString()}
-                    </span>
+                  <div className="text-center space-y-1">
+                    <h3 className="text-lg font-black uppercase tracking-tight">{formData.name || 'Awaiting Input'}</h3>
+                    <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest italic">{formData.email || 'no-email@registry.com'}</p>
+                  </div>
+                  <div className="pt-8 border-t border-white/10">
+                    <div className="flex justify-between items-center px-2">
+                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 text-center flex-1">Status</span>
+                      <div className="w-px h-8 bg-white/10"></div>
+                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 text-center flex-1">Access</span>
+                    </div>
+                    <div className="flex justify-between items-center px-2 mt-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-center flex-1">Active</span>
+                      <div className="w-px h-4 opacity-0"></div>
+                      <span className={`text-[10px] font-black uppercase tracking-widest text-center flex-1 ${formData.isAdmin ? 'text-blue-400' : 'text-white/40'}`}>
+                        {formData.isAdmin ? 'ADMIN' : 'USER'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                {/* Decoration */}
+                <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-white/5 rounded-full blur-3xl"></div>
+              </div>
+
+              <div className="p-8 bg-off-white-warm rounded-[32px] border border-slate-dark/5 space-y-4">
+                <span className="text-[10px] font-black text-slate-dark/30 uppercase tracking-[0.3em]">Temporal Logs</span>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-dark/60">
+                    <span>Initialized</span>
+                    <span className="italic">{selectedUser ? new Date(selectedUser.createdAt).toLocaleDateString() : 'Pending'}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-dark/60">
+                    <span>Archive ID</span>
+                    <span className="italic">#{id.slice(-8).toUpperCase()}</span>
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* Submit Buttons */}
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={() => navigate('/admin/users')}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {loading ? 'Updating...' : 'Update User'}
-              </button>
             </div>
-          </form>
+          </div>
+
+          {/* Form Content */}
+          <div className="lg:col-span-2">
+            <form onSubmit={handleSubmit} className="space-y-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                <div className="md:col-span-2 pb-4 border-b border-slate-dark/5">
+                  <span className="text-[10px] font-black text-slate-dark/40 uppercase tracking-[0.4em] italic">Credentials Manifest</span>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-[10px] font-black text-slate-dark uppercase tracking-widest pl-1">Legal Nomenclature</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-off-white-warm px-6 py-4 rounded-2xl font-bold text-slate-dark border-none focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none"
+                    placeholder="Full identity name"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-[10px] font-black text-slate-dark uppercase tracking-widest pl-1">Primary Liaison Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-off-white-warm px-6 py-4 rounded-2xl font-bold text-slate-dark border-none focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none"
+                    placeholder="Registry email"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="password" className="text-[10px] font-black text-slate-dark uppercase tracking-widest pl-1">Access Key (Optional)</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full bg-off-white-warm px-6 py-4 rounded-2xl font-bold text-slate-dark border-none focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none"
+                    placeholder="Leave dormant to persist current"
+                  />
+                </div>
+
+                <div className="flex items-center gap-4 p-4 bg-off-white-warm rounded-2xl border border-slate-dark/5 mt-auto">
+                  <input
+                    type="checkbox"
+                    id="isAdmin"
+                    name="isAdmin"
+                    checked={formData.isAdmin}
+                    onChange={handleChange}
+                    className="w-5 h-5 rounded border-slate-dark/10 text-slate-dark focus:ring-slate-dark/5 cursor-pointer"
+                  />
+                  <label htmlFor="isAdmin" className="text-[11px] font-black text-slate-dark uppercase tracking-widest cursor-pointer">
+                    Grant Executive Privileges
+                  </label>
+                </div>
+              </div>
+
+              <div className="pt-12 border-t border-slate-dark/5 flex justify-end gap-6">
+                <button
+                  type="button"
+                  onClick={() => navigate('/admin/userlist')}
+                  className="px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] text-slate-dark/40 hover:text-slate-dark transition-all"
+                >
+                  Cancel Operation
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-slate-dark text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-black transition-all shadow-xl active:scale-95 disabled:opacity-50"
+                >
+                  {loading ? 'Committing Synchrony...' : 'Synchronize Identity'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>

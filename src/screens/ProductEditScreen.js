@@ -7,6 +7,7 @@ import Meta from '../components/Meta';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { fetchProductById, updateProduct } from '../store/slices/productSlice';
+import CustomDropdown from '../components/CustomDropdown';
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const ProductEditScreen = () => {
     description: '',
     price: '',
     originalPrice: '',
+    mainCategory: '',
     category: '',
     images: [''],
     sizes: [{ size: '', stock: '' }],
@@ -32,12 +34,20 @@ const ProductEditScreen = () => {
     tags: ['']
   });
 
-  const categories = [
-    'sneakers', 'shirts', 'pants', 'mobile', 'watches', 'bags', 'apparel', 'accessories', 'collectibles',
-    'tshirt', 'shirt', 'cargo', 'jeans', 'trousers', 'hoodies-sweaters', 'flipflop',
-    'ladies-tshirt', 'ladies-shirt', 'ladies-cargo', 'ladies-jeans', 'ladies-trousers', 'ladies-hoodies', 'ladies-shorts', 'coord-set',
-    'men-clothing', 'men-accessories', 'men-sport', 'ladies-clothing', 'ladies-shoes', 'ladies-accessories', 'lingerie', 'ladies-sport'
-  ];
+  const mainCategories = ['MEN', 'LADIES', 'KIDS', 'SPORTS', 'OTHER'];
+
+  const categoryMapping = {
+    'MEN': ['tshirt', 'shirt', 'cargo', 'jeans', 'trousers', 'hoodies-sweaters', 'flipflop', 'sneakers', 'men-clothing', 'men-accessories', 'men-sport'],
+    'LADIES': ['ladies-tshirt', 'ladies-shirt', 'ladies-cargo', 'ladies-jeans', 'ladies-trousers', 'ladies-hoodies', 'ladies-shorts', 'coord-set', 'ladies-clothing', 'ladies-shoes', 'ladies-accessories', 'lingerie', 'ladies-sport'],
+    'KIDS': ['kids-clothing', 'kids-shoes', 'kids-accessories', 'boys', 'girls', 'infants'],
+    'SPORTS': ['activewear', 'performance', 'gym-gear', 'running', 'training', 'men-sport', 'ladies-sport'],
+    'OTHER': ['sneakers', 'shirts', 'pants', 'mobile', 'watches', 'bags', 'apparel', 'accessories', 'collectibles']
+  };
+
+  const getSubCategories = () => {
+    if (!formData.mainCategory) return [];
+    return categoryMapping[formData.mainCategory] || [];
+  };
 
   useEffect(() => {
     if (id) {
@@ -47,12 +57,24 @@ const ProductEditScreen = () => {
 
   useEffect(() => {
     if (product && product._id) {
+      // Inference logic for mainCategory if missing
+      let inferredMain = product.mainCategory || '';
+      if (!inferredMain && product.category) {
+        for (const [main, subs] of Object.entries(categoryMapping)) {
+          if (subs.includes(product.category)) {
+            inferredMain = main;
+            break;
+          }
+        }
+      }
+
       setFormData({
         name: product.name || '',
         brand: product.brand || '',
         description: product.description || '',
         price: product.price || '',
         originalPrice: product.originalPrice || '',
+        mainCategory: inferredMain,
         category: product.category || '',
         images: product.images && product.images.length > 0 ? product.images : [''],
         sizes: product.sizes && product.sizes.length > 0 ? product.sizes : [{ size: '', stock: '' }],
@@ -112,7 +134,7 @@ const ProductEditScreen = () => {
   const handleSizeChange = useCallback((index, field, value) => {
     setFormData(prev => ({
       ...prev,
-      sizes: prev.sizes.map((size, i) => 
+      sizes: prev.sizes.map((size, i) =>
         i === index ? { ...size, [field]: value } : size
       )
     }));
@@ -120,7 +142,7 @@ const ProductEditScreen = () => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (!formData.name || !formData.brand || !formData.price || !formData.category) {
       toast.error('Please fill in all required fields');
@@ -141,9 +163,9 @@ const ProductEditScreen = () => {
     };
 
     try {
-      await dispatch(updateProduct({ 
-        id: id, 
-        productData: cleanedData 
+      await dispatch(updateProduct({
+        id: id,
+        productData: cleanedData
       })).unwrap();
       toast.success('Product updated successfully!');
       navigate('/admin/productlist');
@@ -157,340 +179,278 @@ const ProductEditScreen = () => {
 
   return (
     <>
-      <Meta title="Edit Product | MearnSneakers" />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-6">
+      <Meta title={`Refining ${formData.name} | Admin`} />
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[10px] font-black tracking-[0.4em] text-slate-dark/40 uppercase">Archive Management</span>
+            </div>
+            <h1 className="text-5xl font-black text-slate-dark tracking-tighter uppercase leading-none">Edit Masterpiece</h1>
+          </div>
           <button
             onClick={() => navigate('/admin/productlist')}
-            className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="group flex items-center gap-3 text-slate-dark/40 hover:text-slate-dark transition-all duration-300"
           >
-            <FaArrowLeft className="mr-2" />
-            Back to Products
+            <span className="font-black text-[10px] uppercase tracking-[0.3em]">Back to Archive</span>
+            <div className="w-10 h-10 rounded-full border border-slate-dark/10 flex items-center justify-center group-hover:border-slate-dark transition-colors">
+              <span className="text-lg">✕</span>
+            </div>
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Edit Product</h1>
         </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Product Name *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Brand *
-                </label>
-                <input
-                  type="text"
-                  name="brand"
-                  value={formData.brand}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price *
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  step="0.01"
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Original Price
-                </label>
-                <input
-                  type="number"
-                  name="originalPrice"
-                  value={formData.originalPrice}
-                  onChange={handleInputChange}
-                  step="0.01"
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Category *
-                </label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {categories.map(category => (
-                    <option key={category} value={category}>
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="inStock"
-                    checked={formData.inStock}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Attributes - Left Column */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Identity Card */}
+            <div className="bg-white rounded-3xl border border-slate-dark/5 p-8 shadow-sm">
+              <h3 className="text-xs font-black tracking-[0.3em] text-slate-dark/30 uppercase mb-8">Identity & Story</h3>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-dark/60 ml-4">Product Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark focus:bg-white focus:ring-2 focus:ring-slate-dark/10 transition-all outline-none border-none"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-dark/60 ml-4">Brand Signature</label>
+                    <input
+                      type="text"
+                      name="brand"
+                      value={formData.brand}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark focus:bg-white focus:ring-2 focus:ring-slate-dark/10 transition-all outline-none border-none"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-dark/60 ml-4">Product Narrative</label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
                     onChange={handleInputChange}
-                    className="mr-2"
+                    required
+                    rows={5}
+                    className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark focus:bg-white focus:ring-2 focus:ring-slate-dark/10 transition-all outline-none border-none resize-none"
                   />
-                  In Stock
-                </label>
-                <label className="flex items-center">
+                </div>
+              </div>
+            </div>
+
+            {/* Media Card */}
+            <div className="bg-white rounded-3xl border border-slate-dark/5 p-8 shadow-sm">
+              <div className="flex items-center justify-between mb-8 text-xs font-black tracking-[0.3em] text-slate-dark/30 uppercase">
+                <h3>Visual Portfolio</h3>
+                <span>{formData.images.filter(img => img).length} Assets</span>
+              </div>
+              <div className="space-y-4">
+                {formData.images.map((image, index) => (
+                  <div key={index} className="flex gap-3 group">
+                    <div className="flex-grow space-y-2">
+                      <input
+                        type="url"
+                        value={image}
+                        onChange={(e) => handleArrayInputChange('images', index, e.target.value)}
+                        className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark focus:bg-white focus:ring-2 focus:ring-slate-dark/10 transition-all outline-none border-none"
+                      />
+                    </div>
+                    {formData.images.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem('images', index)}
+                        className="w-14 h-14 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addArrayItem('images')}
+                  className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-dark/10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-dark/40 hover:border-slate-dark/30 hover:text-slate-dark transition-all"
+                >
+                  + Add Visual Asset
+                </button>
+              </div>
+            </div>
+
+            {/* Inventory Card */}
+            <div className="bg-white rounded-3xl border border-slate-dark/5 p-8 shadow-sm">
+              <h3 className="text-xs font-black tracking-[0.3em] text-slate-dark/30 uppercase mb-8">Stock & Sizing</h3>
+              <div className="space-y-4">
+                {formData.sizes.map((size, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 group">
+                    <input
+                      type="text"
+                      value={size.size}
+                      onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                      className="bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark outline-none border-none"
+                      placeholder="Size"
+                    />
+                    <input
+                      type="number"
+                      value={size.stock}
+                      onChange={(e) => handleSizeChange(index, 'stock', e.target.value)}
+                      className="bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark outline-none border-none"
+                      placeholder="Quantity"
+                    />
+                    <div className="flex gap-2">
+                      <div className="flex-grow"></div>
+                      {formData.sizes.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeSizeItem(index)}
+                          className="w-14 h-14 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addSizeItem}
+                  className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-dark/10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-dark/40 hover:border-slate-dark/30 hover:text-slate-dark transition-all"
+                >
+                  + Add Size Variant
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Classification & Pricing - Right Column */}
+          <div className="space-y-8">
+            {/* Classification Card */}
+            <div className="bg-slate-dark rounded-3xl p-8 shadow-xl text-white">
+              <h3 className="text-[10px] font-black tracking-[0.3em] text-white/40 uppercase mb-8">Classification</h3>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/60 ml-4">Main Division</label>
+                  <CustomDropdown
+                    options={[
+                      { label: 'Select Division', value: '' },
+                      ...mainCategories.map(cat => ({ label: cat, value: cat }))
+                    ]}
+                    value={formData.mainCategory}
+                    onChange={(val) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        mainCategory: val,
+                        category: ''
+                      }));
+                    }}
+                    className="w-full !p-0 !bg-transparent !border-none !shadow-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/60 ml-4">Sub Category</label>
+                  <CustomDropdown
+                    options={[
+                      { label: 'Select Category', value: '' },
+                      ...getSubCategories().map(cat => ({
+                        label: cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                        value: cat
+                      }))
+                    ]}
+                    value={formData.category}
+                    onChange={(val) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        category: val
+                      }));
+                    }}
+                    className={`w-full !p-0 !bg-transparent !border-none !shadow-none ${!formData.mainCategory ? 'opacity-30 pointer-events-none' : ''}`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing Card */}
+            <div className="bg-white rounded-3xl border border-slate-dark/5 p-8 shadow-sm">
+              <h3 className="text-xs font-black tracking-[0.3em] text-slate-dark/30 uppercase mb-8">Pricing Intelligence</h3>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-dark/60 ml-4">Retail Price (INR)</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-black text-xl text-slate-dark outline-none border-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-dark/60 ml-4">Compare At Price</label>
+                  <input
+                    type="number"
+                    name="originalPrice"
+                    value={formData.originalPrice}
+                    onChange={handleInputChange}
+                    className="w-full bg-slate-dark/5 px-6 py-4 rounded-2xl font-bold text-slate-dark/40 outline-none border-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Promotion Card */}
+            <div className="bg-white rounded-3xl border border-slate-dark/5 p-8 shadow-sm">
+              <h3 className="text-xs font-black tracking-[0.3em] text-slate-dark/30 uppercase mb-8">Visibility</h3>
+              <div className="space-y-4">
+                <label className="flex items-center justify-between p-4 bg-off-white-warm rounded-2xl cursor-pointer group hover:bg-slate-dark/5 transition-all">
+                  <span className="text-[11px] font-black text-slate-dark uppercase tracking-widest">Featured Active</span>
                   <input
                     type="checkbox"
                     name="featured"
                     checked={formData.featured}
                     onChange={handleInputChange}
-                    className="mr-2"
+                    className="w-5 h-5 accent-slate-dark"
                   />
-                  Featured
+                </label>
+                <label className="flex items-center justify-between p-4 bg-off-white-warm rounded-2xl cursor-pointer group hover:bg-slate-dark/5 transition-all">
+                  <span className="text-[11px] font-black text-slate-dark uppercase tracking-widest">In Stock Status</span>
+                  <input
+                    type="checkbox"
+                    name="inStock"
+                    checked={formData.inStock}
+                    onChange={handleInputChange}
+                    className="w-5 h-5 accent-slate-dark"
+                  />
                 </label>
               </div>
             </div>
 
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Images */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Images
-              </label>
-              {formData.images.map((image, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <input
-                    type="url"
-                    value={image}
-                    onChange={(e) => handleArrayInputChange('images', index, e.target.value)}
-                    placeholder="Image URL"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {formData.images.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('images', index)}
-                      className="ml-2 p-2 text-red-600 hover:text-red-800"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
-                </div>
-              ))}
+            {/* Actions */}
+            <div className="pt-4">
               <button
-                type="button"
-                onClick={() => addArrayItem('images')}
-                className="flex items-center text-blue-600 hover:text-blue-800"
+                type="submit"
+                disabled={loading}
+                className="w-full bg-slate-dark text-white py-6 rounded-3xl font-black uppercase tracking-[0.4em] text-xs hover:bg-black transition-all shadow-2xl disabled:bg-slate-dark/60"
               >
-                <FaPlus className="mr-1" />
-                Add Image
+                {loading ? 'Refining...' : 'Save Changes'}
               </button>
-            </div>
-
-            {/* Colors */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Colors
-              </label>
-              {formData.colors.map((color, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <input
-                    type="text"
-                    value={color}
-                    onChange={(e) => handleArrayInputChange('colors', index, e.target.value)}
-                    placeholder="Color name"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {formData.colors.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('colors', index)}
-                      className="ml-2 p-2 text-red-600 hover:text-red-800"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => addArrayItem('colors')}
-                className="flex items-center text-blue-600 hover:text-blue-800"
-              >
-                <FaPlus className="mr-1" />
-                Add Color
-              </button>
-            </div>
-
-            {/* Sizes */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sizes & Stock
-              </label>
-              {formData.sizes.map((size, index) => (
-                <div key={index} className="flex items-center mb-2 space-x-2">
-                  <input
-                    type="text"
-                    value={size.size}
-                    onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
-                    placeholder="Size (e.g., S, M, L, XL)"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <input
-                    type="number"
-                    value={size.stock}
-                    onChange={(e) => handleSizeChange(index, 'stock', e.target.value)}
-                    placeholder="Stock"
-                    min="0"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {formData.sizes.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeSizeItem(index)}
-                      className="p-2 text-red-600 hover:text-red-800"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={addSizeItem}
-                className="flex items-center text-blue-600 hover:text-blue-800"
-              >
-                <FaPlus className="mr-1" />
-                Add Size
-              </button>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tags
-              </label>
-              {formData.tags.map((tag, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <input
-                    type="text"
-                    value={tag}
-                    onChange={(e) => handleArrayInputChange('tags', index, e.target.value)}
-                    placeholder="Tag"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {formData.tags.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem('tags', index)}
-                      className="ml-2 p-2 text-red-600 hover:text-red-800"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => addArrayItem('tags')}
-                className="flex items-center text-blue-600 hover:text-blue-800"
-              >
-                <FaPlus className="mr-1" />
-                Add Tag
-              </button>
-            </div>
-
-            {/* Rating & Reviews */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rating
-                </label>
-                <input
-                  type="number"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleInputChange}
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Number of Reviews
-                </label>
-                <input
-                  type="number"
-                  name="numReviews"
-                  value={formData.numReviews}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="flex justify-end space-x-4">
               <button
                 type="button"
                 onClick={() => navigate('/admin/productlist')}
-                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                className="w-full mt-4 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-dark/30 hover:text-slate-dark transition-all"
               >
-                Cancel
+                Discard Edits
               </button>
-              <button
-                type="submit"
-                className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                <FaSave className="mr-2" />
-                Update Product
-              </button>
+            </div>
           </div>
-          </form>
-        </div>
+        </form>
       </div>
     </>
   );

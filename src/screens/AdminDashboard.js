@@ -205,218 +205,191 @@ const AdminDashboard = () => {
 
   const statsData = [
     {
-      title: 'Total Users',
+      title: 'Global Cohort',
+      label: 'Active Users',
       value: formatNumber(stats.totalUsers),
       icon: FaUsers,
-      color: 'bg-black',
-      bgColor: 'bg-white',
-      textColor: 'text-black',
       growth: stats.userGrowth,
-      trend: 'up'
     },
     {
-      title: 'Total Products',
+      title: 'Archive Depth',
+      label: 'Curated Assets',
       value: formatNumber(stats.totalProducts),
       icon: FaBox,
-      color: 'bg-black',
-      bgColor: 'bg-white',
-      textColor: 'text-black',
       growth: 8,
-      trend: 'up'
     },
     {
-      title: 'Total Orders',
+      title: 'Market Velocity',
+      label: 'Fulfilled Orders',
       value: formatNumber(stats.totalOrders),
       icon: FaShoppingCart,
-      color: 'bg-black',
-      bgColor: 'bg-white',
-      textColor: 'text-black',
       growth: stats.orderGrowth,
-      trend: 'up'
     },
     {
-      title: 'Total Revenue',
+      title: 'Net Capital',
+      label: 'Total Valuation',
       value: formatCurrency(stats.totalRevenue),
       icon: FaDollarSign,
-      color: 'bg-black',
-      bgColor: 'bg-white',
-      textColor: 'text-black',
       growth: 15,
-      trend: 'up'
     },
   ];
 
   return (
     <>
-      <Meta title="Admin Dashboard | MearnSneakers" />
-
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
-            <p className="text-gray-600">Welcome back, {userInfo?.name || 'Admin'}! Here's what's happening with your store.</p>
+      <Meta title="Executive Intelligence | Mearn Admin" />
+      <div className="max-w-[1600px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 border-b border-slate-dark/5 pb-12">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Executive Directive</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              Command <span className="text-slate-dark/20">Center</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              Welcome back, Commissioner <span className="text-slate-dark">{userInfo?.name || 'Admin'}</span>. Archive is synchronized.
+            </p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Last updated</p>
-            <p className="text-sm font-medium text-gray-900">{new Date().toLocaleString()}</p>
+            <p className="text-[10px] font-black text-slate-dark/20 uppercase tracking-[0.3em] mb-1">Temporal Sync</p>
+            <p className="text-sm font-black text-slate-dark uppercase">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           </div>
         </div>
-      </div>
 
-      {/* Monthly Revenue Summary */}
-      <div className="mb-8">
-        <div className="admin-card bg-black text-white rounded-xl shadow-lg border-2 border-white p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Monthly Revenue</h3>
-              <p className="text-3xl font-bold mb-1">{formatCurrency(stats.monthlyRevenue)}</p>
-              <p className="text-gray-600 text-sm">Last 30 days</p>
-            </div>
-            <div className="text-right">
-              <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <FaDollarSign className="w-8 h-8" />
+        {/* Primary Intelligence Module */}
+        <div className="mb-12">
+          <div className="relative overflow-hidden bg-slate-dark rounded-[40px] p-12 text-white shadow-2xl">
+            <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-12">
+              <div className="space-y-2">
+                <span className="text-[10px] font-black tracking-[0.5em] text-white/40 uppercase italic">30-Day Liquidity</span>
+                <h2 className="text-8xl font-black tracking-tighter leading-none italic text-white">{formatCurrency(stats.monthlyRevenue)}</h2>
+                <div className="flex items-center gap-4">
+                  <span className="bg-white/10 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">+24% Variance</span>
+                  <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">Relative to previous cycle</span>
+                </div>
+              </div>
+              <div className="w-full md:w-auto flex flex-col items-end gap-2">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-1 h-12 bg-white/10 rounded-full" style={{ height: `${20 + Math.random() * 60}px` }}></div>
+                  ))}
+                </div>
+                <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Visualizing Growth Metrics</span>
               </div>
             </div>
+            {/* Background Decoration */}
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl"></div>
           </div>
         </div>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {loading ? (
-          // Loading skeleton
-          Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="admin-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="animate-pulse">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gray-300 rounded-xl"></div>
-                    <div className="ml-4">
-                      <div className="h-4 bg-gray-300 rounded w-20 mb-2"></div>
-                      <div className="h-6 bg-gray-300 rounded w-16 mb-2"></div>
-                      <div className="h-3 bg-gray-300 rounded w-24"></div>
+        {/* Secondary Intelligence Modules */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {loading ? (
+            [...Array(4)].map((_, i) => (
+              <div key={i} className="h-48 bg-slate-dark/5 rounded-[32px] animate-pulse"></div>
+            ))
+          ) : (
+            statsData.map((stat, index) => (
+              <div key={index} className="group bg-white rounded-[32px] p-8 border border-slate-dark/5 shadow-xl shadow-slate-dark/5 hover:border-slate-dark/20 transition-all duration-500 hover:-translate-y-2">
+                <div className="flex flex-col gap-6">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-black text-slate-dark/30 uppercase tracking-widest">{stat.title}</p>
+                      <h4 className="text-3xl font-black text-slate-dark tracking-tighter">{stat.value}</h4>
+                    </div>
+                    <div className="w-12 h-12 bg-off-white-warm rounded-2xl flex items-center justify-center text-slate-dark group-hover:bg-slate-dark group-hover:text-white transition-all duration-500">
+                      <stat.icon className="text-lg" />
                     </div>
                   </div>
-                  <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          statsData.map((stat, index) => (
-            <div key={index} className="admin-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className={`p-3 rounded-xl ${stat.color} text-white shadow-lg`}>
-                    <stat.icon className="w-6 h-6" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                    <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                    <div className="flex items-center mt-1">
-                      {stat.trend === 'up' ? (
-                        <FaArrowUp className="w-3 h-3 text-black mr-1" />
-                      ) : (
-                        <FaArrowDown className="w-3 h-3 text-gray-600 mr-1" />
-                      )}
-                      <span className={`text-xs font-medium ${stat.trend === 'up' ? 'text-black' : 'text-gray-600'}`}>
-                        +{stat.growth}% from last month
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-dark/5">
+                    <span className="text-[9px] font-bold text-slate-dark/40 uppercase tracking-widest">{stat.label}</span>
+                    <span className="text-[10px] font-black text-slate-dark bg-slate-dark/5 px-3 py-1 rounded-full">↑ {stat.growth}%</span>
                   </div>
                 </div>
-                <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
-                  <stat.icon className={`w-6 h-6 ${stat.textColor}`} />
-                </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Quick Actions and Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Quick Actions */}
-        <div className="admin-card bg-white rounded-xl shadow-sm border-2 border-black p-6">
-          <h3 className="text-xl font-semibold text-black mb-6 flex items-center">
-            <FaBox className="mr-2 text-black" />
-            Quick Actions
-          </h3>
-          <div className="space-y-4">
-            <Link
-              to="/admin/productlist"
-              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
-            >
-              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
-                <FaBox className="text-white w-5 h-5" />
-              </div>
-              <div className="ml-4">
-                <p className="text-black font-semibold">Manage Products</p>
-                <p className="text-gray-700 text-sm">Add, edit, or remove products</p>
-              </div>
-            </Link>
-            <Link
-              to="/admin/userlist"
-              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
-            >
-              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
-                <FaUsers className="text-white w-5 h-5" />
-              </div>
-              <div className="ml-4">
-                <p className="text-black font-semibold">Manage Users</p>
-                <p className="text-gray-700 text-sm">View and manage user accounts</p>
-              </div>
-            </Link>
-            <Link
-              to="/admin/orderlist"
-              className="flex items-center p-4 bg-white hover:bg-gray-100 rounded-xl transition-all duration-200 hover:shadow-md group border-2 border-black"
-            >
-              <div className="p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
-                <FaShoppingCart className="text-white w-5 h-5" />
-              </div>
-              <div className="ml-4">
-                <p className="text-black font-semibold">View Orders</p>
-                <p className="text-gray-700 text-sm">Track and manage orders</p>
-              </div>
-            </Link>
-          </div>
+            ))
+          )}
         </div>
 
-        {/* Recent Activity */}
-        <div className="admin-card bg-white rounded-xl shadow-sm border-2 border-black p-6">
-          <h3 className="text-xl font-semibold text-black mb-6 flex items-center">
-            <FaChartBar className="mr-2 text-black" />
-            Recent Activity
-          </h3>
-          <div className="space-y-4">
-            {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
-              </div>
-            ) : recentActivity.length > 0 ? (
-              recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                  <div className={`w-3 h-3 bg-${activity.color}-500 rounded-full mr-4 shadow-sm`}></div>
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-gray-900">{activity.message}</p>
-                    <p className="text-xs text-gray-500">{activity.details}</p>
-                    <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Active Protocols */}
+          <div className="lg:col-span-1 space-y-8">
+            <h3 className="text-[11px] font-black text-slate-dark/30 uppercase tracking-[0.5em] px-2 flex items-center gap-4">
+              <div className="w-8 h-[1px] bg-slate-dark/20"></div>
+              Active Protocols
+            </h3>
+            <div className="space-y-4">
+              {[
+                { to: '/admin/productlist', label: 'Asset Management', sub: 'Archive Operations', icon: FaBox },
+                { to: '/admin/userlist', label: 'Identity Protocol', sub: 'Cohort Maintenance', icon: FaUsers },
+                { to: '/admin/orderlist', label: 'Market Logistics', sub: 'Inbound Streams', icon: FaShoppingCart }
+              ].map((link, i) => (
+                <Link
+                  key={i}
+                  to={link.to}
+                  className="block group p-8 bg-white border border-slate-dark/5 rounded-[32px] hover:bg-slate-dark transition-all duration-500 shadow-lg shadow-slate-dark/5 hover:shadow-2xl hover:shadow-slate-dark/20 active:scale-95"
+                >
+                  <div className="flex items-center gap-6">
+                    <div className="w-14 h-14 bg-off-white-warm rounded-[20px] flex items-center justify-center text-slate-dark group-hover:bg-white/20 group-hover:text-white transition-all duration-500">
+                      <link.icon className="text-xl" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-black text-slate-dark uppercase group-hover:text-white transition-colors">{link.label}</p>
+                      <p className="text-[10px] font-bold text-slate-dark/30 uppercase tracking-widest group-hover:text-white/40 transition-colors">{link.sub}</p>
+                    </div>
                   </div>
-                  <div className={`text-${activity.color}-500 text-xs font-medium`}>
-                    {activity.type === 'order' ? 'Order' :
-                      activity.type === 'user' ? 'User' :
-                        activity.type === 'product' ? 'Product' :
-                          activity.type === 'info' ? 'Info' : 'Alert'}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Chronicles of Action */}
+          <div className="lg:col-span-2 space-y-8">
+            <h3 className="text-[11px] font-black text-slate-dark/30 uppercase tracking-[0.5em] px-2 flex items-center gap-4">
+              <div className="w-8 h-[1px] bg-slate-dark/20"></div>
+              Registry Chronicles
+            </h3>
+            <div className="bg-white rounded-[40px] border border-slate-dark/5 shadow-2xl shadow-slate-dark/10 overflow-hidden">
+              <div className="p-10 space-y-8">
+                {loading ? (
+                  <div className="py-20 flex flex-col items-center justify-center opacity-20">
+                    <div className="w-10 h-10 border-2 border-slate-dark border-t-transparent rounded-full animate-spin"></div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                <FaChartBar className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <p>No recent activity</p>
+                ) : recentActivity.length > 0 ? (
+                  recentActivity.map((activity, index) => (
+                    <div key={index} className="group flex gap-8 pb-8 border-b border-slate-dark/5 last:border-0 last:pb-0">
+                      <div className="relative">
+                        <div className={`w-4 h-4 rounded-full border-2 border-white shadow-xl bg-${activity.color}-400 mt-1`}></div>
+                        {index !== recentActivity.length - 1 && (
+                          <div className="absolute top-5 left-1/2 -translate-x-1/2 w-px h-full bg-slate-dark/5"></div>
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <p className="text-sm font-black text-slate-dark uppercase tracking-tight group-hover:translate-x-1 transition-transform">{activity.message}</p>
+                          <span className="text-[9px] font-black text-slate-dark/20 uppercase tracking-widest">{activity.time}</span>
+                        </div>
+                        <p className="text-[11px] font-bold text-slate-dark/50 uppercase tracking-[0.1em]">{activity.details}</p>
+                        <div className="pt-2">
+                          <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-slate-dark/5 text-slate-dark`}>
+                            {activity.type} Signature
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-20">
+                    <div className="w-20 h-20 bg-off-white-warm rounded-full flex items-center justify-center mx-auto mb-6">
+                      <FaChartBar className="text-slate-dark/10 text-3xl" />
+                    </div>
+                    <p className="text-[11px] font-black text-slate-dark/30 uppercase tracking-[0.4em]">Archive is Currently Dormant</p>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

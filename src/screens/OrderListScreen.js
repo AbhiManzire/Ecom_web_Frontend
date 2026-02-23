@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  FaEye, 
-  FaEdit, 
-  FaTrash, 
+import {
+  FaEye,
+  FaEdit,
+  FaTrash,
   FaSearch,
   FaShoppingCart
 } from 'react-icons/fa';
@@ -13,13 +13,14 @@ import { toast } from 'react-toastify';
 import Meta from '../components/Meta';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import CustomDropdown from '../components/CustomDropdown';
 
 const OrderListScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const { orders, loading, error } = useSelector((state) => state.order);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -93,113 +94,150 @@ const OrderListScreen = () => {
   };
 
   const filteredOrders = orders.filter(order => {
+    let matchesSearch = true;
+    let matchesStatus = true;
+
     if (debouncedSearchTerm) {
       const searchLower = debouncedSearchTerm.toLowerCase();
-      return (
+      matchesSearch = (
         order._id.toLowerCase().includes(searchLower) ||
         (order.user && order.user.name && order.user.name.toLowerCase().includes(searchLower)) ||
         (order.user && order.user.email && order.user.email.toLowerCase().includes(searchLower))
       );
     }
-    return true;
+
+    if (selectedStatus) {
+      if (selectedStatus === 'delivered') matchesStatus = order.isDelivered;
+      else if (selectedStatus === 'paid') matchesStatus = order.isPaid && !order.isDelivered;
+      else if (selectedStatus === 'pending') matchesStatus = !order.isPaid;
+    }
+
+    return matchesSearch && matchesStatus;
   });
 
   return (
     <>
-      <Meta title="Order Management | MearnSneakers Admin" />
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">All Orders</h3>
-          <div className="flex space-x-2">
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+      <Meta title="Logistics Registry | Mearn Admin" />
+      <div className="max-w-[1600px] mx-auto px-4 py-12">
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+              <span className="text-[11px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">E-Commerce Intelligence</span>
+            </div>
+            <h1 className="text-7xl font-black text-slate-dark tracking-tighter uppercase leading-none">
+              Order <span className="text-slate-dark/20">Logistics</span>
+            </h1>
+            <p className="text-xs font-bold text-slate-dark/50 tracking-widest uppercase">
+              {loading ? 'Synchronizing Ledger...' : `Auditing ${filteredOrders.length} Transactional Records`}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-6 whitespace-nowrap">
+            <div className="relative group">
               <input
                 type="text"
-                placeholder="Search orders..."
+                placeholder="Locate Transaction..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+                className="bg-off-white-warm px-8 py-5 rounded-full w-96 font-bold text-slate-dark focus:bg-white focus:ring-4 focus:ring-slate-dark/5 transition-all outline-none border-none placeholder:text-slate-dark/20"
               />
+              <FaSearch className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-dark/20 group-focus-within:text-slate-dark transition-colors" />
             </div>
-            <select 
-              value={selectedStatus}
-              onChange={handleStatusChange}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="delivered">Delivered</option>
-            </select>
           </div>
         </div>
 
+        {/* Filters Ledger */}
+        <div className="flex flex-wrap items-center gap-4 mb-12">
+          <CustomDropdown
+            label="Fulfillment Status"
+            options={[
+              { label: 'Global Ledger', value: '' },
+              { label: 'Pending Payment', value: 'pending' },
+              { label: 'Processing (Paid)', value: 'paid' },
+              { label: 'Delivered Archive', value: 'delivered' },
+            ]}
+            value={selectedStatus}
+            onChange={(val) => setSelectedStatus(val)}
+          />
+        </div>
+
         {loading ? (
-          <Loader />
+          <div className="py-32 flex flex-col items-center justify-center opacity-40">
+            <div className="w-16 h-16 border-4 border-slate-dark border-t-transparent rounded-full animate-spin mb-6"></div>
+            <span className="font-black text-[10px] uppercase tracking-[0.5em]">Fetching Ledger Data</span>
+          </div>
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <div className="bg-red-50 text-red-500 p-8 rounded-3xl font-bold text-center">
+            {error}
+          </div>
         ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          <div className="bg-white border-t border-b border-slate-dark/10">
+            <div className="overflow-visible">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-dark/10">
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Chronicle Signature</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Client Portfolio</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Commercial Valuation</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Settlement Status</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40">Chronology</th>
+                    <th className="px-6 py-6 text-[9px] font-black uppercase tracking-[0.4em] text-slate-dark/40 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-dark/5">
                   {filteredOrders.length > 0 ? (
                     filteredOrders.map((order) => (
-                      <tr key={order._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          #{order._id.slice(-6).toUpperCase()}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">
-                            {order.user ? order.user.name : 'Unknown User'}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {order.user ? order.user.email : 'No email'}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          ₹{order.totalPrice?.toFixed(2) || '0.00'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadge(order)}`}>
-                            {getStatusText(order)}
+                      <tr key={order._id} className="hover:bg-off-white-warm/30 transition-colors">
+                        <td className="px-6 py-4">
+                          <span className="text-xs font-black text-slate-dark/60 tracking-widest leading-none">
+                            #{order._id.slice(-8).toUpperCase()}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatDate(order.createdAt)}
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-xs font-black text-slate-dark uppercase tracking-tighter leading-tight">{order.user ? order.user.name : 'Guest User'}</span>
+                            <span className="text-[9px] font-bold text-slate-dark/20 uppercase tracking-widest italic tracking-tighter">{order.user ? order.user.email : 'No Contact Data'}</span>
+                          </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button 
+                        <td className="px-6 py-4">
+                          <span className="text-[11px] font-black text-slate-dark">₹{order.totalPrice?.toLocaleString() || '0.00'}</span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 border ${order.isDelivered ? 'border-green-400 text-green-700' :
+                            order.isPaid ? 'border-blue-400 text-blue-700' : 'border-orange-400 text-orange-700'
+                            }`}>
+                            {order.isDelivered ? 'Fulfilled' : order.isPaid ? 'In-Process' : 'Pending'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="text-[10px] font-black text-slate-dark/40 uppercase tracking-widest italic">
+                            {formatDate(order.createdAt)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-1.5 ">
+                            <button
                               onClick={() => handleViewOrder(order._id)}
-                              className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
-                              title="View Order"
+                              className="w-8 h-8 bg-slate-dark text-white flex items-center justify-center hover:bg-black transition-colors"
+                              title="Inspect Record"
                             >
-                              <FaEye />
+                              <FaEye className="text-[10px]" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleEditOrder(order._id)}
-                              className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
-                              title="Edit Order"
+                              className="w-8 h-8 bg-off-white-warm text-slate-dark flex items-center justify-center hover:bg-slate-dark hover:text-white transition-colors border border-slate-dark/5"
+                              title="Adjust Logistics"
                             >
-                              <FaEdit />
+                              <FaEdit className="text-[10px]" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleDeleteOrder(order._id, order._id.slice(-6).toUpperCase())}
-                              className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
-                              title="Delete Order"
+                              className="w-8 h-8 bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                              title="Void Transaction"
                             >
-                              <FaTrash />
+                              <FaTrash className="text-[10px]" />
                             </button>
                           </div>
                         </td>
@@ -207,15 +245,12 @@ const OrderListScreen = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" className="px-6 py-12 text-center">
-                        <div className="text-gray-500">
-                          <FaShoppingCart className="mx-auto h-12 w-12 text-gray-300 mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
-                          <p className="text-gray-500">
-                            {searchTerm || selectedStatus !== '' 
-                              ? 'Try adjusting your search or filter criteria.' 
-                              : 'No orders have been placed yet.'}
-                          </p>
+                      <td colSpan="6" className="px-8 py-24 text-center">
+                        <div className="flex flex-col items-center gap-4">
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-black text-slate-dark uppercase tracking-wider">Empty Ledger</h3>
+                            <p className="text-[9px] font-bold text-slate-dark/40 uppercase tracking-widest">Query returned null.</p>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -223,7 +258,7 @@ const OrderListScreen = () => {
                 </tbody>
               </table>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>

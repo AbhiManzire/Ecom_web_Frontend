@@ -13,6 +13,11 @@ api.interceptors.request.use(
   (config) => {
     console.log('🚀 Making API request:', config.method?.toUpperCase(), config.url);
     
+    // For FormData (file uploads), remove Content-Type so browser sets multipart/form-data with boundary
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     // Add auth token if available
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { FaFilter, FaSort } from 'react-icons/fa';
 import { fetchProducts, fetchFilterOptions } from '../store/slices/productSlice';
 import Product from '../components/Product';
 import ProductCarousel from '../components/ProductCarousel';
+import HeroSlider from '../components/HeroSlider';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
@@ -145,8 +146,22 @@ const HomeScreen = () => {
       'mobile': 'Mobile Phones',
       'watches': 'Watches',
       'bags': 'Bags',
-      'men': 'Men\'s Collection',
-      'ladies': 'Ladies\' Collection'
+      'ladies': 'Ladies\' Collection',
+
+      // Kids' Categories
+      'kids-clothing': 'Kids\' Clothing',
+      'kids-shoes': 'Kids\' Shoes',
+      'kids-accessories': 'Kids\' Accessories',
+      'boys': 'Boys Collection',
+      'girls': 'Girls Collection',
+      'infants': 'Infants',
+
+      // Sports Categories
+      'activewear': 'Activewear',
+      'performance': 'Performance gear',
+      'gym-gear': 'Gym Essentials',
+      'running': 'Running Gear',
+      'training': 'Training Wear'
     };
     return categoryNames[cat] || cat;
   };
@@ -157,56 +172,111 @@ const HomeScreen = () => {
       <>
         <Meta />
 
-        {/* Hero Banner */}
-        <div className="relative bg-gradient-to-br from-gray-200 to-gray-300 py-20 overflow-hidden">
+        {/* Hero Image Slider */}
+        <HeroSlider />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4">
-            <div className="text-center">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 inline-block transform hover:scale-105 transition-transform duration-300">
-                <img src="/logos.jpg" alt="Youth Circle Logo" className="h-[350px] w-auto mx-auto " />
+        {/* Featured Products Section Redesign */}
+        <div className="relative py-24 bg-white overflow-hidden">
+          {/* Decorative background text */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none w-full overflow-hidden">
+            <h2 className="text-[80px] sm:text-[120px] md:text-[160px] lg:text-[200px] font-black text-slate-dark/[0.05] leading-none text-center italic">FEATURED</h2>
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8">
+              <div className="space-y-4 max-w-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-[2px] bg-slate-dark"></div>
+                  <span className="text-slate-dark/50 font-black tracking-widest text-xs uppercase">Curated Selection</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-dark tracking-tighter leading-[0.9]">
+                  CURATED <br />
+                  <span>EXCELLENCE.</span>
+                </h2>
+                <p className="text-slate-dark/50 text-lg font-medium">
+                  Handpicked pieces that represent the intersection of luxury and street culture.
+                </p>
               </div>
+
+              <Link to="/category/sneakers" className="group flex items-center gap-4 text-slate-dark font-black uppercase tracking-widest text-sm hover:opacity-70 transition-all">
+                View Entire Gallery
+                <div className="w-12 h-12 rounded-full border border-slate-dark/20 flex items-center justify-center group-hover:bg-slate-dark group-hover:text-white transition-all duration-500">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </div>
+              </Link>
             </div>
+
+            {products && products.filter(p => p.featured).length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                {products.filter(p => p.featured).slice(0, 8).map((product, idx) => (
+                  <div
+                    key={product._id}
+                    className={`animate-fade-in`}
+                    style={{ animationDelay: `${idx * 150}ms` }}
+                  >
+                    <div className="relative group mb-6">
+                      <div className="absolute -inset-4 bg-slate-dark/[0.03] scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 rounded-2xl -z-10"></div>
+                      <Product product={product} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 bg-slate-dark/[0.03] rounded-3xl border-2 border-dashed border-slate-dark/10">
+                <p className="text-slate-dark/40 font-bold italic">Gathering our most exclusive pieces...</p>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Featured Products Section */}
-        {products && products.filter(p => p.featured).length > 0 && (
-          <div className="max-w-7xl mx-auto px-4 py-12">
-            <div className="mb-8">
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">Featured Products</h2>
-              <p className="text-gray-600">Check out our best sellers and trending items</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products.filter(p => p.featured).slice(0, 8).map((product) => (
-                <Product key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Product Carousels */}
         <div className="space-y-8">
           {/* Men's Categories */}
           <div className="space-y-6">
-            {/* Men's Collection Header */}
-            <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-black"></div>
-              <div className="absolute inset-0" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}></div>
-              <div className="relative z-10 py-16 border-b-4 border-white">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                  <div className="inline-block">
-                    <h2 className="text-5xl font-bold text-white mb-4 tracking-wider transform hover:scale-105 transition-transform duration-300">
-                      MEN'S COLLECTION
-                    </h2>
-                    <div className="w-32 h-1 bg-white mx-auto rounded-full"></div>
-                    <p className="text-white text-lg mt-4 opacity-100">
-                      Discover the latest trends in men's fashion
-                    </p>
+            {/* Men's Collection Header Redesign */}
+            <div className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-slate-dark overflow-hidden rounded-2xl sm:rounded-3xl mx-2 sm:mx-4 mb-8 md:mb-12 min-w-0 group hover:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.4)] transition-all duration-700">
+              {/* Background Watermark */}
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 select-none pointer-events-none opacity-20 overflow-hidden">
+                <h2 className="text-[80px] sm:text-[120px] md:text-[150px] lg:text-[180px] font-black text-white leading-none ml-[-30px] sm:ml-[-50px] italic">GENTS</h2>
+              </div>
+
+              <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                <div className="space-y-6 max-w-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-[2px] bg-slate-dark/20"></div>
+                    <span className="text-slate-dark/60 font-black tracking-widest text-xs uppercase">Men's Wardrobe</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black text-white tracking-tighter leading-[0.85]">
+                    MODERN <br />
+                    <span>ESSENTIALS.</span>
+                  </h2>
+                  <p className="text-white/80 text-xl font-medium max-w-md leading-relaxed">
+                    Premium craftsmanship for the contemporary man. Defined by quality, designed for life.
+                  </p>
+                </div>
+
+                {/* Right Visual for Men */}
+                <div className="hidden lg:block relative group-hover:scale-[1.02] transition-transform duration-700">
+                  <div className="aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl relative border-4 border-white/5">
+                    <img
+                      src="https://images.unsplash.com/photo-1488161628813-04466f872be2?w=800&auto=format&fit=crop"
+                      alt="Modern Men's Fashion"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-dark/40 to-transparent"></div>
+                  </div>
+                  <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-2xl z-20">
+                    <p className="text-slate-dark font-black text-2xl">2024</p>
+                    <p className="text-slate-dark/40 text-[10px] font-bold uppercase tracking-widest">Collection</p>
                   </div>
                 </div>
               </div>
+
+              {/* Decorative line */}
+              <div className="absolute bottom-0 right-0 w-1/3 h-[1px] bg-gradient-to-l from-white/20 to-transparent"></div>
             </div>
 
             {/* Men's T-Shirts */}
@@ -292,25 +362,47 @@ const HomeScreen = () => {
 
           {/* Ladies' Categories */}
           <div className="space-y-6">
-            {/* Ladies' Collection Header */}
-            <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-white"></div>
-              <div className="absolute inset-0 border-t-4 border-black" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}></div>
-              <div className="relative z-10 py-16 border-b-4 border-black">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                  <div className="inline-block">
-                    <h2 className="text-5xl font-bold text-black mb-4 tracking-wider transform hover:scale-105 transition-transform duration-300">
-                      LADIES' COLLECTION
-                    </h2>
-                    <div className="w-32 h-1 bg-black mx-auto rounded-full"></div>
-                    <p className="text-black text-lg mt-4 opacity-90">
-                      Explore elegant and trendy women's fashion
-                    </p>
+            {/* Ladies' Collection Header Redesign */}
+            <div className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-white overflow-hidden rounded-2xl sm:rounded-3xl mx-2 sm:mx-4 mb-8 md:mb-12 border border-slate-dark/10 shadow-sm min-w-0 group hover:shadow-xl transition-all duration-700">
+              {/* Background Watermark */}
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 select-none pointer-events-none opacity-[0.08] overflow-hidden">
+                <h2 className="text-[80px] sm:text-[120px] md:text-[150px] lg:text-[180px] font-black text-slate-dark leading-none mr-[-30px] sm:mr-[-50px] italic">WOMEN</h2>
+              </div>
+
+              <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                {/* Left Visual for Ladies */}
+                <div className="hidden lg:block relative group-hover:scale-[1.02] transition-transform duration-700">
+                  <div className="aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl relative border-4 border-slate-dark/5">
+                    <img
+                      src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop"
+                      alt="Timeless Ladies' Fashion"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent"></div>
+                  </div>
+                  <div className="absolute -top-6 -right-6 bg-slate-dark text-white p-6 rounded-xl shadow-2xl z-20">
+                    <p className="font-black text-2xl italic tracking-tighter">PREMIUM</p>
+                    <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Quality Only</p>
                   </div>
                 </div>
+
+                <div className="space-y-6 max-w-2xl text-right flex flex-col items-end">
+                  <div className="flex items-center gap-3 justify-end">
+                    <span className="text-slate-dark/70 font-black tracking-widest text-xs uppercase">Elegance Redefined</span>
+                    <div className="w-12 h-[2px] bg-slate-dark/40"></div>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black text-slate-dark tracking-tighter leading-[0.85]">
+                    TIMELESS <br />
+                    <span>ELEGANCE.</span>
+                  </h2>
+                  <p className="text-slate-dark/80 text-xl font-medium max-w-md ml-auto leading-relaxed">
+                    Curated pieces for the bold and sophisticated. Explore the latest in feminine fashion.
+                  </p>
+                </div>
               </div>
+
+              {/* Decorative line */}
+              <div className="absolute top-0 left-0 w-1/3 h-[1px] bg-gradient-to-r from-slate-dark/10 to-transparent"></div>
             </div>
 
             {/* Ladies' T-Shirts */}
@@ -408,6 +500,38 @@ const HomeScreen = () => {
               category="lingerie"
               theme="ladies"
             />
+
+            {/* Kids Section Heading */}
+            <div className="pt-12 sm:pt-16 md:pt-20 pb-6 md:pb-10">
+              <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-dark tracking-tighter uppercase whitespace-nowrap">KIDS ARCHIVE</h2>
+                <div className="w-full h-[1px] bg-slate-dark/10"></div>
+              </div>
+            </div>
+
+            {/* Kids' Clothing */}
+            <ProductCarousel
+              title="KIDS' SELECTION"
+              products={products.filter(p => ['kids-clothing', 'boys', 'girls', 'infants'].includes(p.category))}
+              category="kids-clothing"
+              theme="men"
+            />
+
+            {/* Sports Section Heading */}
+            <div className="pt-12 sm:pt-16 md:pt-20 pb-6 md:pb-10">
+              <div className="flex items-center gap-3 sm:gap-4 text-right flex-row-reverse overflow-hidden">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-dark tracking-tighter uppercase whitespace-nowrap">PERFORMANCE HUB</h2>
+                <div className="w-full h-[1px] bg-slate-dark/10"></div>
+              </div>
+            </div>
+
+            {/* Sports Activewear */}
+            <ProductCarousel
+              title="ELITE PERFORMANCE"
+              products={products.filter(p => ['activewear', 'performance', 'gym-gear', 'running', 'training', 'men-sport', 'ladies-sport'].includes(p.category))}
+              category="activewear"
+              theme="men"
+            />
           </div>
         </div>
 
@@ -420,122 +544,136 @@ const HomeScreen = () => {
     <>
       <Meta />
 
-      {/* Banner Section */}
-      <div className="bg-black border-b-4 border-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-white opacity-5"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}></div>
+      {/* Premium Minimalist Category Header */}
+      <div className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-white overflow-hidden border-b border-slate-dark/5">
+        {/* Decorative Background Watermark */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] w-full text-center overflow-hidden">
+          <h2 className="text-[100px] sm:text-[160px] md:text-[200px] lg:text-[240px] font-black text-slate-dark leading-none tracking-tighter">
+            {category ? category.split('-')[0].toUpperCase() : 'STORE'}
+          </h2>
+        </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="bg-white text-black px-4 py-2 rounded-lg font-bold text-lg border-2 border-black">
-                {keyword ? 'SEARCH' : category ? 'CATEGORY' : 'STEALS'}
-              </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col items-center text-center space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-[1px] bg-slate-dark/20"></div>
+              <span className="text-[10px] font-black tracking-[0.4em] text-slate-dark/40 uppercase">
+                {keyword ? 'Search Results' : category ? 'Curated Collection' : 'Premium Selection'}
+              </span>
+              <div className="w-12 h-[1px] bg-slate-dark/20"></div>
             </div>
-            <div className="text-center">
-              <h1 className="text-5xl font-bold text-white mb-2">
-                {keyword ? `SEARCH: ${keyword.toUpperCase()}` :
-                  category ? getCategoryDisplayName(category).toUpperCase() :
-                    'ALL SNEAKERS'}
-              </h1>
-              <p className="text-white text-lg">
-                {keyword ? `Search results for "${keyword}"` :
-                  category ? `Discover amazing ${getCategoryDisplayName(category).toLowerCase()}` :
-                    'Discover the latest releases and exclusive deals'}
-              </p>
-            </div>
-            <div></div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black text-slate-dark tracking-tighter leading-none uppercase break-words">
+              {keyword ? keyword : category ? getCategoryDisplayName(category).split("'s ")[1] || getCategoryDisplayName(category) : 'All Essentials'}
+            </h1>
+
+            <p className="text-slate-dark/60 text-xl font-medium max-w-2xl leading-relaxed">
+              {keyword ? `Exploring the best matches for "${keyword}" in our premium vault.` :
+                category ? `Discover the pinnacle of ${getCategoryDisplayName(category).toLowerCase()} designed for modern living.` :
+                  'Explore our complete archive of timeless designs and exclusive seasonal releases.'}
+            </p>
           </div>
         </div>
+
+        {/* Floating Accent */}
+        <div className="absolute bottom-0 left-0 w-1/4 h-[2px] bg-gradient-to-r from-slate-dark/10 to-transparent"></div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8 ">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 md:gap-12">
+          {/* Refined Filters Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border h-fit">
-              <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <FaFilter className="text-gray-600" />
-                  <span className="font-semibold">Filters</span>
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-slate-dark/5 overflow-hidden lg:sticky lg:top-24">
+              <div className="bg-slate-dark p-6 flex items-center justify-between">
+                <div className="flex items-center space-x-3 text-white">
+                  <FaFilter className="text-xs" />
+                  <span className="font-black text-[10px] uppercase tracking-[0.3em]">Refine By</span>
                 </div>
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="text-gray-600 hover:text-gray-800 text-sm"
+                  className="text-white/40 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-colors"
                 >
                   {showFilters ? 'Hide' : 'Show'}
                 </button>
               </div>
 
               {showFilters && (
-                <div className="p-4 space-y-4">
+                <div className="p-6 space-y-8">
                   {/* Category Filter */}
-                  <div>
-                    <h6 className="font-semibold mb-2">Category</h6>
+                  <div className="space-y-3">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Collection</span>
                     <select
                       value={filters.category || ''}
                       onChange={(e) => handleFilterChange('category', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full bg-off-white-warm px-4 py-3 rounded-xl font-bold text-[11px] text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all appearance-none cursor-pointer"
                     >
-                      <option value="">All Categories</option>
+                      <option value="">All Essentials</option>
                       {filterOptions.categories.map((cat) => (
                         <option key={cat} value={cat}>
-                          {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                          {cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Size Filter */}
-                  <div>
-                    <h6 className="font-semibold mb-2">Size</h6>
-                    <select
-                      value={filters.size || ''}
-                      onChange={(e) => handleFilterChange('size', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="">All Sizes</option>
+                  {/* Size Filter - Pill Style */}
+                  <div className="space-y-4">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Fits</span>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleFilterChange('size', '')}
+                        className={`px-3 py-2 rounded-lg text-[10px] font-black transition-all duration-300 border ${!filters.size
+                          ? 'bg-slate-dark text-white border-slate-dark'
+                          : 'bg-white text-slate-dark border-slate-dark/5 hover:border-slate-dark/20'
+                          }`}
+                      >
+                        ALL
+                      </button>
                       {filterOptions.sizes.map((size) => (
-                        <option key={size} value={size}>
+                        <button
+                          key={size}
+                          onClick={() => handleFilterChange('size', size)}
+                          className={`px-3 py-2 rounded-lg text-[10px] font-black transition-all duration-300 border ${filters.size === size
+                            ? 'bg-slate-dark text-white border-slate-dark shadow-lg'
+                            : 'bg-white text-slate-dark border-slate-dark/5 hover:border-slate-dark/20'
+                            }`}
+                        >
                           {size}
-                        </option>
+                        </button>
                       ))}
-                    </select>
+                    </div>
                   </div>
 
                   {/* Price Filter */}
-                  <div>
-                    <h6 className="font-semibold mb-2">Price</h6>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Price Range</span>
+                    <div className="grid grid-cols-2 gap-3">
                       <input
                         type="number"
-                        placeholder="Min Price"
+                        placeholder="Min"
                         value={filters.minPrice}
                         onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-off-white-warm px-4 py-3 rounded-xl font-bold text-[11px] text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20"
                       />
                       <input
                         type="number"
-                        placeholder="Max Price"
+                        placeholder="Max"
                         value={filters.maxPrice}
                         onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-off-white-warm px-4 py-3 rounded-xl font-bold text-[11px] text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20"
                       />
                     </div>
                   </div>
 
                   {/* Brand Filter */}
-                  <div>
-                    <h6 className="font-semibold mb-2">Brand</h6>
+                  <div className="space-y-3">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Makers</span>
                     <select
                       value={filters.brand || ''}
                       onChange={(e) => handleFilterChange('brand', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full bg-off-white-warm px-4 py-3 rounded-xl font-bold text-[11px] text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all appearance-none cursor-pointer"
                     >
-                      <option value="">All Brands</option>
+                      <option value="">Legacy Brands</option>
                       {filterOptions.brands.map((brand) => (
                         <option key={brand} value={brand}>
                           {brand}
@@ -545,25 +683,27 @@ const HomeScreen = () => {
                   </div>
 
                   {/* Color Filter */}
-                  <div>
-                    <h6 className="font-semibold mb-2">Color</h6>
-                    <select
-                      value={filters.color || ''}
-                      onChange={(e) => handleFilterChange('color', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="">All Colors</option>
+                  <div className="space-y-4">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Colours</span>
+                    <div className="flex flex-wrap gap-2">
                       {filterOptions.colors.map((color) => (
-                        <option key={color} value={color}>
+                        <button
+                          key={color}
+                          onClick={() => handleFilterChange('color', color)}
+                          className={`px-3 py-2 rounded-lg text-[10px] font-black transition-all duration-300 border uppercase tracking-tighter ${filters.color === color
+                            ? 'bg-slate-dark text-white border-slate-dark shadow-lg'
+                            : 'bg-white text-slate-dark border-slate-dark/5 hover:border-slate-dark/20'
+                            }`}
+                        >
                           {color}
-                        </option>
+                        </button>
                       ))}
-                    </select>
+                    </div>
                   </div>
 
                   {/* In Stock Only */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">In stock only</span>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-dark/5">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-dark/40">Ready to Ship</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
@@ -571,29 +711,29 @@ const HomeScreen = () => {
                         onChange={(e) => handleFilterChange('inStock', e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <div className="w-10 h-5 bg-slate-dark/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-dark/10 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-slate-dark"></div>
                     </label>
                   </div>
 
                   {/* Clear Filters */}
                   <button
                     onClick={clearFilters}
-                    className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                    className="w-full px-6 py-4 bg-slate-dark text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5"
                   >
-                    Clear Filters
+                    Clear All Filters
                   </button>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Products Section */}
-          <div className="lg:col-span-3">
+          {/* Products Archive */}
+          <div className="lg:col-span-3 space-y-12">
             {/* Sort Bar */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-2">
-                <FaSort className="text-gray-600" />
-                <span className="font-semibold">Sort by:</span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-off-white-warm/50 p-4 rounded-2xl sm:rounded-3xl border border-slate-dark/5">
+              <div className="flex items-center space-x-3">
+                <FaSort className="text-slate-dark/30 text-xs" />
+                <span className="font-black text-[9px] uppercase tracking-widest text-slate-dark/40">Perspective</span>
               </div>
               <select
                 value={`${filters.sortBy}-${filters.sortOrder}`}
@@ -602,42 +742,51 @@ const HomeScreen = () => {
                   handleFilterChange('sortBy', sortBy);
                   handleFilterChange('sortOrder', sortOrder);
                 }}
-                className="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="bg-transparent font-black text-[10px] uppercase tracking-widest text-slate-dark focus:outline-none cursor-pointer"
               >
-                <option value="createdAt-desc">Featured</option>
-                <option value="rating-desc">Best selling</option>
-                <option value="name-asc">Alphabetically, A-Z</option>
-                <option value="name-desc">Alphabetically, Z-A</option>
-                <option value="price-asc">Price, low to high</option>
-                <option value="price-desc">Price, high to low</option>
-                <option value="createdAt-asc">Date, old to new</option>
-                <option value="createdAt-desc">Date, new to old</option>
+                <option value="createdAt-desc">Recommended</option>
+                <option value="rating-desc">Best Rated</option>
+                <option value="price-asc">Price Ascending</option>
+                <option value="price-desc">Price Descending</option>
               </select>
             </div>
 
-            {/* Products Grid */}
-            {loading ? (
-              <Loader />
-            ) : error ? (
-              <Message variant="danger">{error}</Message>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {products.map((product) => (
-                    <div key={product._id}>
-                      <Product product={product} />
-                    </div>
-                  ))}
+            {/* Products Grid Archive */}
+            <div className="min-h-[600px] relative">
+              {loading && (
+                <div className="absolute inset-0 z-20 bg-white/60 backdrop-blur-[1px] flex items-center justify-center rounded-3xl transition-all duration-300">
+                  <div className="flex flex-col items-center gap-4">
+                    <Loader />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-dark/40 animate-pulse">Refreshing Archive</span>
+                  </div>
                 </div>
+              )}
 
-                <Paginate
-                  pages={pages}
-                  page={page}
-                  keyword={keyword ? keyword : ''}
-                  category={category ? category : ''}
-                />
-              </>
-            )}
+              {error ? (
+                <div className="py-12">
+                  <Message variant="danger">{error}</Message>
+                </div>
+              ) : (
+                <div className={`transition-all duration-700 ${loading ? 'opacity-20 blur-[2px] scale-[0.98]' : 'opacity-100 scale-100'}`}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                    {products.map((product) => (
+                      <div key={product._id} className="group">
+                        <Product product={product} />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-16">
+                    <Paginate
+                      pages={pages}
+                      page={page}
+                      keyword={keyword ? keyword : ''}
+                      category={category ? category : ''}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

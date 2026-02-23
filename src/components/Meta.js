@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-const Meta = ({ 
-  title = 'MearnSneakers - Premium Sneaker Store', 
-  description = 'Your premier destination for authentic sneakers, exclusive releases, and unbeatable deals.', 
-  keywords = 'sneakers, shoes, nike, adidas, jordan, yeezy, new balance, authentic, exclusive' 
+const Meta = ({
+  title = 'MearnSneakers - Premium Sneaker Store',
+  description = 'Your premier destination for authentic sneakers, exclusive releases, and unbeatable deals.',
+  keywords = 'sneakers, shoes, nike, adidas, jordan, yeezy, new balance, authentic, exclusive'
 }) => {
   return (
     <Helmet>

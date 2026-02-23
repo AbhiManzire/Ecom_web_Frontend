@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
+import CustomDropdown from '../components/CustomDropdown';
 
 const OrderEditScreen = () => {
   const { id } = useParams();
@@ -47,11 +48,11 @@ const OrderEditScreen = () => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    
+
     try {
-      await dispatch(updateOrder({ 
-        orderId: order._id, 
-        updateData: formData 
+      await dispatch(updateOrder({
+        orderId: order._id,
+        updateData: formData
       })).unwrap();
       toast.success('Order updated successfully!');
       navigate('/admin/orderlist');
@@ -63,14 +64,14 @@ const OrderEditScreen = () => {
   const handleMarkAsPaid = useCallback(async () => {
     if (window.confirm('Mark this order as paid?')) {
       try {
-        await dispatch(payOrder({ 
-          orderId: order._id, 
-          paymentResult: { 
-            id: 'admin-update', 
-            status: 'completed', 
+        await dispatch(payOrder({
+          orderId: order._id,
+          paymentResult: {
+            id: 'admin-update',
+            status: 'completed',
             update_time: new Date().toISOString(),
-            email_address: order.user?.email 
-          } 
+            email_address: order.user?.email
+          }
         })).unwrap();
         toast.success('Order marked as paid!');
       } catch (error) {
@@ -200,19 +201,23 @@ const OrderEditScreen = () => {
                   <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
                     Order Status
                   </label>
-                  <select
-                    id="status"
-                    name="status"
+                  <CustomDropdown
+                    options={[
+                      { label: 'Pending', value: 'pending' },
+                      { label: 'Processing', value: 'processing' },
+                      { label: 'Shipped', value: 'shipped' },
+                      { label: 'Delivered', value: 'delivered' },
+                      { label: 'Cancelled', value: 'cancelled' },
+                    ]}
                     value={formData.status}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
+                    onChange={(val) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        status: val
+                      }));
+                    }}
+                    className="w-full !p-0 !bg-transparent !border-none !shadow-none"
+                  />
                 </div>
               </div>
             </div>
@@ -271,7 +276,7 @@ const OrderEditScreen = () => {
               <p className="text-sm text-gray-600">{order.shippingAddress?.city || 'N/A'}, {order.shippingAddress?.postalCode || 'N/A'}</p>
             </div>
           </div>
-          
+
           <div className="mt-4">
             <h4 className="font-medium text-gray-900 mb-2">Order Items</h4>
             <div className="space-y-2">

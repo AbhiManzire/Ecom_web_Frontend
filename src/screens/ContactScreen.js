@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaFacebook, FaInstagram, FaTwitter, FaPinterest, FaPaperPlane } from 'react-icons/fa';
 import Meta from '../components/Meta';
 
 const ContactScreen = () => {
@@ -19,7 +19,6 @@ const ContactScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
     console.log('Form submitted:', formData);
     alert('Thank you for your message! We will get back to you soon.');
     setFormData({ name: '', email: '', subject: '', message: '' });
@@ -29,217 +28,176 @@ const ContactScreen = () => {
     <>
       <Meta title="Contact Us - YOUTH CIRCLE" />
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-gray-900 to-black py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold text-white mb-6">CONTACT US</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Get in touch with us. We'd love to hear from you and help with any questions you may have.
+      {/* Luxury Editorial Header */}
+      <div className="relative pt-12 pb-24 bg-white overflow-hidden border-b border-slate-dark/5">
+        {/* Background Decorative Watermark */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 opacity-[0.07] select-none pointer-events-none overflow-hidden">
+          <h2 className="text-[100px] sm:text-[160px] md:text-[200px] lg:text-[250px] font-black text-slate-dark tracking-tighter leading-none italic">CONTACT</h2>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center lg:text-left grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-end">
+          <div className="space-y-8 animate-fade-in">
+            <div className="flex items-center justify-center lg:justify-start gap-3">
+              <div className="w-12 h-[2px] bg-slate-dark"></div>
+              <span className="text-[10px] font-black tracking-[0.4em] text-slate-dark/40 uppercase">Global Support</span>
+            </div>
+            <h1 className="text-7xl md:text-9xl font-black text-slate-dark leading-[0.85] tracking-tighter uppercase">
+              REACH <br />
+              <span className="text-transparent" style={{ WebkitTextStroke: '1px #30364F' }}>OUT.</span>
+            </h1>
+          </div>
+          <div className="pb-4">
+            <p className="text-xl text-slate-dark/60 font-medium max-w-lg leading-relaxed mx-auto lg:mx-0">
+              Our concierge team is available worldwide to provide personalized assistance for every YOUTH CIRCLE inquiry.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-black text-white p-3 rounded-lg">
-                    <FaPhone className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Phone</h3>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
-                    <p className="text-gray-600">+1 (555) 987-6543</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-black text-white p-3 rounded-lg">
-                    <FaEnvelope className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">info@youthcircle.com</p>
-                    <p className="text-gray-600">support@youthcircle.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-black text-white p-3 rounded-lg">
-                    <FaMapMarkerAlt className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Address</h3>
-                    <p className="text-gray-600">
-                      123 Fashion Street<br />
-                      Style District, NY 10001<br />
-                      United States
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-black text-white p-3 rounded-lg">
-                    <FaClock className="text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Business Hours</h3>
-                    <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
-                    <p className="text-gray-600">Sunday: Closed</p>
-                  </div>
-                </div>
+      {/* Main Content Section */}
+      <div className="py-12 sm:py-16 md:py-24 bg-[#FAF9F6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 md:gap-20">
+            {/* Contact Information Sidebar */}
+            <div className="lg:col-span-2 space-y-16">
+              <div className="space-y-4">
+                <span className="text-[10px] font-black tracking-[0.3em] text-slate-dark/30 uppercase">Inquiries</span>
+                <h2 className="text-5xl font-black text-slate-dark tracking-tighter uppercase">Get In Touch</h2>
+                <div className="w-16 h-[6px] bg-slate-dark"></div>
               </div>
 
-              {/* Social Media */}
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h3>
+              <div className="space-y-10">
+                {[
+                  { icon: <FaPhone />, title: "Voice", info: ["+1 (555) 123-4567", "+1 (555) 987-6543"] },
+                  { icon: <FaEnvelope />, title: "Digital", info: ["info@youthcircle.com", "support@youthcircle.com"] },
+                  { icon: <FaMapMarkerAlt />, title: "Archives", info: ["123 Fashion Street, Style District", "New York, NY 10001"] },
+                ].map((item, i) => (
+                  <div key={i} className="group flex items-start gap-6">
+                    <div className="w-14 h-14 bg-white border border-slate-dark/5 flex items-center justify-center rounded-2xl group-hover:bg-slate-dark group-hover:text-white transition-all duration-500 shadow-sm">
+                      <div className="text-xl">{item.icon}</div>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-dark/30">{item.title}</h4>
+                      {item.info.map((line, j) => (
+                        <p key={j} className="text-lg font-bold text-slate-dark leading-tight">{line}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social Connect */}
+              <div className="pt-10 border-t border-slate-dark/10">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-dark/40 mb-8">Social Connect</h3>
                 <div className="flex space-x-4">
-                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
-                    <span className="text-lg">📘</span>
-                  </a>
-                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
-                    <span className="text-lg">📷</span>
-                  </a>
-                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
-                    <span className="text-lg">🐦</span>
-                  </a>
-                  <a href="/" className="bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors">
-                    <span className="text-lg">📌</span>
-                  </a>
+                  {[FaFacebook, FaInstagram, FaTwitter, FaPinterest].map((Icon, i) => (
+                    <a key={i} href="/" className="w-12 h-12 bg-white border border-slate-dark/5 text-slate-dark flex items-center justify-center rounded-xl hover:bg-slate-dark hover:text-white hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+                      <Icon size={18} />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                    placeholder="Your full name"
-                  />
+            {/* Premium Contact Form */}
+            <div className="lg:col-span-3">
+              <div className="bg-white p-10 md:p-16 rounded-[3rem] border border-slate-dark/5 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity duration-1000">
+                  <FaPaperPlane size={140} />
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
+                <form onSubmit={handleSubmit} className="relative z-10 space-y-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-dark/30 ml-4">Full Identity</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-[#FAF9F6] px-8 py-5 rounded-2xl font-bold text-sm text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-dark/30 ml-4">Digital Address</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-[#FAF9F6] px-8 py-5 rounded-2xl font-bold text-sm text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                  </div>
 
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject *
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                    placeholder="What's this about?"
-                  />
-                </div>
+                  <div className="space-y-3">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-dark/30 ml-4">Inquiry Subject</label>
+                    <input
+                      type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-[#FAF9F6] px-8 py-5 rounded-2xl font-bold text-sm text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20"
+                      placeholder="Order Status, Collaboration, etc."
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                    placeholder="Tell us more about your inquiry..."
-                  />
-                </div>
+                  <div className="space-y-3">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-dark/30 ml-4">Brief Narrative</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={6}
+                      className="w-full bg-[#FAF9F6] px-8 py-6 rounded-3xl font-bold text-sm text-slate-dark border border-slate-dark/5 focus:border-slate-dark/20 focus:outline-none transition-all placeholder:text-slate-dark/20 resize-none"
+                      placeholder="How can we assist you today?"
+                    />
+                  </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
-                >
-                  Send Message
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="w-full py-6 bg-slate-dark text-white rounded-2xl font-black text-xs uppercase tracking-[0.4em] shadow-2xl hover:shadow-slate-dark/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 group/btn"
+                  >
+                    Transmit Message
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Quick answers to common questions</p>
+      {/* FAQ Editorial Section */}
+      <div className="bg-white py-32 border-t border-slate-dark/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col items-center text-center mb-24 space-y-4">
+            <span className="text-[10px] font-black tracking-[0.5em] text-slate-dark/40 uppercase">Common Intelligence</span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-dark tracking-tighter uppercase leading-none">THE ARCHIVE FAQ</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">What is your return policy?</h3>
-              <p className="text-gray-600">
-                We offer a 30-day return policy for all items in original condition.
-                Returns are free and easy to process.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">How long does shipping take?</h3>
-              <p className="text-gray-600">
-                Standard shipping takes 3-5 business days. Express shipping is available
-                for next-day delivery in select areas.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Do you offer international shipping?</h3>
-              <p className="text-gray-600">
-                Yes, we ship worldwide. International shipping times vary by location,
-                typically 7-14 business days.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">How can I track my order?</h3>
-              <p className="text-gray-600">
-                Once your order ships, you'll receive a tracking number via email.
-                You can track your package on our website or the carrier's site.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {[
+              { q: "What is your return policy?", a: "We offer a 30-day return policy for all items in original condition. Returns are free and easy to process." },
+              { q: "How long does shipping take?", a: "Standard shipping takes 3-5 business days. Express shipping is available for next-day delivery in select areas." },
+              { q: "Do you offer international shipping?", a: "Yes, we ship worldwide. International shipping times vary by location, typically 7-14 business days." },
+              { q: "How can I track my order?", a: "Once your order ships, you'll receive a tracking number via email. You can track your package on our website." },
+            ].map((faq, i) => (
+              <div key={i} className="group p-10 bg-[#FAF9F6] rounded-3xl border border-slate-dark/5 hover:border-slate-dark/20 transition-all duration-500">
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-2xl font-black text-slate-dark/10 group-hover:text-slate-dark/20 transition-colors italic">0{i + 1}</span>
+                  <h3 className="text-xl font-black text-slate-dark uppercase tracking-tighter leading-tight">{faq.q}</h3>
+                </div>
+                <p className="text-sm font-bold text-slate-dark/50 leading-relaxed pl-12">
+                  {faq.a}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
