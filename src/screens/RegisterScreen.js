@@ -46,108 +46,134 @@ const RegisterScreen = () => {
   return (
     <>
       <Meta title="Register | MearnSneakers" />
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Create your account
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              Or{' '}
+      <div className="min-h-screen bg-off-white-warm flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Story / Benefits panel */}
+          <div className="space-y-6 order-2 md:order-1">
+            <p className="text-[11px] font-black tracking-[0.4em] uppercase text-slate-dark/40">
+              Join YouthCircle
+            </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-dark leading-tight">
+              Create your member profile
+              <span className="text-slate-dark/30"> in seconds.</span>
+            </h1>
+            <p className="text-sm sm:text-base text-slate-dark/70 max-w-md">
+              One account for your entire rotation. Sync orders, wishlists and sizes across every device.
+            </p>
+            <div className="hidden md:flex flex-col gap-3 text-[11px] text-slate-dark/60 font-bold uppercase tracking-[0.25em]">
+              <span>Early access to selected drops</span>
+              <span>Fast checkout with saved details</span>
+              <span>Tailored recommendations by category</span>
+            </div>
+            <p className="text-xs text-slate-dark/50">
+              Already a member?{' '}
               <Link
                 to={redirect ? `/login?redirect=${redirect}` : '/login'}
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-semibold text-slate-dark underline underline-offset-4"
               >
-                sign in to your existing account
+                Sign in to your account
               </Link>
             </p>
           </div>
 
-          <div className="bg-white shadow-lg rounded-lg">
-            <div className="p-8">
+          {/* Register card */}
+          <div className="bg-white rounded-3xl shadow-[0_24px_60px_rgba(15,23,42,0.18)] border border-slate-dark/10 overflow-hidden order-1 md:order-2">
+            <div className="border-b border-slate-dark/5 px-8 py-6 flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-black tracking-[0.35em] uppercase text-slate-dark/40">Create account</p>
+                <p className="text-xs text-slate-dark/50 font-medium">Tell us a few details to get started</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-slate-dark text-white flex items-center justify-center text-[10px] font-black tracking-[0.2em]">
+                YC
+              </div>
+            </div>
+
+            <div className="p-8 space-y-6">
               {message && <Message variant="danger">{message}</Message>}
               {error && <Message variant="danger">{error}</Message>}
               {loading && <Loader />}
 
-              <form onSubmit={submitHandler}>
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Name
+              <form onSubmit={submitHandler} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2">
+                    Full Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    placeholder="Enter name"
+                    placeholder="How should we address you?"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
                 </div>
 
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <div>
+                  <label htmlFor="email" className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2">
                     Email Address
                   </label>
                   <input
                     type="email"
                     id="email"
-                    placeholder="Enter email"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
                 </div>
 
-                <div className="mb-4">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2"
+                  >
                     Password
                   </label>
                   <input
                     type="password"
                     id="password"
-                    placeholder="Enter password"
+                    placeholder="Create a strong password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
                 </div>
 
-                <div className="mb-6">
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2"
+                  >
                     Confirm Password
                   </label>
                   <input
                     type="password"
                     id="confirmPassword"
-                    placeholder="Confirm password"
+                    placeholder="Repeat your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 px-4 rounded-full bg-slate-dark text-white text-xs font-black uppercase tracking-[0.3em] hover:bg-black transition-colors disabled:bg-slate-dark/50 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
-                  {loading ? 'Creating Account...' : 'Register'}
+                  {loading ? 'Creating Account...' : 'Create Account'}
                 </button>
               </form>
 
-              <div className="py-3 text-center">
-                Already have an account?{' '}
-                <Link
-                  to={redirect ? `/login?redirect=${redirect}` : '/login'}
-                  className="text-blue-600 hover:text-blue-500"
-                >
-                  Sign In
-                </Link>
-              </div>
+              <p className="text-[11px] text-center text-slate-dark/40">
+                By creating an account you agree to YouthCircle&apos;s{' '}
+                <span className="underline underline-offset-4">Terms</span> and{' '}
+                <span className="underline underline-offset-4">Privacy Policy</span>.
+              </p>
             </div>
           </div>
         </div>

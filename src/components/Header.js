@@ -13,6 +13,10 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [mobileMenOpen, setMobileMenOpen] = useState(false);
+  const [mobileLadiesOpen, setMobileLadiesOpen] = useState(false);
+  const [mobileKidsOpen, setMobileKidsOpen] = useState(false);
+  const [mobileSportsOpen, setMobileSportsOpen] = useState(false);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -236,6 +240,7 @@ const Header = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden text-slate-dark hover:opacity-60 transition-colors"
+              aria-label="Toggle navigation menu"
             >
               <FaBars className="text-xl" />
             </button>
@@ -245,100 +250,374 @@ const Header = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="lg:hidden bg-white border-t-2 border-black">
-            <div className="px-4 py-2 space-y-2">
+            <div className="px-4 py-3 space-y-2 max-h-[80vh] overflow-y-auto">
+              {/* Primary links */}
               <Link
                 to="/"
-                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${location.pathname === '/'
-                  ? 'text-white bg-slate-dark shadow-lg'
-                  : 'text-slate-dark hover:bg-slate-dark/5'
-                  }`}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${
+                  location.pathname === '/' ? 'text-white bg-slate-dark shadow-lg' : 'text-slate-dark hover:bg-slate-dark/5'
+                }`}
               >
                 HOME
               </Link>
               <Link
                 to="/about"
-                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${location.pathname === '/about'
-                  ? 'text-white bg-slate-dark shadow-lg'
-                  : 'text-slate-dark hover:bg-slate-dark/5'
-                  }`}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${
+                  location.pathname === '/about'
+                    ? 'text-white bg-slate-dark shadow-lg'
+                    : 'text-slate-dark hover:bg-slate-dark/5'
+                }`}
               >
                 ABOUT
               </Link>
               <Link
                 to="/contact"
-                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${location.pathname === '/contact'
-                  ? 'text-white bg-slate-dark shadow-lg'
-                  : 'text-slate-dark hover:bg-slate-dark/5'
-                  }`}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block px-4 py-3 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest ${
+                  location.pathname === '/contact'
+                    ? 'text-white bg-slate-dark shadow-lg'
+                    : 'text-slate-dark hover:bg-slate-dark/5'
+                }`}
               >
                 CONTACT
               </Link>
 
-              <div className="text-slate-dark/30 font-black mb-3 mt-8 text-xs uppercase tracking-[0.2em] px-4">Collections</div>
-              <Link
-                to="/category/tshirt"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                T-Shirt
-              </Link>
-              <Link
-                to="/category/shirt"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Shirt
-              </Link>
-              <Link
-                to="/category/jeans"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Jeans
-              </Link>
-              <Link
-                to="/category/sneakers"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Sneakers
-              </Link>
+              {/* Divider */}
+              <div className="border-t border-slate-dark/10 my-3" />
 
-              <div className="text-slate-dark/30 font-black mb-3 mt-8 text-xs uppercase tracking-[0.2em] px-4">LADIES Collection</div>
-              <Link
-                to="/category/ladies-tshirt"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
+              {/* MEN dropdown */}
+              <button
+                type="button"
+                onClick={() => setMobileMenOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between px-4 py-3 text-slate-dark font-black text-xs uppercase tracking-[0.25em] hover:bg-slate-dark/5 rounded-lg"
               >
-                T-Shirt
-              </Link>
-              <Link
-                to="/category/ladies-jeans"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Jeans
-              </Link>
-              <Link
-                to="/category/ladies-shorts"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Shorts
-              </Link>
-              <Link
-                to="/category/coord-set"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
-              >
-                Co-ord Set
-              </Link>
+                <span>Men</span>
+                <FaChevronDown
+                  className={`text-[10px] transition-transform duration-300 ${mobileMenOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {mobileMenOpen && (
+                <div className="space-y-1 pl-4">
+                  <Link
+                    to="/category/men-clothing"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Clothing
+                  </Link>
+                  <Link
+                    to="/category/men-accessories"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Accessories
+                  </Link>
+                  <Link
+                    to="/category/men-sport"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Sport
+                  </Link>
+                  <div className="text-slate-dark/30 font-black mt-3 mb-1 text-[10px] uppercase tracking-[0.25em] px-4">
+                    Core styles
+                  </div>
+                  <Link
+                    to="/category/tshirt"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    T-Shirt
+                  </Link>
+                  <Link
+                    to="/category/shirt"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Shirt
+                  </Link>
+                  <Link
+                    to="/category/cargo"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Cargo
+                  </Link>
+                  <Link
+                    to="/category/jeans"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Jeans
+                  </Link>
+                  <Link
+                    to="/category/trousers"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Trousers
+                  </Link>
+                  <Link
+                    to="/category/hoodies-sweaters"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Hoodies & Sweaters
+                  </Link>
+                  <Link
+                    to="/category/sneakers"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Sneakers
+                  </Link>
+                  <Link
+                    to="/category/flipflop"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Flip Flop
+                  </Link>
+                </div>
+              )}
 
-              <div className="text-slate-dark/30 font-black mb-3 mt-8 text-xs uppercase tracking-[0.2em] px-4">KIDS & SPORTS</div>
-              <Link
-                to="/category/kids-clothing"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
+              {/* LADIES dropdown */}
+              <button
+                type="button"
+                onClick={() => setMobileLadiesOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between mt-2 px-4 py-3 text-slate-dark font-black text-xs uppercase tracking-[0.25em] hover:bg-slate-dark/5 rounded-lg"
               >
-                Kids Clothing
-              </Link>
-              <Link
-                to="/category/activewear"
-                className="block px-4 py-3 text-slate-dark hover:bg-slate-dark/5 rounded-lg transition-all duration-300 font-bold text-sm uppercase tracking-widest"
+                <span>Ladies</span>
+                <FaChevronDown
+                  className={`text-[10px] transition-transform duration-300 ${mobileLadiesOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {mobileLadiesOpen && (
+                <div className="space-y-1 pl-4">
+                  <Link
+                    to="/category/ladies-clothing"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Clothing
+                  </Link>
+                  <Link
+                    to="/category/ladies-shoes"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Shoes
+                  </Link>
+                  <Link
+                    to="/category/ladies-accessories"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Accessories
+                  </Link>
+                  <Link
+                    to="/category/lingerie"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Lingerie
+                  </Link>
+                  <Link
+                    to="/category/ladies-sport"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Sport
+                  </Link>
+                  <div className="text-slate-dark/30 font-black mt-3 mb-1 text-[10px] uppercase tracking-[0.25em] px-4">
+                    Core styles
+                  </div>
+                  <Link
+                    to="/category/ladies-tshirt"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    T-Shirt
+                  </Link>
+                  <Link
+                    to="/category/ladies-shirt"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Shirt
+                  </Link>
+                  <Link
+                    to="/category/ladies-cargo"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Cargo
+                  </Link>
+                  <Link
+                    to="/category/ladies-jeans"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Jeans
+                  </Link>
+                  <Link
+                    to="/category/ladies-shorts"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Shorts
+                  </Link>
+                  <Link
+                    to="/category/ladies-trousers"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Trousers
+                  </Link>
+                  <Link
+                    to="/category/ladies-hoodies"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Hoodies
+                  </Link>
+                  <Link
+                    to="/category/coord-set"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Co-ord Set
+                  </Link>
+                </div>
+              )}
+
+              {/* KIDS dropdown */}
+              <button
+                type="button"
+                onClick={() => setMobileKidsOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between mt-2 px-4 py-3 text-slate-dark font-black text-xs uppercase tracking-[0.25em] hover:bg-slate-dark/5 rounded-lg"
               >
-                Sports Activewear
-              </Link>
+                <span>Kids</span>
+                <FaChevronDown
+                  className={`text-[10px] transition-transform duration-300 ${mobileKidsOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {mobileKidsOpen && (
+                <div className="space-y-1 pl-4">
+                  <Link
+                    to="/category/kids-clothing"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Clothing
+                  </Link>
+                  <Link
+                    to="/category/kids-shoes"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Shoes
+                  </Link>
+                  <Link
+                    to="/category/kids-accessories"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Accessories
+                  </Link>
+                  <div className="text-slate-dark/30 font-black mt-3 mb-1 text-[10px] uppercase tracking-[0.25em] px-4">
+                    Collections
+                  </div>
+                  <Link
+                    to="/category/boys"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Boys
+                  </Link>
+                  <Link
+                    to="/category/girls"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Girls
+                  </Link>
+                  <Link
+                    to="/category/infants"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Infants
+                  </Link>
+                </div>
+              )}
+
+              {/* SPORTS dropdown */}
+              <button
+                type="button"
+                onClick={() => setMobileSportsOpen((prev) => !prev)}
+                className="w-full flex items-center justify-between mt-2 px-4 py-3 text-slate-dark font-black text-xs uppercase tracking-[0.25em] hover:bg-slate-dark/5 rounded-lg mb-1"
+              >
+                <span>Sports</span>
+                <FaChevronDown
+                  className={`text-[10px] transition-transform duration-300 ${mobileSportsOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {mobileSportsOpen && (
+                <div className="space-y-1 pl-4 pb-3">
+                  <Link
+                    to="/category/activewear"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Activewear
+                  </Link>
+                  <Link
+                    to="/category/performance"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Performance
+                  </Link>
+                  <Link
+                    to="/category/gym-gear"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Gym Gear
+                  </Link>
+                  <Link
+                    to="/category/men-sport"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Men&apos;s Sport
+                  </Link>
+                  <Link
+                    to="/category/ladies-sport"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Ladies&apos; Sport
+                  </Link>
+                  <Link
+                    to="/category/running"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Running
+                  </Link>
+                  <Link
+                    to="/category/training"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-slate-dark text-xs font-bold uppercase tracking-widest hover:bg-slate-dark/5 rounded-lg"
+                  >
+                    Training
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}

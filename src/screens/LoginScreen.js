@@ -42,77 +42,110 @@ const LoginScreen = () => {
   return (
     <>
       <Meta title="Sign In | MearnSneakers" />
-      <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
-              Sign in to your account
-            </h2>
-            <p className="mt-2 text-center text-sm text-black">
-              Or{' '}
+      <div className="min-h-screen bg-off-white-warm flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Brand / Story panel */}
+          <div className="space-y-6">
+            <p className="text-[11px] font-black tracking-[0.4em] uppercase text-slate-dark/40">
+              YouthCircle Members
+            </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-dark leading-tight">
+              Welcome back
+              <span className="text-slate-dark/30"> to the circle.</span>
+            </h1>
+            <p className="text-sm sm:text-base text-slate-dark/70 max-w-md">
+              Access your orders, saved styles and exclusive member drops. Sign in to keep your rotation in sync.
+            </p>
+            <div className="hidden md:flex flex-col gap-3 text-[11px] text-slate-dark/60 font-bold uppercase tracking-[0.25em]">
+              <span>Track every order in real time</span>
+              <span>Save favourites across collections</span>
+              <span>Early access to selected drops</span>
+            </div>
+            <p className="text-xs text-slate-dark/50">
+              New here?{' '}
               <Link
                 to={redirect ? `/register?redirect=${redirect}` : '/register'}
-                className="font-medium text-black hover:text-gray-700 underline"
+                className="font-semibold text-slate-dark underline underline-offset-4"
               >
-                create a new account
+                Create an account
               </Link>
             </p>
           </div>
 
-          <div className="bg-white shadow-lg rounded-lg border-2 border-black">
-            <div className="p-8">
+          {/* Sign-in card */}
+          <div className="bg-white rounded-3xl shadow-[0_24px_60px_rgba(15,23,42,0.18)] border border-slate-dark/10 overflow-hidden">
+            <div className="border-b border-slate-dark/5 px-8 py-6 flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-black tracking-[0.35em] uppercase text-slate-dark/40">Sign in</p>
+                <p className="text-xs text-slate-dark/50 font-medium">Use your email and password to continue</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-slate-dark text-white flex items-center justify-center text-[10px] font-black tracking-[0.2em]">
+                YC
+              </div>
+            </div>
+
+            <div className="p-8 space-y-6">
               {error && <Message variant="danger">{error}</Message>}
               {loading && <Loader />}
 
-              <form onSubmit={submitHandler}>
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
+              <form onSubmit={submitHandler} className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2">
                     Email Address
                   </label>
                   <input
                     type="email"
                     id="email"
-                    placeholder="Enter email"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
-                    className="w-full px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
                 </div>
 
-                <div className="mb-6">
-                  <label htmlFor="password" className="block text-sm font-medium text-black mb-2">
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-xs font-black tracking-[0.2em] uppercase text-slate-dark/60 mb-2"
+                  >
                     Password
                   </label>
                   <input
                     type="password"
                     id="password"
-                    placeholder="Enter password"
+                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     autoComplete="current-password"
-                    className="w-full px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-dark/15 bg-off-white-warm/60 text-sm text-slate-dark focus:outline-none focus:ring-2 focus:ring-slate-dark/20 focus:border-slate-dark/40 placeholder:text-slate-dark/30"
                   />
+                </div>
+
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-dark/50">
+                    <Link to="/forgot-password" className="font-semibold text-slate-dark underline underline-offset-4">
+                      Forgot password?
+                    </Link>
+                  </span>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-black text-white rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed font-semibold"
+                  className="w-full py-3.5 px-4 rounded-full bg-slate-dark text-white text-xs font-black uppercase tracking-[0.3em] hover:bg-black transition-colors disabled:bg-slate-dark/50 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
                   {loading ? 'Signing In...' : 'Sign In'}
                 </button>
               </form>
 
-              <div className="py-3">
-                <div className="text-center">
-                  <Link to="/forgot-password" className="text-black hover:text-gray-700 underline">
-                    Forgot Password?
-                  </Link>
-                </div>
-              </div>
+              <p className="text-[11px] text-center text-slate-dark/40">
+                By continuing you agree to YouthCircle&apos;s{' '}
+                <span className="underline underline-offset-4">Terms</span> and{' '}
+                <span className="underline underline-offset-4">Privacy Policy</span>.
+              </p>
             </div>
           </div>
         </div>
